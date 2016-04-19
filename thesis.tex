@@ -651,4 +651,90 @@ staples.
 
 Figure 4.X. Comparison of results with different number of authors using lines.
 
+
+\chapter{Discussion}
+\section{Method discussion}
+When attempting to implement the method used in Rosenblum et al. it was not
+without difficulties. To be able to use the source code provided by Rosenblum
+et al. we had to make some adjustments to the source code, updating it to make
+it work on a more modern system. As far as we can tell it has not caused any
+errors.
+
+The source code provided by Rosenblum et al. was only for feature extraction.
+We assume that possible inconsistencies with the method of Rosenblum et al.
+come from the process of converting output data from the feature extraction to
+data with LIBSVM format needed to be able to use LIBLINEAR.
+
+We notice that we need more features than Rosenblum et al. to achieve high
+accuracy; thus, our implementation of feature selection may differ from that of
+Rosenblum et al. 
+
+\section{Results analysis}
+The experiments conducted show that optimisation reduces the accuracy. This is
+similar to what Caliskan-Islam et al. (2015) found in their experiments. As
+previously mentioned, they got with 100 authors and no optimisation 78.3\%
+accuracy and with level 3 optimisation 60.1\% accuracy.
+
+When optimisation is used to compile the binaries there tend to be a larger
+amount of features extracted. Optimisation with -O3 gave 3891494 unique
+features in the case with 413 authors compared to 736307 features when -O0 was
+used. That is more than five times as many features. For optimisation -O3  the
+highest accuracy with 20 authors was 58.66\% compared to 68.80\% when no
+optimisation was used (see Figure 4.2. and Figure 4.8.), a 10.14\% difference).
+Furthermore, optimisation with -O1 and -O2 gave only a small reduction in
+accuracy. The results are still much higher than the random chance 5\% of
+guessing the author . 
+
+Experiments with subsets of 20 authors from the set of 191 authors shows
+similar results. When no optimisation was used the highest accuracy was 71.22
+\% compared to 59.79\% when -O3 was used (see Figure 4.X. and  Figure 4.X. ).
+In this case the difference is 11.43\%.
+
+It is also possible to see that the accuracy is higher when fewer authors is
+used which is not that strange, random chance of guessing the correct author is
+also higher 10\%. If the case with 20 authors and no optimisation from the set
+of 191 is compared with that of 10 authors (see Figure 4.X.) the highest
+accuracy with 10 authors and was 81.58\% compared to 71.22\% with 20 authors.
+The difference is 10.36\%.
+
+When using static with only 20 authors the unique number of features was
+3859605 and the total number of features was 110725073. In contrast, even
+though using more authors,  the number of unique features from the set of 191
+authors was 509908 and the total number of features was only 6221646.The
+accuracy achieved in the case using static linking and 10 authors was 45.54\%
+compare to 81.58\%. Thus, an important factor affecting the accuracy seems to
+be the number of features. 
+
+Even though we couldn’t replicate Rosenblum’s et al. (2011) experiment and data
+exactly our experiments showed accuracy levels not far from theirs. Using 191
+authors and 20 authors Rosenblum’s et al (2011) got approximately 77\% while
+our experiment using 191 authors; however, with a different number of files and
+probably not the exact set of 191 authors our experiment gave 71\%.     
+
+With no optimisation and using all 191 authors and 7000 features an accuracy of
+41.8\% was achieved (see Figure 4.23). It is much better than random chance
+0.5\%. Rosenblum et al. (2011) achieved 51\% on the full set with 191 authors
+using only 1900 features. Not only did they achieve better results, they also
+manage to do this using fewer features. Which could indicate that our
+implementation of feature selection differ from that of Rosenblum et al.
+
+\section{Future research}
+There are more techniques one could use when processing the source code or the
+binaries that could be interesting to investigate further. It would be
+interesting to test how different packers affect the accuracy. Moreover, it
+would be interesting to see how this method would work in more practical
+situations. Is it possible to identify teams using these techniques? What if
+the team’s members change frequently? What if two teams enforce the same style
+guide? In real situations the code could be processed using different methods.
+What would happen if the binaries were compiled with a mix of different
+optimisation levels and static?  
+
+Most of the previous reports have focus on code from the Google Code Jam
+programming competition. More research on other datasets with larger files
+could be interesting to examine.
+
+With the purpose of testing the accuracy values obtained it could also be
+interesting to use different machine learning approaches. Possible try another
+program than LIBLINEAR for the cross-validation.
+
 \end{document}
