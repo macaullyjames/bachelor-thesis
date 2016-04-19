@@ -157,3 +157,9 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
+
+# Thesis PDF
+thesis.pdf
+
+# Editor files
+*.swp
