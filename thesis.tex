@@ -26,31 +26,48 @@ executables}
 \maketitle
 \selectlanguage{english}
 \begin{abstract}
-  This is a skeleton for KTH theses. More documentation
-  regarding the KTH thesis class file can be found in
-  the package documentation.
+Previous research has shown that it is possible to achieve authorship
+attribution with high accuracy using binary files. The idea behind authorship
+attribution for binaries is that authors’ unique style will survive the
+compilation process making it possible to identify the author.    
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris
-purus. Fusce tempor. Nulla facilisi. Sed at turpis. Phasellus eu
-ipsum. Nam porttitor laoreet nulla. Phasellus massa massa, auctor
-rutrum, vehicula ut, porttitor a, massa. Pellentesque fringilla. Duis
-nibh risus, venenatis ac, tempor sed, vestibulum at, tellus. Class
-aptent taciti sociosqu ad litora torquent per conubia nostra, per
-inceptos hymenaeos.
+The aim of this report is to investigate different ways to reduce the accuracy
+and see how the processing of binaries affects the author prediction accuracy.
+
+This work will build on the report of Rosenblum et al. and implement the method
+they used. The method uses  a machine learning approach to predict the author
+of the binary. The data used for prediction consists of features extracted from
+the binaries. Similar to Rosenblum et al. (2011) binary files used in this
+thesis come from the Google Code Jam programming competition.
+
+Results from this study indicate that optimisation of code reduces the accuracy
+achieved; however, is not enough to ensure anonymity. Using static linking
+results in a more significant drop in accuracy. The data extracted shows that
+optimisation and static linking results in more features that may be the cause
+of the reduction in accuracy.
 \end{abstract}
 \clearpage
 \begin{foreignabstract}{swedish}
-  Denna fil ger ett avhandlingsskelett.
-  Mer information om \LaTeX-mallen finns i
-  dokumentationen till paketet.
+I tidigare studier har det visat sig möjligt att med hög noggrannhet
+identifiera författaren till binära filer. Idéen är att författare till kod
+lämnar karaktäristiska drag i koden som går att känna igen även efter
+kompilering. 
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris
-purus. Fusce tempor. Nulla facilisi. Sed at turpis. Phasellus eu
-ipsum. Nam porttitor laoreet nulla. Phasellus massa massa, auctor
-rutrum, vehicula ut, porttitor a, massa. Pellentesque fringilla. Duis
-nibh risus, venenatis ac, tempor sed, vestibulum at, tellus. Class
-aptent taciti sociosqu ad litora torquent per conubia nostra, per
-inceptos hymenaeos.
+Syftet med denna rapport är att utforska olika tekniker för att minska
+säkerheten då man vill bestämma vem som är författaren till binära filer och
+undersöka hur olika bearbetningar av koden påverkar noggrannheten.     
+
+Denna rapport bygger vidare på rapport av Rosenblum et al. och dess metod. En
+maskininlärningsmetod implementerats för att identifiera vem som är författaren
+till en binär fil. Attribut extraheras från binärfilerna som sedan kan används
+som data för maskininlärning. Likt Rosenblum et al. används data hämtat från
+programmeringstävlingen Google Code Jam. 
+
+Erhållna resultat tyder på att optimering försämrar noggrannheten men är dock
+inte tillräckligt för att garantera anonymitet. Användning av statisk länkning
+resulterar i en kraftigare sänkning. Man kan se att optimering och statisk
+länkning resulterar i fler attribut vilket kan vara orsaken till att det blir
+svårare att avgöra vem som är författaren.
 \end{foreignabstract}
 \clearpage
 \tableofcontents*
