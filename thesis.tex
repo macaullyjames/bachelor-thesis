@@ -6,6 +6,7 @@
 \usepackage[swedish,english]{babel}
 \usepackage{modifications}
 \usepackage{listings}
+\usepackage{hyperref}
 \title{Anti-analysis techniques to preserve programmer anonymity in binary
 executables}
 
@@ -376,5 +377,94 @@ author with 96\% accuracy. Caliskan-Islam (2015) also tested the effect of
 different optimisations and got with 100 authors and no optimisation 78.3\%
 accuracy and with level 3 optimisation 60.1\% accuracy. Furthermore, the study
 found that it was easier to identify more experienced programmers.
+
+\chapter{Method}
+\section{Data and datasets}
+We base our analysis on data collected from the 2010 round of Google Code Jam
+(GCJ). Specifically, we restrict our analysis to authors that have submitted at
+least 8 submissions in C++. We also require that solutions consist of exactly
+one file with the extension .cpp which can be compiled and statically linked
+with g++ in our test environment (see section 3.2 for details).
+
+Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
+used in order to test how the size of training data affects our analysis.
+Furthermore, analysis on binaries compiled with the -static flag is
+computationally infeasible with large datasets in our test environments. This
+is summarised in figure 3.TK.
+
+These dataset is chosen primarily to allow us to easily compare our results
+with the existing literature; however, it should be said that the structure of
+the GCJ dataset is a good fit for our analysis nonetheless. Because we use an
+unsupervised classification algorithm with a large number of features, it is
+important to choose features derived from the coding style of the programmer
+and not the problem itself. The GCJ dataset facilitates this since all
+contestants solve the same set of problems; features derived from the problem
+formulation perform poorly as classifiers and can be identified and discarded.
+Likewise, features derived from the compilation process itself can also be
+identified and discarded due to all solutions being compiled in the same way.
+
+\section{Test environment}
+All processing was done on an server running Fedora 23 x64. The following dnf
+packages were used at some point during our analysis:
+
+In a supplement to their 2011 paper, Rosenblum et al. provided the programs
+they created for binary feature extraction as open source software. We used
+these same programs for our own analysis, albeit with minor changes due to
+outdated dependencies\footnote{
+    The original feature extraction code can be found at
+    \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions can be
+    found at \url{https://github.com/macaullyjames/esorics}, along with installation
+    instructions.
+}.
+
+\section{Feature selection}
+The feature extraction process yields a high dimensional dataset with hundreds
+of thousands, sometimes millions, of features. In order to speed up the
+training of the SVM and avoid overfitting it is desirable to remove features
+that provide little or no information about the authors’ programming style. To
+achieve this, we first rank the features according to the mutual information
+criteria (Guyon, 2003) and then evaluate a model trained with varying sizes of
+subsets of the highest ranking features. The model with the best predictive
+power is retained.
+
+\subsection{Ranking using mutual information}
+Let $X$ be the multiset of all features generated for a given data set. For all
+$x \in X$, let $P(X = x)$ denote the observed frequency of $x$ in $X$, that is,
+$P(X = x) = \frac{1}{|X|}$. Likewise, let $Y$ be the set of all author labels
+and $P(Y = y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$
+and let $P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the data
+set. We rank each unique feature $x_i \in supp X $ using the mutual information
+criteria $R(x_i)$ (Guyon, 2003) in the following way:
+
+$$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
+Y = y)}{P(X = x_i)P(Y = y)}$$
+
+Intuitively the highly ranked features will be unique to a small set of author
+labels and as such more useful in the classification process, whereas the
+lowest ranked features can be removed without negatively affecting the
+predictive power of the model.  Determining the optimal subset of features
+Using the above ranking algorithm we train our model using the 800, 1900, 7000,
+8000, 9000, 10000 and 100000 highest ranked features, choosing the subset of
+features that yields the best predictive power. We also compare with a model
+trained with all features in data sets where this is computationally feasible.
+The predictive power of each model is validated through cross-validation, see
+section TK for details.
+
+\section{Author classification}
+As in the original paper from Rosenblum et al., classification is performed
+using a linear support vector machine (SVM) (Rosenblum, 2011a). See section
+2.TK for details. We use the svm-scale program from the LIBSVM toolkit (Chang,
+2011) to scale our feature values (avoids overweighting frequently occurring
+features) to the interval [0, 1]:
+\begin{lstlisting}
+svm-scale -l 0 -u 1 features.dat > features.scale
+\end{lstlisting}
+
+We then use the LIBLINEAR SVM implementation (Chang 2008) for training and
+evaluating via 10-fold cross validation:
+\begin{lstlisting}
+train -v 10 features.scale
+\end{lstlisting}
+
 
 \end{document}
