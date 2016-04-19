@@ -467,4 +467,188 @@ train -v 10 features.scale
 \end{lstlisting}
 
 
+\chapter{Results}
+This section present the results from our different experiments using 10-fold
+cross-validation to obtain the accuracy values. The experiments vary in number
+of authors used, total number of features and processing. The purpose is to
+show how the accuracy varies in different scenarios.  
+
+\section{Test with 413 authors and different optimisation levels}
+This experiment uses a dataset of 413 authors and optimisation levels -O0 to
+-O3. Moreover, this experiment examine the accuracy when using different
+numbers of top ranked features in the training dataset in an attempt to find a
+maximum value. To get more accurate values the average of many test instances
+is used. In this case 20 subsets with data from 20 randomly selected authors
+from the total of 413 authors were used.
+
+\subsection{With all 413 authors and optimisation level -O0 to -O3}
+Figure 4.1. This diagram sums up the results of using the entire set of 413
+authors with different optimisation levels and top ranked features.
+Optimisation with -O0 gave the highest accuracy 32.53\% using 7000 features.
+Optimisation with -O1 gave its highest accuracy 28.60\% using 9000 features.
+Optimisation with -O2 gave its highest accuracy 28.60\% using 10000 features.
+Optimisation with -O3 gave its highest accuracy 21.63\% using 10000 features. 
+
+
+\subsection{Subset with 20 authors and optimisation level -O0}
+Figure 4.2. This diagram shows the results of binaries that were compiled with
+optimisation level -O0 and had a total of 765307 unique features. The x-axis
+shows the number of top ranked features used  and the y-axis shows the average
+of the results from the 20 subsets used. The highest accuracy average achieved
+was 68.80\% with 8000 features. 
+
+Figure 4.3. In this diagram the result of every instance of the 20 instances
+using 8000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 5.18\%. 
+
+\subsection{Subset with 20 authors and optimisation level -O1}
+Figure 4.4. This diagram shows the results of binaries that were compiled with
+optimisation level -O1 and had a total of 2141558 unique features. The x-axis
+shows the number of top ranked features used and the y-axis shows the average
+of the results from the 20 subsets used. Highest accuracy average achieved was
+65.42\% with 7000 features. 
+
+
+Figure 4.5. In this diagram the result of every instance of the 20 instances
+using 7000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 6.86\%.
+
+\subsection{Subset with 20 authors and optimisation level -O2}
+Figure 4.6. This diagram shows the results of binaries that were compiled with
+optimisation level -O2 and had a total of 2593340 unique features. The x-axis
+shows the number of top ranked features used and the y-axis shows the average
+of the results from the 20 subsets used. Highest accuracy average achieved was
+64.43\% with 9000 features.
+
+Figure 4.7. In this diagram the result of every instance of the 20 instances
+using 9000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 6.99\%.
+
+\subsection{Subset with 20 authors and optimisation level -O3}
+Figure 4.8. This diagram shows the results of binaries that were compiled with
+optimisation level -O3 and had a total of 3891394 unique features. The x-axis
+shows the number of top ranked features used and the y-axis shows the average
+of the results from the 20 subsets used. Highest accuracy average achieved was
+58.66\% with 9000 features.
+
+Figure 4.9. In this diagram the result of every instance of the 20 instances
+using 9000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 5.73\%.
+
+\subsection{Summary}
+Figure 4.X. Comparison of results from the different optimisations levels using
+staples.  
+
+Figure 4.X. Comparison of results from the different optimisations levels using
+lines.  
+
+\section{Test with 191 authors and different optimisation levels}
+This experiment uses a dataset of 191 authors and optimisation levels -O0 and
+-O3. It shows how fewer authors affect the results and is the same number of
+authors used in Rosenblum et al. However, the exact set of authors may be
+different and the number of files is not the same. Moreover, this experiment
+examine the accuracy when using different numbers of top ranked features in the
+training dataset in an attempt to find a maximum value. To get more accurate
+values the average of many test instances is used. In this case 20 subsets with
+data from 20 randomly selected authors from the total of 191 authors were used.
+In addition, tests with 10 authors instead of 20 was also used.  
+
+\subsection{With all 191 authors and optimisation level -O0 and -O3}
+Figure 4.X: This diagram sums up the results of using the entire set of 191
+authors with optimisation levels -O0, -O3 and different numbers of top ranked
+features. Optimisation with -O0 gave the highest accuracy 41.80\% using 7000
+features. Optimisation with -O3 gave its highest accuracy 29.61\% using 10000
+features. 
+
+\subsection{Subset with 20 authors and optimisation level -O0}
+Figure 4.X. This diagram shows the results of binaries that were compiled with
+optimisation level -O0 and had a total of 509908 unique features. The x-axis
+shows the number of top ranked features used  and the y-axis shows the average
+of the results from the 20 subsets used. The highest accuracy average achieved
+was 71.22\% with 8000 features.
+
+Figure 4.X.  In this diagram the result of every instance of the 20 instances
+using 8000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 6.18\%.
+
+\subsection{Subset with 20 authors and optimisation level -O3}
+Figure 4.X. This diagram shows the results of binaries that were compiled with
+optimisation level -O3 and had a total of 2380127 unique features. The x-axis
+shows the number of top ranked features used and the y-axis shows the average
+of the results from the 20 subsets used. Highest accuracy average achieved was
+59.79\% with 9000 features.
+
+Figure 4.X.  In this diagram the result of every instance of the 20 instances
+using 9000 features and with 20 randomly selected authors is displayed.
+Standard deviation is 5.66\%.
+
+\subsection{Subset with 10 authors and optimisation level -O0}
+Figure 4.X.  This diagram shows the results of binaries that were compiled
+with optimisation level -O0 and had a total of 509908 unique features. The
+x-axis shows the number of top ranked features used and the y-axis shows the
+average of the results from the 20 subsets used, this time with 10 authors.
+Highest accuracy average achieved was 81.58\% with 8000 features.
+
+Figure 4.X. In this diagram the result of every instance of the 0 instances
+using 8000 features and with 10 randomly selected authors is displayed.
+Standard deviation is 7.09\%.
+
+\subsection{Subset with 10 authors and optimisation level -O3}
+Figure 4.X. This diagram shows the results of binaries that were compiled with
+optimisation level -O3 and had a total of 2380127 unique features. The x-axis
+shows the number of top ranked features used and the y-axis shows the average
+of the results from the 20 subsets used, this time with 10 authors. Highest
+accuracy average achieved was 73.22\% with 10000 features.
+
+Figure 4.X. In this diagram the result of every instance of the 20 instances
+using 10000 features and with 10 randomly selected authors is displayed.
+Standard deviation is 9.24\%.
+
+\subsection{Summary}
+Figure 4.X. Comparison of results from the different optimisations levels and
+20 authors.
+
+Figure 4.X. Comparison of results from the different optimisations levels and
+10 authors.
+
+Figure 4.X. Comparison of results with different number of authors using
+staples.
+
+Figure 4.X. Comparison of results with different number of authors using
+lines.
+
+\section{Test with 20 authors and static compilation}
+This experiment uses a dataset of 20 authors and without  optimisation. It
+shows how the use of static affect the results. Moreover, this experiment
+examine the accuracy when using different numbers of top ranked features in the
+training dataset in an attempt to find a maximum value.  To get more accurate
+values the average of many test instances is used. In this case 20 subsets with
+data from 10 randomly selected authors from the total of 20 authors were used.
+In addition, tests with each data file with 20 authors was used; however, no
+average could be used. Tests with all features were not possible or took too
+long time to obtain in this case.   
+
+\subsection{With all 20 authors and static (optimisation level -O0)}
+Figure 4.X. This diagram shows the results of binaries that were compiled with
+static and had a total of 3859605 unique features. The x-axis shows the number
+of top ranked features used and the y-axis shows the the results from a single
+set with 20 authors. Highest accuracy achieved was 28.65\% with 9000 features.
+
+\subsection{Subset with 10 authors and static (optimisation level -O0)}
+Figure 4.X. This diagram shows the results of binaries that were compiled with
+static and had a total of 3859605 unique features. The x-axis shows the number
+of top ranked features used and the y-axis shows the average of the results
+from the 20 subsets used, this time with 10 authors. Highest accuracy average
+achieved was 45.54\% with 8000 features.
+
+Figure 4.X. In this diagram the result of every instance of the 20 instances
+using 8000 features and with 10 randomly selected authors is displayed.
+Standard deviation is 6.62\%.
+
+\subsection{Summary}
+Figure 4.X. Comparison of results with different number of authors using
+staples.
+
+Figure 4.X. Comparison of results with different number of authors using lines.
+
 \end{document}
