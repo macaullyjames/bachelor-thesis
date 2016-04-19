@@ -5,6 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[swedish,english]{babel}
 \usepackage{modifications}
+\usepackage{listings}
 \title{Anti-analysis techniques to preserve programmer anonymity in binary
 executables}
 
@@ -125,5 +126,255 @@ Code Jam. This allows us to verify the results in the literature (Rosenblum,
 2011) and provides a meaningful data set to work with. This method assume that
 a program has exactly one author. However, this is often not true since many
 programs are developed in teams.
+
+\chapter{Background}
+This section begins with an overview of the field. We then introduce the
+technical concepts required to understand the rest of this thesis, and finally
+present the state-of-the-art in the field of authorship attribution. Focus will
+be on deriving authorship from binary programs; however, some related works
+will be mentioned.
+
+\section{Overview of the field}
+Computer forensics is a branch where the goal is to to analyse digital data to
+obtain information, often in relation to computer crime (Reith et al., 2002).
+One application is author attribution. In recent years machine learning
+techniques have been used with great success to identify counterfeited
+integrated circuits (Huang, 2013), distinguishing different kinds of brain
+tumours (Zacharaki, 2009) and the automated detection of software bugs (Aleem,
+2015), to name a few examples.
+
+The first attempt at using statistical methods to de-anonymise authors of
+programs from their coding style was performed by Oman et al. (Oman, 1989) who
+classified programmers using a hand-picked, language-specific feature set. In
+2006, Frantzeskou et al. proposed a method using the analysis of byte level
+n-grams (continuous sequences of n bytes) present in the source code which
+greatly improved upon previous methods, along with being language-agnostic
+(Frantzeskou, 2006). In 2015, Caliskan-Islam et al. presented a method based on
+features of the abstract syntax trees (ASTs) of C/C++ programs that
+significantly improved the state-of-the-art again (Caliskan-Islam, 2015).
+ 
+The above methods all assume that de-anonymisation is to be performed on the
+source code of a program. However, there are many contexts where
+de-anonymisation is desirable where access to the source code is either
+impractical or entirely impossible, for example during malware analysis. In
+2011 Rosenblum et al. showed that this is is feasible in certain conditions
+using machine learning techniques on the stylistic features of source code that
+survive the compilation process (Rosenblum, 2011). Specifically, their features
+were derived from the control flow graph (CFG) of the compiled binary and byte
+level n-grams. In 2014 Alrabaee et al. improved upon the accuracy of those
+techniques and proposed features that were more closely related to programming
+style (Alrabaee, 2014). In 2015 Caliskan-Islam et al. further improved the
+state of the art using disassemblers and decompilers, and applying their
+research in de-anonymising programmers from source code to the ASTs of the
+decompiled binaries (Caliskan-Islam, 2015).
+
+\section{Technical Background}
+This section includes the technical details necessary for understanding the rest of this thesis. We start with a brief overview of the compilation process and the static analysis, techniques used to extract features from binary executables and a short explanation of support vector machines (SVMs) and their uses. 
+
+\subsection{The compilation process}
+ Compilation is the process of transforming source code into executable programs. It is beyond the scope of this thesis to give a complete overview of the inner workings of compilers, so we work under the simplification that compilation is a two step process: assembly code generation and machine code generation.
+
+[Figure]
+
+As illustrated in figure 2.TK, stylistic elements present in source code are
+not easily discernible from the resulting binary code. This can be formalised
+with the observation that compilation is in general non-reversible; there are
+an infinite number of source code programs that would generate a given binary
+executable. As such the compilation process suffers from information loss,
+since information contained within the source code may not be present in the
+resulting binary. Figure 2.TK shows two different source code representations
+of the same binary program.
+
+[Figure]
+
+However, it is hard to say exactly what information is preserved in the
+compilation process. The compiler guarantees that the semantics of the source
+code be preserved in the resulting machine code but its algorithms and data
+structures may not. Figure 2.TK shows how gcc optimises the calculation of an
+arithmetic sum, replacing the loop with the constant-time formula. The results
+of (Rosenblum, 2011), (Caliskan-Islam, 2015), and (Alrabaee et al., 2014) are
+novel in this regard as they show that stylistic features present in source
+code do in fact consistently survive the compilation process.
+
+[Figure]
+\subsection{Static analysis of compiled binaries}
+Static binary analysis is the process of understanding how a binary program
+will behave without executing it. This can involve any number of techniques
+but is often used in the context of reverse engineering, that is, the goal of
+the analysis is to understand not only the behaviour but also the
+implementation of the program. It is assumed that the source code of the
+program is not accessible. In this section we present two methods of static
+analysis, disassembling and control flow analysis, that are used in our
+analysis of the Google Code Jam submissions.
+
+Disassembling is the task of transforming binary code into the equivalent
+assembly code and is performed by a disassembler. In general this is a
+non-trivial task, especially on machine code for complex instruction sets such
+as x86 (Wartell, 2011). Moreover, a number of techniques can be employed to
+purposely thwart commonly used disassembly algorithms, making the process much
+harder (Linn, 2003). For the purpose of our analysis however this is not an
+issue, as we have found that the compiled Google Code Jam solutions in our data
+set can in fact be automatically disassembled. Figure 2.TK shows a simple
+assembly routine, its equivalent machine code after compilation and the
+resulting assembly code after disassembly.
+
+[figure]
+
+Control flow analysis is performed on assembly code produced by a disassembler.
+The goal is to partition the code into so-called “basic blocks”: sequences of
+instructions with exactly one entry point and exit point with respect to
+program flow (Allen 1970). This structure is captured in the control flow graph
+(CFG), a directed graph with the basic blocks as nodes and control flow paths
+as edges. Figure 2.TK illustrates the basic blocks of a simple assembly code
+routine.
+
+[figure]
+
+The CFG provides a structured view of the binary at a higher level than
+individual instructions. This can be used to identify high-level language
+constructs such as loops and functions (Cifuentes, 1993) and as such is used by
+decompilers such as the Hex-Rays decompiler (Hex-Rays, 2016), used by
+Caliskan-Islam et al. in their paper improving on the work of Rosenblum et al
+(Caliskan-Islam 2015). Rosenblum et al. also use the CFG for feature
+extraction, but do not go as far as to decompile the binaries (Rosenblum 2011).
+
+\subsection{Support vector machines}
+Support vector machines (SVMs) belong to a group of supervised learning methods
+and are based on statistical learning theory. SVMs have been around since the
+1960s and work well on for example text and image recognition. The learning
+algorithm is given data and learns from that to identify patterns or classify
+new data. There is a balance in how much data the algorithm should have. Using
+too much information can lead to “overfitting” and the algorithm will perform
+poorer for new data (Weston, n.d.). The goal is to maximize the distance
+between data points in the different classes (Awad, 2004).
+
+\subsection{Cross-validation}
+Cross-validation is a common method used when testing predictions. It is a
+model used to analyze how well a predictive model will work in practice. When
+using 10-fold cross-validation the data is randomly divided into 10 equally
+sized sets, 9 of the sets is used for training and the remaining set it used
+for the testing. This is repeated for each one of the sets, finally resulting
+in an average measure of accuracy in our case (Hsu, 2003).        
+
+\section{State-of-the-art analysis}
+As previously discussed, there are as far as we are aware of exactly three
+papers presenting novel techniques to de-anonymise programmers from compiled
+binary programs: (Rosenblum, 2011), (Alrabee, 2014) and (Caliskan-Islam et al.,
+2015). In this section we discuss each approach. The  focus will be on the
+techniques used by Rosenblum et al.
+
+\subsection{Rosenblum et al.}
+\subsubsection{General approach}
+Step 1: Binary disassembly
+As a first step, the compiled binary is disassembled into human-readable
+assembly code. It is implicitly assumed that this can always be performed, but
+it is important to note that this is not necessarily the case. Malware, for
+example, is often obfuscated in ways that make automated disassembly difficult
+to perform (Branco, 2012). Rosenblum’s approach will not work if the binary
+cannot be disassembled.
+
+Step 2: Idiom generation
+The disassembled code is parsed and all sequences of 1-3 instructions are
+extracted and counted. Specifically, each function the disassembler encounters
+is parsed individually. Wildcards are allowed in the idioms; for example, the
+idiom
+\begin{lstlisting}
+(push ebp | * | mov esp,ebp)
+\end{lstlisting}
+%TK: Taken from Rosenblum, find a better example
+represents a generic stack frame setup operation.
+
+Step 3: N-gram generation
+The disassembled code is parsed again in the same per-function way as above,
+this time examining the raw binary data of each function. Each n-gram
+(continuous sequence of bytes) of length 3 or 4 is extracted and counted. This
+leads to a large amount of data, roughly 64\% of all features in Rosenblum et
+al.’s corpus.
+
+Step 4: Generation of the control flow graph (CFG)
+This can be done using standard tools such as the open source ParseAPI library
+(Paradyn, 2016). The CFG is a directed graph whose nodes and edges represent
+the basic blocks and control flow paths respectively of the disassembled
+program. See section 2.TK for a more in-depth explanation.
+
+Step 5: Generation of the coloured control flow graph (CCFG) the randomly
+collapsed, coloured control flow graph (RCCCFG) and the coloured call graph
+(CCG).
+Using the CFG, three derivative graphs are created: The coloured CFG (CCFG),
+the randomly collapsed, coloured CFG (RCCCFG) and the coloured call graph
+(CCG). To generate the CCFG, each node in the CFG is associated with a
+fourteen-bit colour depending on the types of instructions contained in the
+node’s corresponding block of code (this process is described in detail in
+(Rosenblum, 2011)). The RCCCFG is then generated from the CCFG by collapsing
+all nodes in the CCFG with a random neighbor in the natural way:
+Fig 2.X TODO: REPLACE THESE IMAGES
+
+The CCG is created from the CFG only including the subset of nodes that contain
+a call instruction, with edges between two nodes representing a path between
+the corresponding nodes in the original CFG. A colouring function is applied in
+the same way as for the CCFG, with the colours depending on whether not the
+node calls a library function, and if so, which library function is called:
+Fig 2.X TODO: REPLACE THIS IMAGE
+
+
+Step 6: Generation of feature vectors
+For each author in the data set an integral valued feature vector is generated
+from the  above steps. Specifically, the feature vector contains:
+
+\begin{itemize}
+\item All idioms and n-grams
+\item All three-node subgraphs of the of the CCFG
+\item All three-node subgraphs of the RCCCFG
+\item All three-node subgraphs of the CCG
+\item The number of times a library method is called, extracted from the CCG
+\end{itemize}
+
+Step 7: Feature selection
+This can be seen as a dimensionality reduction of the feature vectors. It is
+performed by selecting the features that are ranked best under the mutual
+information criteria with respect to the author labels. The optimal number of
+features to retain is chosen by training the model with 10-fold cross
+validation on the dataset.
+
+\subsubsection{Evaluation}
+Rosenblum et al. evaluate their data on both a private data set obtained from
+an operating systems course (CS537) at the University of Wisconsin and a subset
+of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
+(GCJ), specifically the solutions that:
+
+\begin{itemize}
+\item Were written in C/C++
+\item Could be compiled using GCC 4.5 
+\item Were submitted by an author that had submitted correct solutions to at
+      least 8 problems in total
+\end{itemize}
+
+TK: We only care about 2010 data
+In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
+2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
+from 2010, 51\% accuracy was achieved. For a randomly selected subset of 10
+authors, 81\% accuracy was achieved and for a randomly selected subset of 20
+authors 77\% accuracy.
+
+\subsection{Alrabee et al.}
+\subsubsection{Approach and evaluation}
+Another study by Alrabaee et al. (An Onion approach to Binary code Authorship
+Attribution) used an approach they called OBA2 to identify author style in
+binary code (Alrabaee et al., 2014). The study refers to the work of Rosenblum
+et al. and argues that some of the features used in Rosenblum et al. do not
+represent author style features. The result of the study (diagrams) shows a
+higher accuracy than (Rosenblum 2011).The data used in the study was the same
+as Rosenblum et al. 
+
+\subsection{Caliskan-Islam et al.}
+\subsubsection{Approach and evaluation}
+Another report published in December 2015 by Caliskan-Islam et al. improves on
+the work of Rosenblum (2011). This study has been able to improve author
+identification accuracy even further also using data from Google Code Jam and
+c/c++ binary code. With a set of 20 authors they are able to find the correct
+author with 96\% accuracy. Caliskan-Islam (2015) also tested the effect of
+different optimisations and got with 100 authors and no optimisation 78.3\%
+accuracy and with level 3 optimisation 60.1\% accuracy. Furthermore, the study
+found that it was easier to identify more experienced programmers.
 
 \end{document}
