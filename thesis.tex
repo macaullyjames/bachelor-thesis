@@ -417,6 +417,15 @@ outdated dependencies\footnote{
     instructions.
 }.
 
+\section{Feature extraction}
+The techniques presented in (Rosenblum et al., 2011) are applied to each
+compiled program in the dataset (see section 2.TK for details) so that each
+file is associated with a list of string features. A list of all unique
+features in the dataset is then generated (figure TK). For each author, we
+count the total number of occurrences of each feature in their solution set and
+save this data in the LIBSVM format. Each feature is mapped to its index in the
+global feature list (figure TK).
+
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
 of thousands, sometimes millions, of features. In order to speed up the
