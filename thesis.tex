@@ -390,7 +390,19 @@ Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
 used in order to test how the size of training data affects our analysis.
 Furthermore, analysis on binaries compiled with the -static flag is
 computationally infeasible with large datasets in our test environments. This
-is summarised in figure 3.TK.
+is summarised in Table~\ref{tab:datasets-summary}.
+
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Authors & Subsets & Compiler flags \\ \hline
+        413 & 413, 20 &  \lstinline{-O0, -O1, -O2, -O3} \\ 
+        191 & 191, 20, 10 &  \lstinline{-O0, -O3} \\ 
+        20 & 20, 10 &  \lstinline{-O0 static} 
+        \end{tabular}
+    \caption{Summary of subsets of the 2010 GCJ dataset used in our analysis}
+    \label{tab:datasets-summary}
+\end{table}
 
 These dataset is chosen primarily to allow us to easily compare our results
 with the existing literature; however, it should be said that the structure of
@@ -404,8 +416,24 @@ Likewise, features derived from the compilation process itself can also be
 identified and discarded due to all solutions being compiled in the same way.
 
 \section{Test environment}
-All processing was done on an server running Fedora 23 x64. The following dnf
-packages were used at some point during our analysis:
+All processing was done on an server running Fedora 23 x64.
+Table~\ref{tab:dnf-packages} lists the dnf packages used in our test
+environment that are not included in the base installation used:
+
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Package name & Version & Usage \\ \hline
+        gcc-c++ & 5.3.1-2.fc23 & Compiling GCJ submissions \\
+        python & 2.7.10-8.fc23 & Scripting, data manipulation \\
+        libsvm & 3.20-5.fc23  & Support vector machine library \\
+        libsvm-python & 3.20-5.fc23 & Python bindings for libsvm
+        % TK: This is incomplete
+        \end{tabular}
+    \caption{\lstinline{dnf} packages not including in the base Fedora 23 x64
+    installation that are used in our analysis}
+    \label{tab:dnf-packages}
+\end{table}
 
 In a supplement to their 2011 paper, Rosenblum et al. provided the programs
 they created for binary feature extraction as open source software. We used
@@ -425,6 +453,38 @@ features in the dataset is then generated (figure TK). For each author, we
 count the total number of occurrences of each feature in their solution set and
 save this data in the LIBSVM format. Each feature is mapped to its index in the
 global feature list (figure TK).
+
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Compiler setting & Unique features & Total features \\ \hline
+        \lstinline{-O0} & 765307 & 13204201 \\
+        \lstinline{-O3} & 3891494 & 21570182
+        \end{tabular}
+    \caption{Features in the 413 author dataset}
+    \label{tab:413-features}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Compiler setting & Unique features & Total features \\ \hline
+        \lstinline{-O0} & 509908 & 6221646 \\
+        \lstinline{-O3} & 2380127 & 10276979
+        \end{tabular}
+    \caption{Features in the 191 author dataset}
+    \label{tab:191-features}
+\end{table}
+
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Compiler setting & Unique features & Total features \\ \hline
+        \lstinline{-O0 -static} & 3859605 & 110725073 \\
+        \end{tabular}
+    \caption{Features in the 20 author dataset}
+    \label{tab:20-features}
+\end{table}
 
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
