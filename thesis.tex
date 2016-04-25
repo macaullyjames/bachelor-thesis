@@ -103,11 +103,12 @@ on the same Google Code Jam dataset.
 
 \section{Problem definition} In short, this thesis aims to:
 \begin{itemize}
-\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google Code Jam dataset
-\item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of the
-      author classification algorithm on the 2010 GCJ dataset
-\item Investigate how statically linking the standard library affects the accuracy of
-      the author classification algorithm on the 2010 GCJ dataset.
+\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
+      Code Jam dataset
+\item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of
+      the author classification algorithm on the 2010 GCJ dataset
+\item Investigate how statically linking the standard library affects the
+      accuracy of the author classification algorithm on the 2010 GCJ dataset.
 \end{itemize}
 
 \section{Motivation}
@@ -176,10 +177,18 @@ source code to the ASTs of the decompiled binaries
 \parencite{caliskan2015coding}.
 
 \section{Technical Background}
-This section includes the technical details necessary for understanding the rest of this thesis. We start with a brief overview of the compilation process and the static analysis, techniques used to extract features from binary executables and a short explanation of support vector machines (SVMs) and their uses. 
+This section includes the technical details necessary for understanding the
+rest of this thesis. We start with a brief overview of the compilation process
+and the static analysis, techniques used to extract features from binary
+executables and a short explanation of support vector machines (SVMs) and their
+uses. 
 
 \subsection{The compilation process}
- Compilation is the process of transforming source code into executable programs. It is beyond the scope of this thesis to give a complete overview of the inner workings of compilers, so we work under the simplification that compilation is a two step process: assembly code generation and machine code generation.
+ Compilation is the process of transforming source code into executable
+ programs. It is beyond the scope of this thesis to give a complete overview of
+ the inner workings of compilers, so we work under the simplification that
+ compilation is a two step process: assembly code generation and machine code
+ generation.
 
 [Figure]
 
@@ -315,8 +324,8 @@ the randomly collapsed, coloured CFG (RCCCFG) and the coloured call graph
 (CCG). To generate the CCFG, each node in the CFG is associated with a
 fourteen-bit colour depending on the types of instructions contained in the
 node’s corresponding block of code (this process is described in detail in
-\parencite{rosenblum2011wrote}). The RCCCFG is then generated from the CCFG by collapsing
-all nodes in the CCFG with a random neighbor in the natural way:
+\parencite{rosenblum2011wrote}). The RCCCFG is then generated from the CCFG by
+collapsing all nodes in the CCFG with a random neighbor in the natural way:
 Fig 2.X TODO: REPLACE THESE IMAGES
 
 The CCG is created from the CFG only including the subset of nodes that contain
@@ -449,9 +458,9 @@ they created for binary feature extraction as open source software. We used
 these same programs for our own analysis, albeit with minor changes due to
 outdated dependencies\footnote{
     The original feature extraction code can be found at
-    \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions can be
-    found at \url{https://github.com/macaullyjames/esorics}, along with installation
-    instructions.
+    \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions
+    can be found at \url{https://github.com/macaullyjames/esorics}, along with
+    installation instructions.
 }.
 
 \section{Feature extraction}
