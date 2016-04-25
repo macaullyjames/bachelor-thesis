@@ -7,6 +7,9 @@
 \usepackage{modifications}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\addbibresource{references.bib}
+
 \title{Anti-analysis techniques to preserve programmer anonymity in binary
 executables}
 
@@ -39,7 +42,7 @@ and see how the processing of binaries affects the author prediction accuracy.
 This work will build on the report of Rosenblum et al. and implement the method
 they used. The method uses  a machine learning approach to predict the author
 of the binary. The data used for prediction consists of features extracted from
-the binaries. Similar to Rosenblum et al. (2011) binary files used in this
+the binaries. Similar to \parencite{rosenblum2011wrote} binary files used in this
 thesis come from the Google Code Jam programming competition.
 
 Results from this study indicate that optimisation of code reduces the accuracy
@@ -59,11 +62,12 @@ Syftet med denna rapport är att utforska olika tekniker för att minska
 säkerheten då man vill bestämma vem som är författaren till binära filer och
 undersöka hur olika bearbetningar av koden påverkar noggrannheten.     
 
-Denna rapport bygger vidare på rapport av Rosenblum et al. och dess metod. En
-maskininlärningsmetod implementerats för att identifiera vem som är författaren
-till en binär fil. Attribut extraheras från binärfilerna som sedan kan används
-som data för maskininlärning. Likt Rosenblum et al. används data hämtat från
-programmeringstävlingen Google Code Jam. 
+Denna rapport bygger vidare på rapport av \parencite{rosenblum2011wrote}
+och dess metod. En maskininlärningsmetod implementerats för
+att identifiera vem som är författaren till en binär fil. Attribut extraheras
+från binärfilerna som sedan kan används som data för maskininlärning. Likt
+Rosenblum et al. används data hämtat från programmeringstävlingen Google Code
+Jam. 
 
 Erhållna resultat tyder på att optimering försämrar noggrannheten men är dock
 inte tillräckligt för att garantera anonymitet. Användning av statisk länkning
@@ -80,27 +84,26 @@ svårare att avgöra vem som är författaren.
 Is it possible to extract information about programming style from compiled
 binary programs? Can such information be used to identify the author of a given
 program? In 2011 Rosenblum et al. showed that the answer to both these
-questions is “yes” under certain conditions (Rosenblum, 2011); from a pool of
-191 Google Code Jam (GCJ) contestants with eight or more submitted solutions,
-authorship identification from a set of 10 authors could be performed with 81\%
-accuracy using a supervised support vector machine classifier. In 2015
-Caliskan-Islam et al. proposed an alternate method that could achieve 96\%
-accuracy from a pool of 20 contestants (Caliskan-Islam, 2015) under similar
-conditions.
+questions is “yes” under certain conditions \parencite{rosenblum2011wrote};
+from a pool of 191 Google Code Jam (GCJ) contestants with eight or more
+submitted solutions, authorship identification from a set of 10 authors could
+be performed with 81\% accuracy using a supervised support vector machine
+classifier. In 2015 Caliskan-Islam et al. proposed an alternate method that
+could achieve 96\% accuracy from a pool of 20 contestants
+\parencite{caliskan2015coding} under similar conditions.
 
 However, it is not clear whether the above results could be replicated with
 other datasets from meaningful real-world scenarios. Nevertheless, they do
 raise questions about the ability of programmers to write and distribute
 software anonymously and it is therefore desirable to find methods that prevent
-de-anonymisation with this kind of analysis. Using the methods of (Rosenblum
-2011), this report aims to investigate how changes to the build process can be
-used to reduce the accuracy of author classification on the same Google Code
-Jam dataset.
+de-anonymisation with this kind of analysis. Using the methods of
+\parencite{rosenblum2011wrote}, this report aims to investigate how changes to
+the build process can be used to reduce the accuracy of author classification
+on the same Google Code Jam dataset.
 
-\section{Problem definition}
-In short, this thesis aims to:
+\section{Problem definition} In short, this thesis aims to:
 \begin{itemize}
-\item Validate the results of (Rosenblum, 2011) on the 2010 Google Code Jam dataset
+\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google Code Jam dataset
 \item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of the
       author classification algorithm on the 2010 GCJ dataset
 \item Investigate how statically linking the standard library affects the accuracy of
@@ -123,10 +126,10 @@ This report will only implement the method of Rosenblum et al. by using
 available source code when possible and by implement remaining part ourselves
 trying to be consistent with the original implementation.  Furthermore, we
 limit our analysis to a subset of C++ solutions from the 2010 rounds of Google
-Code Jam. This allows us to verify the results in the literature (Rosenblum,
-2011) and provides a meaningful data set to work with. This method assume that
-a program has exactly one author. However, this is often not true since many
-programs are developed in teams.
+Code Jam. This allows us to verify the results in the literature
+\parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
+This method assume that a program has exactly one author. However, this is
+often not true since many programs are developed in teams.
 
 \chapter{Background}
 This section begins with an overview of the field. We then introduce the
@@ -137,22 +140,24 @@ will be mentioned.
 
 \section{Overview of the field}
 Computer forensics is a branch where the goal is to to analyse digital data to
-obtain information, often in relation to computer crime (Reith et al., 2002).
-One application is author attribution. In recent years machine learning
-techniques have been used with great success to identify counterfeited
-integrated circuits (Huang, 2013), distinguishing different kinds of brain
-tumours (Zacharaki, 2009) and the automated detection of software bugs (Aleem,
-2015), to name a few examples.
+obtain information, often in relation to computer crime
+\parencite{reith2002examination}.  One application is author attribution. In
+recent years machine learning techniques have been used with great success to
+identify counterfeited integrated circuits \parencite{huang2013counterfeit},
+distinguishing different kinds of brain tumours
+\parencite{zacharaki2009classification} and the automated detection of software
+bugs \parencite{aleem2015comparative}, to name a few examples.
 
 The first attempt at using statistical methods to de-anonymise authors of
-programs from their coding style was performed by Oman et al. (Oman, 1989) who
-classified programmers using a hand-picked, language-specific feature set. In
-2006, Frantzeskou et al. proposed a method using the analysis of byte level
-n-grams (continuous sequences of n bytes) present in the source code which
-greatly improved upon previous methods, along with being language-agnostic
-(Frantzeskou, 2006). In 2015, Caliskan-Islam et al. presented a method based on
-features of the abstract syntax trees (ASTs) of C/C++ programs that
-significantly improved the state-of-the-art again (Caliskan-Islam, 2015).
+programs from their coding style was performed by Oman et al.
+\parencite{oman1989programming} who classified programmers using a hand-picked,
+language-specific feature set. In 2006, Frantzeskou et al. proposed a method
+using the analysis of byte level n-grams (continuous sequences of n bytes)
+present in the source code which greatly improved upon previous methods, along
+with being language-agnostic \parencite{frantzeskou2006source}. In 2015,
+Caliskan-Islam et al. presented a method based on features of the abstract
+syntax trees (ASTs) of C/C++ programs that significantly improved the
+state-of-the-art again \parencite{caliskan2015anonymizing}.
  
 The above methods all assume that de-anonymisation is to be performed on the
 source code of a program. However, there are many contexts where
@@ -160,14 +165,15 @@ de-anonymisation is desirable where access to the source code is either
 impractical or entirely impossible, for example during malware analysis. In
 2011 Rosenblum et al. showed that this is is feasible in certain conditions
 using machine learning techniques on the stylistic features of source code that
-survive the compilation process (Rosenblum, 2011). Specifically, their features
-were derived from the control flow graph (CFG) of the compiled binary and byte
-level n-grams. In 2014 Alrabaee et al. improved upon the accuracy of those
-techniques and proposed features that were more closely related to programming
-style (Alrabaee, 2014). In 2015 Caliskan-Islam et al. further improved the
-state of the art using disassemblers and decompilers, and applying their
-research in de-anonymising programmers from source code to the ASTs of the
-decompiled binaries (Caliskan-Islam, 2015).
+survive the compilation process \parencite{rosenblum2011wrote}. Specifically,
+their features were derived from the control flow graph (CFG) of the compiled
+binary and byte level n-grams. In 2014 Alrabaee et al. improved upon the
+accuracy of those techniques and proposed features that were more closely
+related to programming style \parencite{alrabaee2014oba2}. In 2015
+Caliskan-Islam et al. further improved the state of the art using disassemblers
+and decompilers, and applying their research in de-anonymising programmers from
+source code to the ASTs of the decompiled binaries
+\parencite{caliskan2015coding}.
 
 \section{Technical Background}
 This section includes the technical details necessary for understanding the rest of this thesis. We start with a brief overview of the compilation process and the static analysis, techniques used to extract features from binary executables and a short explanation of support vector machines (SVMs) and their uses. 
@@ -193,9 +199,10 @@ compilation process. The compiler guarantees that the semantics of the source
 code be preserved in the resulting machine code but its algorithms and data
 structures may not. Figure 2.TK shows how gcc optimises the calculation of an
 arithmetic sum, replacing the loop with the constant-time formula. The results
-of (Rosenblum, 2011), (Caliskan-Islam, 2015), and (Alrabaee et al., 2014) are
-novel in this regard as they show that stylistic features present in source
-code do in fact consistently survive the compilation process.
+of \parencite{rosenblum2011wrote}, \parencite{caliskan2015coding}, and
+\parencite{alrabaee2014oba2} are novel in this regard as they show that
+stylistic features present in source code do in fact consistently survive the
+compilation process.
 
 [Figure]
 \subsection{Static analysis of compiled binaries}
@@ -211,33 +218,35 @@ analysis of the Google Code Jam submissions.
 Disassembling is the task of transforming binary code into the equivalent
 assembly code and is performed by a disassembler. In general this is a
 non-trivial task, especially on machine code for complex instruction sets such
-as x86 (Wartell, 2011). Moreover, a number of techniques can be employed to
-purposely thwart commonly used disassembly algorithms, making the process much
-harder (Linn, 2003). For the purpose of our analysis however this is not an
-issue, as we have found that the compiled Google Code Jam solutions in our data
-set can in fact be automatically disassembled. Figure 2.TK shows a simple
-assembly routine, its equivalent machine code after compilation and the
-resulting assembly code after disassembly.
+as x86 \parencite{wartell2011differentiating}. Moreover, a number of techniques
+can be employed to purposely thwart commonly used disassembly algorithms,
+making the process much harder \parencite{linn2003obfuscation}. For the purpose
+of our analysis however this is not an issue, as we have found that the
+compiled Google Code Jam solutions in our data set can in fact be automatically
+disassembled. Figure 2.TK shows a simple assembly routine, its equivalent
+machine code after compilation and the resulting assembly code after
+disassembly.
 
 [figure]
 
 Control flow analysis is performed on assembly code produced by a disassembler.
 The goal is to partition the code into so-called “basic blocks”: sequences of
 instructions with exactly one entry point and exit point with respect to
-program flow (Allen 1970). This structure is captured in the control flow graph
-(CFG), a directed graph with the basic blocks as nodes and control flow paths
-as edges. Figure 2.TK illustrates the basic blocks of a simple assembly code
-routine.
+program flow \parencite{allen1970control}. This structure is captured in the
+control flow graph (CFG), a directed graph with the basic blocks as nodes and
+control flow paths as edges. Figure 2.TK illustrates the basic blocks of a
+simple assembly code routine.
 
 [figure]
 
 The CFG provides a structured view of the binary at a higher level than
 individual instructions. This can be used to identify high-level language
-constructs such as loops and functions (Cifuentes, 1993) and as such is used by
-decompilers such as the Hex-Rays decompiler (Hex-Rays, 2016), used by
-Caliskan-Islam et al. in their paper improving on the work of Rosenblum et al
-(Caliskan-Islam 2015). Rosenblum et al. also use the CFG for feature
-extraction, but do not go as far as to decompile the binaries (Rosenblum 2011).
+constructs such as loops and functions \parencite{cifuentes1993methodology} and
+as such is used by decompilers such as the Hex-Rays decompiler (TK: Hex-Rays,
+2016), used by Caliskan-Islam et al. in their paper improving on the work of
+Rosenblum et al \parencite{caliskan2015coding}. Rosenblum et al. also use the
+CFG for feature extraction, but do not go as far as to decompile the binaries
+\parencite{rosenblum2011wrote}.
 
 \subsection{Support vector machines}
 Support vector machines (SVMs) belong to a group of supervised learning methods
@@ -246,8 +255,8 @@ and are based on statistical learning theory. SVMs have been around since the
 algorithm is given data and learns from that to identify patterns or classify
 new data. There is a balance in how much data the algorithm should have. Using
 too much information can lead to “overfitting” and the algorithm will perform
-poorer for new data (Weston, n.d.). The goal is to maximize the distance
-between data points in the different classes (Awad, 2004).
+poorer for new data (TK: Weston, n.d.). The goal is to maximize the distance
+between data points in the different classes \parencite{awad2004effective}.
 
 \subsection{Cross-validation}
 Cross-validation is a common method used when testing predictions. It is a
@@ -255,14 +264,14 @@ model used to analyze how well a predictive model will work in practice. When
 using 10-fold cross-validation the data is randomly divided into 10 equally
 sized sets, 9 of the sets is used for training and the remaining set it used
 for the testing. This is repeated for each one of the sets, finally resulting
-in an average measure of accuracy in our case (Hsu, 2003).        
+in an average measure of accuracy in our case \parencite{hsu2003practical}.        
 
 \section{State-of-the-art analysis}
 As previously discussed, there are as far as we are aware of exactly three
 papers presenting novel techniques to de-anonymise programmers from compiled
-binary programs: (Rosenblum, 2011), (Alrabee, 2014) and (Caliskan-Islam et al.,
-2015). In this section we discuss each approach. The  focus will be on the
-techniques used by Rosenblum et al.
+binary programs: \parencite{rosenblum2011wrote}, \parencite{alrabaee2014oba2}
+and \parencite{caliskan2015coding}. In this section we discuss each approach.
+The focus will be on the techniques used by Rosenblum et al.
 
 \subsection{Rosenblum et al.}
 \subsubsection{General approach}
@@ -271,8 +280,8 @@ As a first step, the compiled binary is disassembled into human-readable
 assembly code. It is implicitly assumed that this can always be performed, but
 it is important to note that this is not necessarily the case. Malware, for
 example, is often obfuscated in ways that make automated disassembly difficult
-to perform (Branco, 2012). Rosenblum’s approach will not work if the binary
-cannot be disassembled.
+to perform \parencite{branco2012scientific}. Rosenblum’s approach will not work
+if the binary cannot be disassembled.
 
 Step 2: Idiom generation
 The disassembled code is parsed and all sequences of 1-3 instructions are
@@ -306,7 +315,7 @@ the randomly collapsed, coloured CFG (RCCCFG) and the coloured call graph
 (CCG). To generate the CCFG, each node in the CFG is associated with a
 fourteen-bit colour depending on the types of instructions contained in the
 node’s corresponding block of code (this process is described in detail in
-(Rosenblum, 2011)). The RCCCFG is then generated from the CCFG by collapsing
+\parencite{rosenblum2011wrote}). The RCCCFG is then generated from the CCFG by collapsing
 all nodes in the CCFG with a random neighbor in the natural way:
 Fig 2.X TODO: REPLACE THESE IMAGES
 
@@ -357,20 +366,20 @@ from 2010, 51\% accuracy was achieved. For a randomly selected subset of 10
 authors, 81\% accuracy was achieved and for a randomly selected subset of 20
 authors 77\% accuracy.
 
-\subsection{Alrabee et al.}
+\subsection{Alrabaee et al.}
 \subsubsection{Approach and evaluation}
 Another study by Alrabaee et al. (An Onion approach to Binary code Authorship
 Attribution) used an approach they called OBA2 to identify author style in
-binary code (Alrabaee et al., 2014). The study refers to the work of Rosenblum
-et al. and argues that some of the features used in Rosenblum et al. do not
-represent author style features. The result of the study (diagrams) shows a
-higher accuracy than (Rosenblum 2011).The data used in the study was the same
-as Rosenblum et al. 
+binary code \parencite{alrabaee2014oba2}. The study refers to the work of
+Rosenblum et al. and argues that some of the features used in Rosenblum et al.
+do not represent author style features. The result of the study (diagrams)
+shows a higher accuracy than \parencite{rosenblum2011wrote}.The data used in
+the study was the same as Rosenblum et al. 
 
 \subsection{Caliskan-Islam et al.}
 \subsubsection{Approach and evaluation}
 Another report published in December 2015 by Caliskan-Islam et al. improves on
-the work of Rosenblum (2011). This study has been able to improve author
+the work of Rosenblum. This study has been able to improve author
 identification accuracy even further also using data from Google Code Jam and
 c/c++ binary code. With a set of 20 authors they are able to find the correct
 author with 96\% accuracy. Caliskan-Islam (2015) also tested the effect of
@@ -446,7 +455,7 @@ outdated dependencies\footnote{
 }.
 
 \section{Feature extraction}
-The techniques presented in (Rosenblum et al., 2011) are applied to each
+The techniques presented in \parencite{rosenblum2011wrote} are applied to each
 compiled program in the dataset (see section 2.TK for details) so that each
 file is associated with a list of string features. A list of all unique
 features in the dataset is then generated (figure TK). For each author, we
@@ -492,9 +501,9 @@ of thousands, sometimes millions, of features. In order to speed up the
 training of the SVM and avoid overfitting it is desirable to remove features
 that provide little or no information about the authors’ programming style. To
 achieve this, we first rank the features according to the mutual information
-criteria (Guyon, 2003) and then evaluate a model trained with varying sizes of
-subsets of the highest ranking features. The model with the best predictive
-power is retained.
+criteria \parencite{guyon2003introduction} and then evaluate a model trained
+with varying sizes of subsets of the highest ranking features. The model with
+the best predictive power is retained.
 
 \subsection{Ranking using mutual information}
 Let $X$ be the multiset of all features generated for a given data set. For all
@@ -521,16 +530,16 @@ section TK for details.
 
 \section{Author classification}
 As in the original paper from Rosenblum et al., classification is performed
-using a linear support vector machine (SVM) (Rosenblum, 2011a). See section
-2.TK for details. We use the svm-scale program from the LIBSVM toolkit (Chang,
-2011) to scale our feature values (avoids overweighting frequently occurring
-features) to the interval [0, 1]:
+using a linear support vector machine (SVM) \parencite{rosenblum2011wrote}. See
+section 2.TK for details. We use the svm-scale program from the LIBSVM toolkit
+\parencite{chang2011libsvm} to scale our feature values (avoids overweighting
+frequently occurring features) to the interval [0, 1]:
 \begin{lstlisting}
 svm-scale -l 0 -u 1 features.dat > features.scale
 \end{lstlisting}
 
-We then use the LIBLINEAR SVM implementation (Chang 2008) for training and
-evaluating via 10-fold cross validation:
+We then use the LIBLINEAR SVM implementation \parencite{fan2008liblinear} for
+training and evaluating via 10-fold cross validation:
 \begin{lstlisting}
 train -v 10 features.scale
 \end{lstlisting}
@@ -740,7 +749,7 @@ Rosenblum et al.
 
 \section{Results analysis}
 The experiments conducted show that optimisation reduces the accuracy. This is
-similar to what Caliskan-Islam et al. (2015) found in their experiments. As
+similar to what \parencite{caliskan2015coding} found in their experiments. As
 previously mentioned, they got with 100 authors and no optimisation 78.3\%
 accuracy and with level 3 optimisation 60.1\% accuracy.
 
@@ -774,17 +783,17 @@ accuracy achieved in the case using static linking and 10 authors was 45.54\%
 compare to 81.58\%. Thus, an important factor affecting the accuracy seems to
 be the number of features. 
 
-Even though we couldn’t replicate Rosenblum’s et al. (2011) experiment and data
+Even though we couldn’t replicate Rosenblum’s et al. 2011 experiment and data
 exactly our experiments showed accuracy levels not far from theirs. Using 191
-authors and 20 authors Rosenblum’s et al (2011) got approximately 77\% while
+authors and 20 authors \parencite{rosenblum2011wrote} got approximately 77\% while
 our experiment using 191 authors; however, with a different number of files and
 probably not the exact set of 191 authors our experiment gave 71\%.     
 
 With no optimisation and using all 191 authors and 7000 features an accuracy of
 41.8\% was achieved (see Figure 4.23). It is much better than random chance
-0.5\%. Rosenblum et al. (2011) achieved 51\% on the full set with 191 authors
-using only 1900 features. Not only did they achieve better results, they also
-manage to do this using fewer features. Which could indicate that our
+0.5\%. \parencite{rosenblum2011wrote} achieved 51\% on the full set with 191
+authors using only 1900 features. Not only did they achieve better results,
+they also manage to do this using fewer features. Which could indicate that our
 implementation of feature selection differ from that of Rosenblum et al.
 
 \section{Future research}
@@ -808,8 +817,8 @@ program than LIBLINEAR for the cross-validation.
 
 \chapter{Conclusion}
 This thesis attempted to verify the authorship attribution method created by
-Rosenblum et al. (2011). Our results tend to be somewhat lower than that of
-Rosenblum et al. and need more features to give high accuracy; nevertheless,
+\parencite{rosenblum2011wrote}. Our results tend to be somewhat lower than that
+of Rosenblum et al. and need more features to give high accuracy; nevertheless,
 the method seems to be working. Some possible explanations concerning the
 differences in accuracy achieved could be because of difficulties in
 implementing Rosenblum et al. method exactly. Furthermore, even though working
@@ -823,5 +832,8 @@ to 81.58\% without. Perhaps not enough to ensure anonymity; nevertheless,
 static gives a significantly lower accuracy. The data extracted shows that
 optimisation and static linking results in more features that may be the cause
 of the reduction in accuracy.
+
+\printbibheading
+\printbibliography
 
 \end{document}
