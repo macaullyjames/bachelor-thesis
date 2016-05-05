@@ -41,7 +41,7 @@ The aim of this report is to investigate different ways to reduce the accuracy
 and see how the processing of binaries affects the author prediction accuracy.
 
 This work will build on the report of Rosenblum et al. and implement the method
-they used. The method uses  a machine learning approach to predict the author
+they used. The method uses a machine learning approach to predict the author
 of the binary. The data used for prediction consists of features extracted from
 the binaries. Similar to \parencite{rosenblum2011wrote} binary files used in this
 thesis come from the Google Code Jam programming competition.
@@ -87,7 +87,7 @@ binary programs? Can such information be used to identify the author of a given
 program? In 2011 Rosenblum et al. showed that the answer to both these
 questions is “yes” under certain conditions \parencite{rosenblum2011wrote};
 from a pool of 191 Google Code Jam (GCJ) contestants with eight or more
-submitted solutions, authorship identification from a set of 10 authors could
+submitted solutions, authorship identification from a subset of 10 authors could
 be performed with 81\% accuracy using a supervised support vector machine
 classifier. In 2015 Caliskan-Islam et al. proposed an alternate method that
 could achieve 96\% accuracy from a pool of 20 contestants
@@ -141,9 +141,9 @@ be on deriving authorship from binary programs; however, some related works
 will be mentioned.
 
 \section{Overview of the field}
-Computer forensics is a branch where the goal is to to analyse digital data to
+Computer forensics is a branch where the goal is to analyse digital data to
 obtain information, often in relation to computer crime
-\parencite{reith2002examination}.  One application is author attribution. In
+\parencite{reith2002examination}. One application is authorship attribution. In
 recent years machine learning techniques have been used with great success to
 identify counterfeited integrated circuits \parencite{huang2013counterfeit},
 distinguishing different kinds of brain tumours
@@ -165,13 +165,13 @@ The above methods all assume that de-anonymisation is to be performed on the
 source code of a program. However, there are many contexts where
 de-anonymisation is desirable where access to the source code is either
 impractical or entirely impossible, for example during malware analysis. In
-2011 Rosenblum et al. showed that this is is feasible in certain conditions
+2011, Rosenblum et al. showed that this is feasible in certain conditions
 using machine learning techniques on the stylistic features of source code that
 survive the compilation process \parencite{rosenblum2011wrote}. Specifically,
 their features were derived from the control flow graph (CFG) of the compiled
 binary and byte level n-grams. In 2014 Alrabaee et al. improved upon the
 accuracy of those techniques and proposed features that were more closely
-related to programming style \parencite{alrabaee2014oba2}. In 2015
+related to programming style \parencite{alrabaee2014oba2}. In 2015,
 Caliskan-Islam et al. further improved the state of the art using disassemblers
 and decompilers, and applying their research in de-anonymising programmers from
 source code to the ASTs of the decompiled binaries
@@ -179,8 +179,8 @@ source code to the ASTs of the decompiled binaries
 
 \section{Technical Background}
 This section includes the technical details necessary for understanding the
-rest of this thesis. We start with a brief overview of the compilation process
-and the static analysis, techniques used to extract features from binary
+rest of this thesis. Initially it starts with a brief overview of the compilation process
+and the static analysis. Moreover, techniques used to extract features from binary
 executables and a short explanation of support vector machines (SVMs) and their
 uses. 
 
@@ -292,9 +292,9 @@ between data points in the different classes \parencite{awad2004effective}.
 Cross-validation is a common method used when testing predictions. It is a
 model used to analyze how well a predictive model will work in practice. When
 using 10-fold cross-validation the data is randomly divided into 10 equally
-sized sets, 9 of the sets is used for training and the remaining set it used
+sized sets, 9 of the sets is used for training and the remaining set is used
 for the testing. This is repeated for each one of the sets, finally resulting
-in an average measure of accuracy in our case \parencite{hsu2003practical}.        
+in an average measure of accuracy \parencite{hsu2003practical}.        
 
 \section{State-of-the-art analysis}
 As previously discussed, there are as far as we are aware of exactly three
