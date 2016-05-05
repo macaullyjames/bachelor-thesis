@@ -7,6 +7,7 @@
 \usepackage{modifications}
 \usepackage{listings}
 \usepackage{hyperref}
+\usepackage{enumitem}
 \usepackage[backend=bibtex,style=authoryear]{biblatex}
 \addbibresource{references.bib}
 
@@ -214,7 +215,7 @@ stylistic features present in source code do in fact consistently survive the
 compilation process.
 
 [Figure]
-\subsection{Static analysis of compiled binaries}
+\subsection{Static analysis of compiled binaries} \label{static-analysis-tb}
 Static binary analysis is the process of understanding how a binary program
 will behave without executing it. This can involve any number of techniques
 but is often used in the context of reverse engineering, that is, the goal of
@@ -257,6 +258,25 @@ Rosenblum et al \parencite{caliskan2015coding}. Rosenblum et al. also use the
 CFG for feature extraction, but do not go as far as to decompile the binaries
 \parencite{rosenblum2011wrote}.
 
+In their 2011 paper on authorship attribution, Roesenblum et al. defined an
+additional two abstractions based on the CFG of a program: the \emph{coloured
+control flow graph} (CCFG) and the \emph{coloured call graph} (CCG).
+
+The CCFG is a graph identical to the CFG with an additional \emph{colouring
+function}. Each instruction in the target instruction set is classified as one
+of fourteen instruction classes such as ``arithmetic instructions'' or
+``branching instructions'', and a node's colour is simply a 14 bit bitmap
+representing which instruction types are present in its corresponding basic
+block. The colouring process is described in more detail in
+\parencite{rosenblum2011recovering}, but further knowledge is not needed for
+the rest of this thesis.
+
+The CCG is created from the CFG by only including the subset of nodes that contain
+a call instruction, with edges between two nodes representing a path between
+the corresponding nodes in the original CFG. A colouring function is applied in
+the same way as for the CCFG, with the colours depending on whether not the
+node calls a library function, and if so, which library function is called.
+
 \subsection{Support vector machines}
 Support vector machines (SVMs) belong to a group of supervised learning methods
 and are based on statistical learning theory. SVMs have been around since the
@@ -283,79 +303,6 @@ and \parencite{caliskan2015coding}. In this section we discuss each approach.
 The focus will be on the techniques used by Rosenblum et al.
 
 \subsection{Rosenblum et al.}
-\subsubsection{General approach}
-Step 1: Binary disassembly
-As a first step, the compiled binary is disassembled into human-readable
-assembly code. It is implicitly assumed that this can always be performed, but
-it is important to note that this is not necessarily the case. Malware, for
-example, is often obfuscated in ways that make automated disassembly difficult
-to perform \parencite{branco2012scientific}. Rosenblum’s approach will not work
-if the binary cannot be disassembled.
-
-Step 2: Idiom generation
-The disassembled code is parsed and all sequences of 1-3 instructions are
-extracted and counted. Specifically, each function the disassembler encounters
-is parsed individually. Wildcards are allowed in the idioms; for example, the
-idiom
-\begin{lstlisting}
-(push ebp | * | mov esp,ebp)
-\end{lstlisting}
-%TK: Taken from Rosenblum, find a better example
-represents a generic stack frame setup operation.
-
-Step 3: N-gram generation
-The disassembled code is parsed again in the same per-function way as above,
-this time examining the raw binary data of each function. Each n-gram
-(continuous sequence of bytes) of length 3 or 4 is extracted and counted. This
-leads to a large amount of data, roughly 64\% of all features in Rosenblum et
-al.’s corpus.
-
-Step 4: Generation of the control flow graph (CFG)
-This can be done using standard tools such as the open source ParseAPI library
-(Paradyn, 2016). The CFG is a directed graph whose nodes and edges represent
-the basic blocks and control flow paths respectively of the disassembled
-program. See section 2.TK for a more in-depth explanation.
-
-Step 5: Generation of the coloured control flow graph (CCFG) the randomly
-collapsed, coloured control flow graph (RCCCFG) and the coloured call graph
-(CCG).
-Using the CFG, three derivative graphs are created: The coloured CFG (CCFG),
-the randomly collapsed, coloured CFG (RCCCFG) and the coloured call graph
-(CCG). To generate the CCFG, each node in the CFG is associated with a
-fourteen-bit colour depending on the types of instructions contained in the
-node’s corresponding block of code (this process is described in detail in
-\parencite{rosenblum2011wrote}). The RCCCFG is then generated from the CCFG by
-collapsing all nodes in the CCFG with a random neighbor in the natural way:
-Fig 2.X TODO: REPLACE THESE IMAGES
-
-The CCG is created from the CFG only including the subset of nodes that contain
-a call instruction, with edges between two nodes representing a path between
-the corresponding nodes in the original CFG. A colouring function is applied in
-the same way as for the CCFG, with the colours depending on whether not the
-node calls a library function, and if so, which library function is called:
-Fig 2.X TODO: REPLACE THIS IMAGE
-
-
-Step 6: Generation of feature vectors
-For each author in the data set an integral valued feature vector is generated
-from the  above steps. Specifically, the feature vector contains:
-
-\begin{itemize}
-\item All idioms and n-grams
-\item All three-node subgraphs of the of the CCFG
-\item All three-node subgraphs of the RCCCFG
-\item All three-node subgraphs of the CCG
-\item The number of times a library method is called, extracted from the CCG
-\end{itemize}
-
-Step 7: Feature selection
-This can be seen as a dimensionality reduction of the feature vectors. It is
-performed by selecting the features that are ranked best under the mutual
-information criteria with respect to the author labels. The optimal number of
-features to retain is chosen by training the model with 10-fold cross
-validation on the dataset.
-
-\subsubsection{Evaluation}
 Rosenblum et al. evaluate their data on both a private data set obtained from
 an operating systems course (CS537) at the University of Wisconsin and a subset
 of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
@@ -368,7 +315,7 @@ of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
       least 8 problems in total
 \end{itemize}
 
-TK: We only care about 2010 data
+%TK: We only care about 2010 data
 In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
 2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
 from 2010, 51\% accuracy was achieved. For a randomly selected subset of 10
@@ -376,7 +323,6 @@ authors, 81\% accuracy was achieved and for a randomly selected subset of 20
 authors 77\% accuracy.
 
 \subsection{Alrabaee et al.}
-\subsubsection{Approach and evaluation}
 Another study by Alrabaee et al. (An Onion approach to Binary code Authorship
 Attribution) used an approach they called OBA2 to identify author style in
 binary code \parencite{alrabaee2014oba2}. The study refers to the work of
@@ -386,7 +332,6 @@ shows a higher accuracy than \parencite{rosenblum2011wrote}.The data used in
 the study was the same as Rosenblum et al. 
 
 \subsection{Caliskan-Islam et al.}
-\subsubsection{Approach and evaluation}
 Another report published in December 2015 by Caliskan-Islam et al. improves on
 the work of Rosenblum. This study has been able to improve author
 identification accuracy even further also using data from Google Code Jam and
@@ -464,13 +409,56 @@ outdated dependencies\footnote{
 }.
 
 \section{Feature extraction}
-The techniques presented in \parencite{rosenblum2011wrote} are applied to each
-compiled program in the dataset (see section 2.TK for details) so that each
-file is associated with a list of string features. A list of all unique
-features in the dataset is then generated (figure TK). For each author, we
-count the total number of occurrences of each feature in their solution set and
-save this data in the LIBSVM format. Each feature is mapped to its index in the
-global feature list (figure TK).
+Feature extraction is the process of extracting measurable properties from the
+sample dataset for further analysis. This section aims to provide a short
+account of the \emph{feature templates} used by Rosenblum et al., on which we
+base our work. For an in-depth account of how each feature template contributes
+to the overall analysis, we refer to their original paper
+\parencite{rosenblum2011wrote}.
+
+Becasue it is not known which properties of the compiled binaries are
+meaningful for determining authorship, the approach of Rosenblum et al. is to
+extract a large number of generic features in the hope that authorship
+information will be captured indirectly. All features are derived from the
+program's disassembled code, coloured control flow graph (CCFG) and coloured
+call graph (CCG) (section \ref{static-analysis-tb} explains these concepts in
+detail) and are based on 6 feature templates: 
+
+\begin{description}[style=nextline]
+\item[Idioms]
+All sequences of 1-3 instructions are extracted and counted from the
+disassembled code. This is performed intraprocedurally; only sequences of
+instructions within the same procedure are considered. Wildcard instructions
+are allowed in order to capture more general instruction patterns.
+
+\item[N-grams]
+N-grams (continuous sequences of bytes) of length 3 or 4 in are extracted from
+the program. Again, this is performed intraprocedurally so n-grams outside of
+procedures will be ignored.
+
+\item[Graphlets]
+All connected components of size 3 of the CCFG are extracted.
+
+\item[Supergraphlets]
+Each node in the CCFG is collapsed with a random neighbour and all connected
+components of size 3 of the resulting graph are extracted. The algorithm used
+to collapse nodes is described in detail in \parencite{rosenblum2011recovering} 
+
+\item[Call graphlets]
+All connected components of size 3 of the CCG are extracted.
+
+\item[External interaction]
+The name of each library routine used by the program is extracted.
+\end{description}
+
+Features are extracted for each program in the dataset and the set of unique
+features in the entire dataset is generated; each feature can then be indexed
+and recognised across programs. Finally, features are grouped by author and
+saved in the LibSVM format %TK: reference
+for analysis. Tables \ref{tab:413-features},
+\ref{tab:191-features} and \ref{tab:20-features} show the number of unique
+features as well as the total number of features found in our datasets of sizes
+413, 191 and 20 respectively.   
 
 \begin{table}[!htb]
     \centering
