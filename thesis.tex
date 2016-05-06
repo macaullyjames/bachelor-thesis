@@ -126,17 +126,17 @@ ensure the anonymity of the programmer.
 \section{Scope}
 This report will only implement the method of Rosenblum et al. by using
 available source code when possible and by implement remaining part ourselves
-trying to be consistent with the original implementation.  Furthermore, we
-limit our analysis to a subset of C++ solutions from the 2010 rounds of Google
-Code Jam. This allows us to verify the results in the literature
+trying to be consistent with the original implementation. Furthermore, the report 
+will only analyse a subset of C++ solutions from the 2010 rounds of Google
+Code Jam. This makes it possible to verify the results in the literature
 \parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
-This method assume that a program has exactly one author. However, this is
+The method assume that a program has exactly one author. However, in real cases this is
 often not true since many programs are developed in teams.
 
 \chapter{Background}
-This section begins with an overview of the field. We then introduce the
-technical concepts required to understand the rest of this thesis, and finally
-present the state-of-the-art in the field of authorship attribution. Focus will
+This section begins with an overview of the field. Moreover, the
+technical concepts required to understand the rest of this thesis is introduced, and finally
+the state-of-the-art in the field of authorship attribution is presented. Focus will
 be on deriving authorship from binary programs; however, some related works
 will be mentioned.
 
@@ -187,7 +187,7 @@ uses.
 \subsection{The compilation process}
 Compilation is the process of transforming source code into executable
 programs. It is beyond the scope of this thesis to give a complete overview of
-the inner workings of compilers, so we work under the simplification that
+the inner workings of compilers, so the thesis will utilise the simplification that
 compilation is a two step process: assembly code generation and machine code
 generation.
 
@@ -221,9 +221,9 @@ will behave without executing it. This can involve any number of techniques
 but is often used in the context of reverse engineering, that is, the goal of
 the analysis is to understand not only the behaviour but also the
 implementation of the program. It is assumed that the source code of the
-program is not accessible. In this section we present two methods of static
-analysis, disassembling and control flow analysis, that are used in our
-analysis of the Google Code Jam submissions.
+program is not accessible. In this section two methods of static
+analysis, disassembling and control flow analysis, that are used in the
+analysis of the Google Code Jam submissions will be presented.
 
 Disassembling is the task of transforming binary code into the equivalent
 assembly code and is performed by a disassembler. In general this is a
@@ -231,8 +231,8 @@ non-trivial task, especially on machine code for complex instruction sets such
 as x86 \parencite{wartell2011differentiating}. Moreover, a number of techniques
 can be employed to purposely thwart commonly used disassembly algorithms,
 making the process much harder \parencite{linn2003obfuscation}. For the purpose
-of our analysis however this is not an issue, as we have found that the
-compiled Google Code Jam solutions in our data set can in fact be automatically
+of our analysis however this is not an issue, because
+compiled Google Code Jam solutions in the data set used can in fact be automatically
 disassembled. Figure 2.TK shows a simple assembly routine, its equivalent
 machine code after compilation and the resulting assembly code after
 disassembly.
@@ -300,7 +300,7 @@ in an average measure of accuracy \parencite{hsu2003practical}.
 As previously discussed, there are as far as we are aware of exactly three
 papers presenting novel techniques to de-anonymise programmers from compiled
 binary programs: \parencite{rosenblum2011wrote}, \parencite{alrabaee2014oba2}
-and \parencite{caliskan2015coding}. In this section we discuss each approach.
+and \parencite{caliskan2015coding}. In this section each approach will be discussed.
 The focus will be on the techniques used by Rosenblum et al.
 
 \subsection{Rosenblum et al.}
@@ -316,7 +316,7 @@ of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
       least 8 problems in total
 \end{itemize}
 
-%TK: We only care about 2010 data
+%TK: This thesis only care about 2010 data
 In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
 2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
 from 2010, 51\% accuracy was achieved. For a randomly selected subset of 10
@@ -344,11 +344,11 @@ found that it was easier to identify more experienced programmers.
 
 \chapter{Method}
 \section{Data and datasets}
-We base our analysis on data collected from the 2010 round of Google Code Jam
-(GCJ). Specifically, we restrict our analysis to authors that have submitted at
-least 8 submissions in C++. We also require that solutions consist of exactly
+The analysis is based on data collected from the 2010 round of Google Code Jam
+(GCJ). Specifically, the analysis is restricted to authors that have submitted at
+least 8 submissions in C++. Furthermore, it is also required that solutions consist of exactly
 one file with the extension .cpp which can be compiled and statically linked
-with g++ in our test environment (see section 3.2 for details).
+with g++ in the test environment used (see section 3.2 for details).
 
 Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
 used in order to test how the size of training data affects our analysis.
@@ -370,8 +370,8 @@ is summarised in Table~\ref{tab:datasets-summary}.
 
 These dataset is chosen primarily to allow us to easily compare our results
 with the existing literature; however, it should be said that the structure of
-the GCJ dataset is a good fit for our analysis nonetheless. Because we use an
-unsupervised classification algorithm with a large number of features, it is
+the GCJ dataset is a good fit for our analysis nonetheless. An
+unsupervised classification algorithm is used with a large number of features; thus, it is
 important to choose features derived from the coding style of the programmer
 and not the problem itself. The GCJ dataset facilitates this since all
 contestants solve the same set of problems; features derived from the problem
@@ -400,8 +400,7 @@ environment that are not included in the base installation used:
 \end{table}
 
 In a supplement to their 2011 paper, Rosenblum et al. provided the programs
-they created for binary feature extraction as open source software. We used
-these same programs for our own analysis, albeit with minor changes due to
+they created for binary feature extraction as open source software. The same programs is used for our own analysis, albeit with minor changes due to
 outdated dependencies\footnote{
     The original feature extraction code can be found at
     \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions
@@ -412,8 +411,8 @@ outdated dependencies\footnote{
 \section{Feature extraction}
 Feature extraction is the process of extracting measurable properties from the
 sample dataset for further analysis. This section aims to provide a short
-account of the \emph{feature templates} used by Rosenblum et al., on which we
-base our work. For an in-depth account of how each feature template contributes
+account of the \emph{feature templates} used by Rosenblum et al., on which this
+thesis is based upon. For an in-depth account of how each feature template contributes
 to the overall analysis, we refer to their original paper
 \parencite{rosenblum2011wrote}.
 
@@ -498,9 +497,9 @@ The feature extraction process yields a high dimensional dataset with hundreds
 of thousands, sometimes millions, of features. In order to speed up the
 training of the SVM and avoid overfitting it is desirable to remove features
 that provide little or no information about the authors’ programming style. To
-achieve this, we first rank the features according to the mutual information
-criteria \parencite{guyon2003introduction} and then evaluate a model trained
-with varying sizes of subsets of the highest ranking features. The model with
+achieve this, features are ranked according to the mutual information
+criteria \parencite{guyon2003introduction} and then a model trained
+with varying sizes of subsets of the highest ranking features is evaluated. The model with
 the best predictive power is retained.
 
 \subsection{Ranking using mutual information}
@@ -509,7 +508,7 @@ $x \in X$, let $P(X = x)$ denote the observed frequency of $x$ in $X$, that is,
 $P(X = x) = \frac{1}{|X|}$. Likewise, let $Y$ be the set of all author labels
 and $P(Y = y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$
 and let $P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the data
-set. We rank each unique feature $x_i \in supp X $ using the mutual information
+set. Each unique feature is ranked $x_i \in supp X $ using the mutual information
 criteria $R(x_i)$ (Guyon, 2003) in the following way:
 
 $$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
@@ -518,25 +517,28 @@ Y = y)}{P(X = x_i)P(Y = y)}$$
 Intuitively the highly ranked features will be unique to a small set of author
 labels and as such more useful in the classification process, whereas the
 lowest ranked features can be removed without negatively affecting the
-predictive power of the model.  Determining the optimal subset of features
-Using the above ranking algorithm we train our model using the 800, 1900, 7000,
+predictive power of the model.
+ 
+Determining the optimal subset of features
+ 
+Using the above ranking algorithm, a model is trained using the 800, 1900, 7000,
 8000, 9000, 10000 and 100000 highest ranked features, choosing the subset of
-features that yields the best predictive power. We also compare with a model
-trained with all features in data sets where this is computationally feasible.
+features that yields the best predictive power. When computationally feasible, models
+trained with all features have also been compared.
 The predictive power of each model is validated through cross-validation, see
 section TK for details.
 
 \section{Author classification}
 As in the original paper from Rosenblum et al., classification is performed
 using a linear support vector machine (SVM) \parencite{rosenblum2011wrote}. See
-section 2.TK for details. We use the svm-scale program from the LIBSVM toolkit
-\parencite{chang2011libsvm} to scale our feature values (avoids overweighting
+section 2.TK for details. The svm-scale program from the LIBSVM toolkit is used
+\parencite{chang2011libsvm} to scale the feature values (avoids overweighting
 frequently occurring features) to the interval [0, 1]:
 \begin{lstlisting}
 svm-scale -l 0 -u 1 features.dat > features.scale
 \end{lstlisting}
 
-We then use the LIBLINEAR SVM implementation \parencite{fan2008liblinear} for
+The LIBLINEAR SVM implementation is then used \parencite{fan2008liblinear} for
 training and evaluating via 10-fold cross validation:
 \begin{lstlisting}
 train -v 10 features.scale
@@ -732,16 +734,16 @@ Figure 4.X. Comparison of results with different number of authors using lines.
 \section{Method discussion}
 When attempting to implement the method used in Rosenblum et al. it was not
 without difficulties. To be able to use the source code provided by Rosenblum
-et al. we had to make some adjustments to the source code, updating it to make
+et al. some adjustments to the source code had to be made, updating it to make
 it work on a more modern system. As far as we can tell it has not caused any
 errors.
 
 The source code provided by Rosenblum et al. was only for feature extraction.
-We assume that possible inconsistencies with the method of Rosenblum et al.
-come from the process of converting output data from the feature extraction to
-data with LIBSVM format needed to be able to use LIBLINEAR.
+Therefore, it is possible that inconsistencies with the method of Rosenblum et al. could have
+emerged from the process of converting output data from the feature extraction to
+data with the LIBSVM format needed for LIBLINEAR.
 
-We notice that we need more features than Rosenblum et al. to achieve high
+Something to notice is that more features than Rosenblum et al. was needed to achieve high
 accuracy; thus, our implementation of feature selection may differ from that of
 Rosenblum et al. 
 
@@ -781,11 +783,11 @@ accuracy achieved in the case using static linking and 10 authors was 45.54\%
 compare to 81.58\%. Thus, an important factor affecting the accuracy seems to
 be the number of features. 
 
-Even though we couldn’t replicate Rosenblum’s et al. 2011 experiment and data
-exactly our experiments showed accuracy levels not far from theirs. Using 191
+Even though it was not possible to replicate Rosenblum’s et al. (2011) experiment and data
+exactly, our experiments showed accuracy levels not far from theirs. Using 191
 authors and 20 authors \parencite{rosenblum2011wrote} got approximately 77\% while
-our experiment using 191 authors; however, with a different number of files and
-probably not the exact set of 191 authors our experiment gave 71\%.     
+our experiment using 191 authors gave 71\%; however, with a different number of files and
+probably not the exact set of 191 authors.     
 
 With no optimisation and using all 191 authors and 7000 features an accuracy of
 41.8\% was achieved (see Figure 4.23). It is much better than random chance
