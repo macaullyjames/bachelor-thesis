@@ -37,10 +37,10 @@ attribution with high accuracy using binary files. The idea behind authorship
 attribution for binaries is that authors’ unique style will survive the
 compilation process making it possible to identify the author.    
 
-The aim of this report is to investigate different ways to reduce the accuracy
+The aim of this thesis is to investigate different ways to reduce the accuracy
 and see how the processing of binaries affects the author prediction accuracy.
 
-This work will build on the report of Rosenblum et al. and implement the method
+This thesis will build on the report of Rosenblum et al. and implement the method
 they used. The method uses a machine learning approach to predict the author
 of the binary. The data used for prediction consists of features extracted from
 the binaries. Similar to \parencite{rosenblum2011wrote} binary files used in this
@@ -61,7 +61,7 @@ kompilering.
 
 Syftet med denna rapport är att utforska olika tekniker för att minska
 säkerheten då man vill bestämma vem som är författaren till binära filer och
-undersöka hur olika bearbetningar av koden påverkar noggrannheten.     
+undersöka hur olika bearbetningar av binärfilerna påverkar noggrannheten.     
 
 Denna rapport bygger vidare på rapport av \parencite{rosenblum2011wrote}
 och dess metod. En maskininlärningsmetod implementerats för
@@ -89,16 +89,17 @@ questions is “yes” under certain conditions \parencite{rosenblum2011wrote};
 from a pool of 191 Google Code Jam (GCJ) contestants with eight or more
 submitted solutions, authorship identification from a subset of 10 authors could
 be performed with 81\% accuracy using a supervised support vector machine
-classifier. In 2015 Caliskan-Islam et al. proposed an alternate method that
-could achieve 96\% accuracy from a pool of 20 contestants
+classifier. In 2015 Caliskan-Islam et al. proposed an alternative method that
+could achieve 96\% accuracy from a subset of 20 authors
 \parencite{caliskan2015coding} under similar conditions.
 
-However, it is not clear whether the above results could be replicated with
+It is not clear whether the above results could be replicated with
 other datasets from meaningful real-world scenarios. Nevertheless, they do
 raise questions about the ability of programmers to write and distribute
-software anonymously and it is therefore desirable to find methods that prevent
-de-anonymisation with this kind of analysis. Using the methods of
-\parencite{rosenblum2011wrote}, this report aims to investigate how changes to
+software anonymously and it is therefore interesting to find methods that prevent
+de-anonymisation with this kind of analysis. More research is needed to answer these questions. 
+Using the methods of
+\parencite{rosenblum2011wrote}, this thesis aims to investigate how changes to
 the build process can be used to reduce the accuracy of author classification
 on the same Google Code Jam dataset.
 
@@ -118,17 +119,15 @@ would want to remain anonymous. It could be that their association with the
 software could put them in danger (for example, a programmer that writes
 anti-surveillance software in an oppressive state). It could also be the case
 that the programmer simply does not want to be publicly associated with the
-software such as in the cases of TrueCrypt, Bitcoin etc. (TK: source). It is
-therefore important to investigate the robustness of these author
-classification algorithms and develop tools and procedures that ensure can help
+software. It is therefore important to investigate the robustness of these author
+classification algorithms and develop tools and procedures that can help
 ensure the anonymity of the programmer.
 
 \section{Scope}
-This report will only implement the method of Rosenblum et al. by using
-available source code when possible and by implement remaining part ourselves
-trying to be consistent with the original implementation. Furthermore, the report 
-will only analyse a subset of C++ solutions from the 2010 rounds of Google
-Code Jam. This makes it possible to verify the results in the literature
+For this thesis only the method of Rosenblum et al. will be implemented by using
+available source code when possible and by implement the remaining parts ourselves
+trying to be consistent with the original implementation. Furthermore, only a subset of C++ solutions from the 2010 rounds of Google
+Code Jam will be analysed. This makes it possible to verify the results in the literature
 \parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
 The method assume that a program has exactly one author. However, in real cases this is
 often not true since many programs are developed in teams.
@@ -180,14 +179,14 @@ source code to the ASTs of the decompiled binaries
 \section{Technical Background}
 This section includes the technical details necessary for understanding the
 rest of this thesis. Initially it starts with a brief overview of the compilation process
-and the static analysis. Moreover, techniques used to extract features from binary
-executables and a short explanation of support vector machines (SVMs) and their
+and the static analysis. Moreover, this section describes techniques used to extract features from binary
+executables and gives a short explanation of support vector machines (SVMs) and their
 uses. 
 
 \subsection{The compilation process}
 Compilation is the process of transforming source code into executable
 programs. It is beyond the scope of this thesis to give a complete overview of
-the inner workings of compilers, so the thesis will utilise the simplification that
+the inner workings of compilers, so this thesis will utilise the simplification that
 compilation is a two step process: assembly code generation and machine code
 generation.
 
@@ -195,7 +194,7 @@ generation.
 
 As illustrated in figure 2.TK, stylistic elements present in source code are
 not easily discernible from the resulting binary code. This can be formalised
-with the observation that compilation is in general non-reversible; there are
+with the observation that compilation is in general non-reversible; there are 
 an infinite number of source code programs that would generate a given binary
 executable. As such the compilation process suffers from information loss,
 since information contained within the source code may not be present in the
@@ -206,7 +205,7 @@ of the same binary program.
 
 However, it is hard to say exactly what information is preserved in the
 compilation process. The compiler guarantees that the semantics of the source
-code be preserved in the resulting machine code but its algorithms and data
+code will be preserved in the resulting machine code but its algorithms and data
 structures may not. Figure 2.TK shows how gcc optimises the calculation of an
 arithmetic sum, replacing the loop with the constant-time formula. The results
 of \parencite{rosenblum2011wrote}, \parencite{caliskan2015coding}, and
@@ -240,7 +239,7 @@ disassembly.
 [figure]
 
 Control flow analysis is performed on assembly code produced by a disassembler.
-The goal is to partition the code into so-called “basic blocks”: sequences of
+The goal is to partition the code into so-called ``basic blocks'': sequences of
 instructions with exactly one entry point and exit point with respect to
 program flow \parencite{allen1970control}. This structure is captured in the
 control flow graph (CFG), a directed graph with the basic blocks as nodes and
@@ -254,7 +253,7 @@ individual instructions. This can be used to identify high-level language
 constructs such as loops and functions \parencite{cifuentes1993methodology} and
 as such is used by decompilers such as the Hex-Rays decompiler (TK: Hex-Rays,
 2016), used by Caliskan-Islam et al. in their paper improving on the work of
-Rosenblum et al \parencite{caliskan2015coding}. Rosenblum et al. also use the
+Rosenblum et al. \parencite{caliskan2015coding}. Rosenblum et al. also use the
 CFG for feature extraction, but do not go as far as to decompile the binaries
 \parencite{rosenblum2011wrote}.
 
@@ -284,7 +283,7 @@ and are based on statistical learning theory. SVMs have been around since the
 1960s and work well on for example text and image recognition. The learning
 algorithm is given data and learns from that to identify patterns or classify
 new data. There is a balance in how much data the algorithm should have. Using
-too much information can lead to “overfitting” and the algorithm will perform
+too much information can lead to ``overfitting'' and the algorithm will perform
 poorer for new data (TK: Weston, n.d.). The goal is to maximize the distance
 between data points in the different classes \parencite{awad2004effective}.
 
@@ -319,7 +318,7 @@ of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
 %TK: This thesis only care about 2010 data
 In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
 2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
-from 2010, 51\% accuracy was achieved. For a randomly selected subset of 10
+from 2010, 51\% accuracy was achieved with 1900 features. For a randomly selected subset of 10
 authors, 81\% accuracy was achieved and for a randomly selected subset of 20
 authors 77\% accuracy.
 
@@ -328,7 +327,7 @@ Another study by Alrabaee et al. (An Onion approach to Binary code Authorship
 Attribution) used an approach they called OBA2 to identify author style in
 binary code \parencite{alrabaee2014oba2}. The study refers to the work of
 Rosenblum et al. and argues that some of the features used in Rosenblum et al.
-do not represent author style features. The result of the study (diagrams)
+do not represent author style features. The result of the study
 shows a higher accuracy than \parencite{rosenblum2011wrote}.The data used in
 the study was the same as Rosenblum et al. 
 
@@ -457,7 +456,7 @@ and recognised across programs. Finally, features are grouped by author and
 saved in the LibSVM format %TK: reference
 for analysis. Tables \ref{tab:413-features},
 \ref{tab:191-features} and \ref{tab:20-features} show the number of unique
-features as well as the total number of features found in our datasets of sizes
+features as well as the total number of features found in the datasets of sizes
 413, 191 and 20 respectively.   
 
 \begin{table}[!htb]
@@ -743,8 +742,8 @@ Therefore, it is possible that inconsistencies with the method of Rosenblum et a
 emerged from the process of converting output data from the feature extraction to
 data with the LIBSVM format needed for LIBLINEAR.
 
-Something to notice is that more features than Rosenblum et al. was needed to achieve high
-accuracy; thus, our implementation of feature selection may differ from that of
+Something to note is that a larger number of features than Rosenblum et al. was needed to achieve high
+accuracy. One reason could be that our implementation of feature selection may differ from that of
 Rosenblum et al. 
 
 \section{Results analysis}
@@ -793,7 +792,7 @@ With no optimisation and using all 191 authors and 7000 features an accuracy of
 41.8\% was achieved (see Figure 4.23). It is much better than random chance
 0.5\%. \parencite{rosenblum2011wrote} achieved 51\% on the full set with 191
 authors using only 1900 features. Not only did they achieve better results,
-they also manage to do this using fewer features. Which could indicate that our
+they also manage to do this using fewer features. This could indicate that our
 implementation of feature selection differ from that of Rosenblum et al.
 
 \section{Future research}
