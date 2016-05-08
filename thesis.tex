@@ -342,8 +342,8 @@ different optimisations and got with 100 authors and no optimisation 78.3\%
 accuracy and with level 3 optimisation 60.1\% accuracy. Furthermore, the study
 found that it was easier to identify more experienced programmers.
 
-\chapter{Method}
-\section{Data and datasets}
+\chapter{Method} \label{ch:method}
+\section{Data and datasets} \label{data-datasets}
 The analysis is based on data collected from the 2010 round of Google Code Jam
 (GCJ). Specifically, the analysis is restricted to authors that have submitted at
 least 8 submissions in C++. Furthermore, it is also required that solutions consist of exactly
@@ -354,6 +354,7 @@ Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
 used in order to test how the size of training data affects our analysis.
 Furthermore, analysis on binaries compiled with the -static flag is
 computationally infeasible with large datasets in our test environments. This
+
 is summarised in Table~\ref{tab:datasets-summary}.
 
 \begin{table}[!htb]
@@ -546,189 +547,171 @@ train -v 10 features.scale
 
 
 \chapter{Results}
-This section present the results from our different experiments using 10-fold
-cross-validation to obtain the accuracy values. The experiments vary in number
-of authors used, total number of features and processing. The purpose is to
-show how the accuracy varies in different scenarios.  
+As stated in the introduction, the aim of this thesis is to:
+\begin{itemize}
+\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
+      Code Jam dataset
+\item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of
+      the author classification algorithm on the 2010 GCJ dataset
+\item Investigate how statically linking the standard library affects the
+      accuracy of the author classification algorithm on the 2010 GCJ dataset.
+\end{itemize}
 
-\section{Test with 413 authors and different optimisation levels}
-This experiment uses a dataset of 413 authors and optimisation levels -O0 to
--O3. Moreover, this experiment examine the accuracy when using different
-numbers of top ranked features in the training dataset in an attempt to find a
-maximum value. To get more accurate values the average of many test instances
-is used. In this case 20 subsets with data from 20 randomly selected authors
-from the total of 413 authors were used.
+This section presents our results in each of these areas. On a similar 2010 GCJ
+dataset used in \parencite{rosenblum2011wrote} our model performs comparably,
+validating the results of Rosenblum et al. Compiler optimisations decrease the
+predictive power of the model in all datasets and statically linked programs
+are significantly harder to classify accurately. An in depth description of
+each result follows.
 
-\subsection{With all 413 authors and optimisation level -O0 to -O3}
-Figure 4.1. This diagram sums up the results of using the entire set of 413
-authors with different optimisation levels and top ranked features.
-Optimisation with -O0 gave the highest accuracy 32.53\% using 7000 features.
-Optimisation with -O1 gave its highest accuracy 28.60\% using 9000 features.
-Optimisation with -O2 gave its highest accuracy 28.60\% using 10000 features.
-Optimisation with -O3 gave its highest accuracy 21.63\% using 10000 features. 
+\section{Validation of \parencite{rosenblum2011wrote}}
+The 191 author subset described in section \ref{data-datasets} is
+compiled without additional compiler optimisations (-O0). Our model is then
+evaluated usng 10 fold cross-validation on each dataset using a varying number
+of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
+our model using 20 randomly selected subsets of 20 authors in the same way.
 
+In the 191 author subset we achieve at most 41.8\% accuracy. Rosenblum et al.
+achieve 51\% accuracy in their comparable 191 author dataset. The chance of
+randomly choosing the correct author among 191 candidates is 0.5\%.
 
-\subsection{Subset with 20 authors and optimisation level -O0}
-Figure 4.2. This diagram shows the results of binaries that were compiled with
-optimisation level -O0 and had a total of 765307 unique features. The x-axis
-shows the number of top ranked features used  and the y-axis shows the average
-of the results from the 20 subsets used. The highest accuracy average achieved
-was 68.80\% with 8000 features. 
+In the 20 randomly selceted subsets of 20 authors we achieve an average best
+accuracy of 68.8\% with a standard deviation of 5.18\%. Rosenblum et al.
+achieve an average 76.8\% accuracy in their comparable study of 20 random
+subsets of 20 authors. The chance of randomly choosing the correct author
+among 20 candidates is 5\%
 
-Figure 4.3. In this diagram the result of every instance of the 20 instances
-using 8000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 5.18\%. 
+While our models do not perform quite as well as those of Rosenblum et al.,  we
+argue that the difference in accuracy is reasonable and also expected. This is
+discussed further in section TK. In both datasets our model performs
+significantly better than chance and as such the general approach of Rosenblum
+et al. seems to be valid.
 
-\subsection{Subset with 20 authors and optimisation level -O1}
-Figure 4.4. This diagram shows the results of binaries that were compiled with
-optimisation level -O1 and had a total of 2141558 unique features. The x-axis
-shows the number of top ranked features used and the y-axis shows the average
-of the results from the 20 subsets used. Highest accuracy average achieved was
-65.42\% with 7000 features. 
+Figure TK summarises our results compared to that of Rosenblum et al.
 
+\section{Optimisation levels -O1 to -O3}
+The full 413 author dataset is compiled with optimisation levels -O1 to -O3 and
+compared to a baseline dataset compiled without additional compiler
+optimisations enabled (-O0). Compiler optimisations lead to an increase in both
+unique features and the total number of features extracted from the programs,
+the -O3 dataset yielding 5 times the number of unique features as the -O0
+dataset and a 63\% increase in the total number of features. Models trained on
+the -O1 and -O2 datasets do not perform significantly worse than the baseline
+(28.6\% vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.5\%.
+This is summarised in table \ref{tab:413-results}.
 
-Figure 4.5. In this diagram the result of every instance of the 20 instances
-using 7000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 6.86\%.
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l l }
+        Optimisation level & Model accuracy \\
+        \hline
+        \lstinline{-O0} & 32.5\% \\
+        \lstinline{-O1} & 28.6\% \\
+        \lstinline{-O2} & 28.6\% \\
+        \lstinline{-O3} & 21.6\%
+        \end{tabular}
+    \caption{How accuracy varies depending on optimisation level in the full
+    413 author dataset}
+    \label{tab:413-results}
+\end{table}
 
-\subsection{Subset with 20 authors and optimisation level -O2}
-Figure 4.6. This diagram shows the results of binaries that were compiled with
-optimisation level -O2 and had a total of 2593340 unique features. The x-axis
-shows the number of top ranked features used and the y-axis shows the average
-of the results from the 20 subsets used. Highest accuracy average achieved was
-64.43\% with 9000 features.
+Interestingly, the number of features selected by cross validation is roughly
+the same for all optimisation levels. This despite that both the number of
+unique features and total number of features vary greatly, as seen in table
+\ref{tab:413-results-features}.
 
-Figure 4.7. In this diagram the result of every instance of the 20 instances
-using 9000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 6.99\%.
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l l }
+        Optimisation level & Unique & Total & Selected \\ \hline
+        \lstinline{-O0} & 765307 & 13204201 & 7000 \\
+        \lstinline{-O1} & 2141558 & 15532246 & 9000 \\
+        \lstinline{-O2} & 2593340 & 16681152 & 10000 \\
+        \lstinline{-O3} & 3891494 & 21570182 & 10000
+        \end{tabular}
+    \caption{The number of unique features, total number of features and number
+    of features selected by cross validation for each optimisation level in the
+    full 413 author dataset}
+    \label{tab:413-results-features}
+\end{table}
 
-\subsection{Subset with 20 authors and optimisation level -O3}
-Figure 4.8. This diagram shows the results of binaries that were compiled with
-optimisation level -O3 and had a total of 3891394 unique features. The x-axis
-shows the number of top ranked features used and the y-axis shows the average
-of the results from the 20 subsets used. Highest accuracy average achieved was
-58.66\% with 9000 features.
+The same analysis is performed on 20 random subsets of 20 authors from the same
+413 author dataset. Again, models trained on the -O1 and -O2 subsets do not
+perform significantly worse than the baseline on average (65.4\% and 64.4\%
+vs 68.8\%, respectively) while the -O3 subsets yield an average accuracy of
+58.7\%. This is summarised in table \ref{tab:20-results}.
 
-Figure 4.9. In this diagram the result of every instance of the 20 instances
-using 9000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 5.73\%.
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l l }
+        Optimisation level & Average accuracy & Standard deviance \\
+        \hline
+        \lstinline{-O0} & 68.8\% & 5.1\% \\
+        \lstinline{-O1} & 65.4\% & 6.9\% \\
+        \lstinline{-O2} & 64.4\% & 7.0\% \\
+        \lstinline{-O3} & 58.7\% & 5.7\% 
+        \end{tabular}
+    \caption{Average accuracy and standard deviance per optimisation level for
+    models over 20 random subsets of 20 authors from the full 413 author
+    dataset.}
+    \label{tab:20-results}
+\end{table}
 
-\subsection{Summary}
-Figure 4.X. Comparison of results from the different optimisations levels using
-staples.  
+In summary, we find that the use of compiler optimisation flags does
+consistently decrease the accuracy of our models, even though they still
+perform significantly better than random chance. With the highest optimisation
+level, -O3, a 10\% drop in accuracy is observed in both the full 413 author
+dataset and random subsets of 20 authors.
 
-Figure 4.X. Comparison of results from the different optimisations levels using
-lines.  
+\section{Statically linked programs}
+A subset of 20 authors is compiled and statically linked with optimisation
+level -O0. This is compared to a baseline dataset of the same 20 authors
+compiled without additional optimisations (-O0) but dynamically linked. The
+statically linked programs yield 3859605 unique features and 110725073 features
+in total. In comparison, the baseline dataset yields 122420 unique features and
+618918 features in total, meaning the statically linked programs yield more
+than 30 times the number of unique features and almost 180 times the number of
+features in total. Models trained on the statically linked programs also
+performed considerably worse than the baseline: 28.7\% vs 75.0\%. The number of
+features selected by cross validation is roughly the same in both cases. These
+results are summarised in table \ref{tab:20-static-results}.
 
-\section{Test with 191 authors and different optimisation levels}
-This experiment uses a dataset of 191 authors and optimisation levels -O0 and
--O3. It shows how fewer authors affect the results and is the same number of
-authors used in Rosenblum et al. However, the exact set of authors may be
-different and the number of files is not the same. Moreover, this experiment
-examine the accuracy when using different numbers of top ranked features in the
-training dataset in an attempt to find a maximum value. To get more accurate
-values the average of many test instances is used. In this case 20 subsets with
-data from 20 randomly selected authors from the total of 191 authors were used.
-In addition, tests with 10 authors instead of 20 was also used.  
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l l l }
+        Linkage & Model accuracy & Unique features & Total features &
+        Selected features \\ \hline
+        \lstinline{Dynamic} & 75.0\% & 122420 & 618918 & 7000 \\
+        \lstinline{Static} & 28.7\% & 3859605 & 110725073 & 9000 \\
+        \end{tabular}
+    \caption{Comparison of model accuracy, number of unique features, total
+    number of features and number of features selected by cross validation for
+    dynamically respectively statically linked programs from the same 20 author
+    dataset} 
+    \label{tab:20-static-results}
+\end{table}
 
-\subsection{With all 191 authors and optimisation level -O0 and -O3}
-Figure 4.X: This diagram sums up the results of using the entire set of 191
-authors with optimisation levels -O0, -O3 and different numbers of top ranked
-features. Optimisation with -O0 gave the highest accuracy 41.80\% using 7000
-features. Optimisation with -O3 gave its highest accuracy 29.61\% using 10000
-features. 
+The same analysis is performed with 20 randomly selected subsets of 10 authors
+from the 20 author dataset used above. Again, models trained on the statically
+linked programs perform significantly worse than models trained on their
+dynamially linked counterparts, as seen in table \ref{tab:10-static-results}. 
 
-\subsection{Subset with 20 authors and optimisation level -O0}
-Figure 4.X. This diagram shows the results of binaries that were compiled with
-optimisation level -O0 and had a total of 509908 unique features. The x-axis
-shows the number of top ranked features used  and the y-axis shows the average
-of the results from the 20 subsets used. The highest accuracy average achieved
-was 71.22\% with 8000 features.
+\begin{table}[!htb]
+    \centering
+        \begin{tabular}{ l l l }
+        Linkage & Average accuracy & Standard deviance \\
+        \hline
+        Dynamic & 81.2\% & 7.3\% \\
+        Static & 45.5\% & 6.6\%
+        \end{tabular}
+    \caption{Average accuracy and standard deviance for models over 20 random
+    subsets of 10 authors with static and dynamic linkage, respectively}
+    \label{tab:10-static-results}
+\end{table}
 
-Figure 4.X.  In this diagram the result of every instance of the 20 instances
-using 8000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 6.18\%.
-
-\subsection{Subset with 20 authors and optimisation level -O3}
-Figure 4.X. This diagram shows the results of binaries that were compiled with
-optimisation level -O3 and had a total of 2380127 unique features. The x-axis
-shows the number of top ranked features used and the y-axis shows the average
-of the results from the 20 subsets used. Highest accuracy average achieved was
-59.79\% with 9000 features.
-
-Figure 4.X.  In this diagram the result of every instance of the 20 instances
-using 9000 features and with 20 randomly selected authors is displayed.
-Standard deviation is 5.66\%.
-
-\subsection{Subset with 10 authors and optimisation level -O0}
-Figure 4.X.  This diagram shows the results of binaries that were compiled
-with optimisation level -O0 and had a total of 509908 unique features. The
-x-axis shows the number of top ranked features used and the y-axis shows the
-average of the results from the 20 subsets used, this time with 10 authors.
-Highest accuracy average achieved was 81.58\% with 8000 features.
-
-Figure 4.X. In this diagram the result of every instance of the 0 instances
-using 8000 features and with 10 randomly selected authors is displayed.
-Standard deviation is 7.09\%.
-
-\subsection{Subset with 10 authors and optimisation level -O3}
-Figure 4.X. This diagram shows the results of binaries that were compiled with
-optimisation level -O3 and had a total of 2380127 unique features. The x-axis
-shows the number of top ranked features used and the y-axis shows the average
-of the results from the 20 subsets used, this time with 10 authors. Highest
-accuracy average achieved was 73.22\% with 10000 features.
-
-Figure 4.X. In this diagram the result of every instance of the 20 instances
-using 10000 features and with 10 randomly selected authors is displayed.
-Standard deviation is 9.24\%.
-
-\subsection{Summary}
-Figure 4.X. Comparison of results from the different optimisations levels and
-20 authors.
-
-Figure 4.X. Comparison of results from the different optimisations levels and
-10 authors.
-
-Figure 4.X. Comparison of results with different number of authors using
-staples.
-
-Figure 4.X. Comparison of results with different number of authors using
-lines.
-
-\section{Test with 20 authors and static compilation}
-This experiment uses a dataset of 20 authors and without  optimisation. It
-shows how the use of static affect the results. Moreover, this experiment
-examine the accuracy when using different numbers of top ranked features in the
-training dataset in an attempt to find a maximum value.  To get more accurate
-values the average of many test instances is used. In this case 20 subsets with
-data from 10 randomly selected authors from the total of 20 authors were used.
-In addition, tests with each data file with 20 authors was used; however, no
-average could be used. Tests with all features were not possible or took too
-long time to obtain in this case.   
-
-\subsection{With all 20 authors and static (optimisation level -O0)}
-Figure 4.X. This diagram shows the results of binaries that were compiled with
-static and had a total of 3859605 unique features. The x-axis shows the number
-of top ranked features used and the y-axis shows the the results from a single
-set with 20 authors. Highest accuracy achieved was 28.65\% with 9000 features.
-
-\subsection{Subset with 10 authors and static (optimisation level -O0)}
-Figure 4.X. This diagram shows the results of binaries that were compiled with
-static and had a total of 3859605 unique features. The x-axis shows the number
-of top ranked features used and the y-axis shows the average of the results
-from the 20 subsets used, this time with 10 authors. Highest accuracy average
-achieved was 45.54\% with 8000 features.
-
-Figure 4.X. In this diagram the result of every instance of the 20 instances
-using 8000 features and with 10 randomly selected authors is displayed.
-Standard deviation is 6.62\%.
-
-\subsection{Summary}
-Figure 4.X. Comparison of results with different number of authors using
-staples.
-
-Figure 4.X. Comparison of results with different number of authors using lines.
-
+We conclude that statically linking the programs in our dataset leads to a
+large increase of unique features and total number of features, and
+significantly reduces the accuracy of our models.
 
 \chapter{Discussion}
 \section{Method discussion}
