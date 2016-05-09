@@ -9,11 +9,16 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{csquotes}
 \usepackage[backend=bibtex,style=authoryear]{biblatex}
 \addbibresource{references.bib}
 
 \nonzeroparskip
 \setlength{\parindent}{0pt}
+
+\newenvironment{italicquotes}
+{\begin{quote}\itshape}
+{\end{quote}}
 
 \title{Anti-analysis techniques to preserve programmer anonymity in binary
 executables}
@@ -113,33 +118,93 @@ be accomplished in vastly different ways in the C programming language.
 It has been shown in multiple studies that a programmer's code style is unique
 within a limited popultaion, such as a subset of students at RMIT University
 \parencite{burrows2009application} or contestants in the Google Code Jam
-programming competition \parencite{caliskan2015anonymizing}. Moreover, this
-unique code style can be used to reliably identify programmers from their
-source code alone; Caliskan-Islam et al. developed methods that could identify
-programmers from 1600 candidates with 93\% accuracy in the above study.
+programming competition \parencite{caliskan2015anonymizing}. Moreover, unique
+code style can be used to reliably identify programmers from their source code
+alone.  Caliskan-Islam et al. developed methods that could identify programmers
+from 1600 candidates with 93\% accuracy in the above study. As seen in figure
+\ref{fig:id-ml}, identifying authors from their source code is essentially a
+machine learning problem.
 
-Would it be possible to perform this kind of analysis if, instead of their
-source code, we only had access to the programmers' compiled executables? On
-face value it is not at all clear that the necessary stylistic information
-survives the compilation process; indeed, the three programs in figure
-\ref{fig:3x4} would be impossible to differentiate because they all produce the
-exact same executable when compiled. Nevertheless, in 2011 Rosenblum et al.
-developed methods that could identify programmers from their compiled
-executables alone with 77\% accuracy, from a pool of 20 Google Code Jam
-contestants. This was further improved upon by Caliskan-Islam et al. in 2015,
-achieving 96\% accuracy in a similar dataset. 
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{id-ml}
+    \caption{ The problem of identifying programmers from their source code is
+    essentially a machine learning problem: Given a \emph{training set} of
+    source files with known authors, is it possible to ``learn'' the style of
+    each author and accurately \emph{classify} a program outside of the
+    training set? This is called the \emph{author classification problem}. }
+    \label{fig:id-ml}
+\end{figure}
 
-It is not clear whether the above results could be replicated with other
-datasets from meaningful real-world scenarios. Nevertheless, they do raise
-questions about the ability of programmers to write and distribute software
-anonymously and it is therefore interesting to find methods that prevent
-de-anonymisation with this kind of analysis. More research is needed to answer
-these questions.  Using the methods of \parencite{rosenblum2011wrote}, this
-thesis aims to investigate how changes to the build process can be used to
-reduce the accuracy of author classification on the same Google Code Jam
-dataset.
+Is the author classification problem solvable if, instead of their source code,
+we only had access to the programmers' compiled executables? On face value it
+is not at all clear that the necessary stylistic information survives the
+compilation process; indeed, the three programs in figure \ref{fig:3x4} would
+be impossible to differentiate because they all produce the exact same
+executable when compiled. Nevertheless, in 2011 Rosenblum et al. developed
+methods that could identify programmers from their compiled executables 
+with 77\% accuracy from a set of 20 Google Code Jam contestants
+\parencite{rosenblum2011wrote}, showing that the author classification problem
+for compiled executables is in fact solvable in at least some cases. These
+methods were improved upon by Caliskan-Islam et al. in 2015, achieving 96\%
+accuracy in a similar dataset \parencite{caliskan2015coding}. 
 
-\section{Problem definition} In short, this thesis aims to:
+Instead of trying to further improve upon the results of Caliskan-Islam et al.,
+this thesis takes the opposite approach: What can programmers do to
+\emph{prevent} de-anonymisation with the above methods? Specifically, we
+examine how the methods of Rosenblum et al. \parencite{rosenblum2011wrote}
+perform when the training data is compiled with various levels of compiler
+optimisation (-O1 to -O3) turned on, as well as studying the effects of
+statically linking the programs in the training data.
+
+\section{Problem statement}
+The aim of this thesis is to investigate techniques that reduce the accuracy of
+models in the author classification problem for compiled executables. We choose
+an experimental approach and base our analysis around the methods proposed by
+Rosenblum et al. \parencite{rosenblum2011wrote} for mainly practical reasons
+described in section \ref{sec:scope}. The specific techniques we choose to
+evaluate are the enabling of different levels of compiler optimisation (-O0 to
+-O3 using gcc) statically linking when compiling the models' training
+data. This is captured by the following problem statement: 
+
+\begin{italicquotes}
+How do compiler optimisations and static linkage affect the acccuracy of the
+author classification models presented in \parencite{rosenblum2011wrote}?
+\end{italicquotes}
+
+\section{Motivation}
+Methods that solve the author classification problem for compiled executables
+could potentially be useful in a number of fields such as malware analysis or
+plagiarism detection. However, little research exists on the robustness of such
+methods against active adversaries. Common anti-analysis techniques such as the
+use of packers or virtualisation can add a prohibitive pre-processing step to
+the classification process \parencite{caliskan2015coding}, but the existence of
+a truly non-reversible procedure for obfuscating the identifying features of a
+program is an open research question. Investigating methods that can reliably
+weaken the accuracy of classifiers in the literature is an important first
+step to understanding how a more general solution could be constructed, if it
+is in fact feasible at all.
+
+From a programmer's point of view there are also a number of legitimate reasons
+why one would want to remain anonymous. It could be that one's association with
+the software could put them in danger (for example, a programmer that writes
+anti-surveillance software in an oppressive state). It could also be the case
+that the programmer simply does not want to be publicly associated with the
+software. In this regard, it is highly desirable to give programmers the choice
+of anonymity. Again, weakening the accuracy of classifiers in the literature is
+an important first step towards this goal.
+
+\section{Scope}
+\label{sec:scope}
+For this thesis only the method of Rosenblum et al. will be implemented by using
+available source code when possible and by implement the remaining parts ourselves
+trying to be consistent with the original implementation. Furthermore, only a subset of C++ solutions from the 2010 rounds of Google
+Code Jam will be analysed. This makes it possible to verify the results in the literature
+\parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
+The method assume that a program has exactly one author. However, in real cases this is
+often not true since many programs are developed in teams.
+
+In short, this thesis aims to:
 \begin{itemize}
 \item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
       Code Jam dataset
@@ -148,25 +213,6 @@ dataset.
 \item Investigate how statically linking the standard library affects the
       accuracy of the author classification algorithm on the 2010 GCJ dataset.
 \end{itemize}
-
-\section{Motivation}
-There are a number of legitimate reasons why the author of a piece of software
-would want to remain anonymous. It could be that their association with the
-software could put them in danger (for example, a programmer that writes
-anti-surveillance software in an oppressive state). It could also be the case
-that the programmer simply does not want to be publicly associated with the
-software. It is therefore important to investigate the robustness of these author
-classification algorithms and develop tools and procedures that can help
-ensure the anonymity of the programmer.
-
-\section{Scope}
-For this thesis only the method of Rosenblum et al. will be implemented by using
-available source code when possible and by implement the remaining parts ourselves
-trying to be consistent with the original implementation. Furthermore, only a subset of C++ solutions from the 2010 rounds of Google
-Code Jam will be analysed. This makes it possible to verify the results in the literature
-\parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
-The method assume that a program has exactly one author. However, in real cases this is
-often not true since many programs are developed in teams.
 
 \chapter{Background}
 This section begins with an overview of the field. Moreover, the
