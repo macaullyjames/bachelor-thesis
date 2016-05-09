@@ -8,8 +8,12 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{graphicx}
 \usepackage[backend=bibtex,style=authoryear]{biblatex}
 \addbibresource{references.bib}
+
+\nonzeroparskip
+\setlength{\parindent}{0pt}
 
 \title{Anti-analysis techniques to preserve programmer anonymity in binary
 executables}
@@ -82,26 +86,58 @@ svårare att avgöra vem som är författaren.
 \pagestyle{newchap}
 
 \chapter{Introduction}
-Is it possible to extract information about programming style from compiled
-binary programs? Can such information be used to identify the author of a given
-program? In 2011 Rosenblum et al. showed that the answer to both these
-questions is “yes” under certain conditions \parencite{rosenblum2011wrote};
-from a pool of 191 Google Code Jam (GCJ) contestants with eight or more
-submitted solutions, authorship identification from a subset of 10 authors could
-be performed with 81\% accuracy using a supervised support vector machine
-classifier. In 2015 Caliskan-Islam et al. proposed an alternative method that
-could achieve 96\% accuracy from a subset of 20 authors
-\parencite{caliskan2015coding} under similar conditions.
+Languages such as C and C++ are flexible enough to allow the programmer to
+write solutions to the same algorithmic problem in a multitude of different
+ways, not unlike how the English language allows for many different ways of
+explaining the same concept. As with the written word, this leads to
+programmers developing their own ``code style''
+\parencite{krsul1997authorship}. Stylistic properties such as the usage of
+whitespace, bracket placement, naming conventions etc. all contribute to the
+programmer's code style, as well as implementation differences such as the
+usage of for vs. while loops, iteration vs. recursion and so on. Of course,
+many problems have multiple algorithmic solutions and the programmer's
+preferences between them also contribute to their unique style. Figure
+\ref{fig:3x4} shows how the trivial task of printing the number 4 to stdout can
+be accomplished in vastly different ways in the C programming language.
 
-It is not clear whether the above results could be replicated with
-other datasets from meaningful real-world scenarios. Nevertheless, they do
-raise questions about the ability of programmers to write and distribute
-software anonymously and it is therefore interesting to find methods that prevent
-de-anonymisation with this kind of analysis. More research is needed to answer these questions. 
-Using the methods of
-\parencite{rosenblum2011wrote}, this thesis aims to investigate how changes to
-the build process can be used to reduce the accuracy of author classification
-on the same Google Code Jam dataset.
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3x4}
+    \caption{Three different C programs that print the number 4 to stdout. When
+    compiled with gcc's -O3 flag each program generates the same executable,
+    verified by comparing MD5 hashes.}
+    \label{fig:3x4}
+\end{figure}
+
+It has been shown in multiple studies that a programmer's code style is unique
+within a limited popultaion, such as a subset of students at RMIT University
+\parencite{burrows2009application} or contestants in the Google Code Jam
+programming competition \parencite{caliskan2015anonymizing}. Moreover, this
+unique code style can be used to reliably identify programmers from their
+source code alone; Caliskan-Islam et al. developed methods that could identify
+programmers from 1600 candidates with 93\% accuracy in the above study.
+
+Would it be possible to perform this kind of analysis if, instead of their
+source code, we only had access to the programmers' compiled executables? On
+face value it is not at all clear that the necessary stylistic information
+survives the compilation process; indeed, the three programs in figure
+\ref{fig:3x4} would be impossible to differentiate because they all produce the
+exact same executable when compiled. Nevertheless, in 2011 Rosenblum et al.
+developed methods that could identify programmers from their compiled
+executables alone with 77\% accuracy, from a pool of 20 Google Code Jam
+contestants. This was further improved upon by Caliskan-Islam et al. in 2015,
+achieving 96\% accuracy in a similar dataset. 
+
+It is not clear whether the above results could be replicated with other
+datasets from meaningful real-world scenarios. Nevertheless, they do raise
+questions about the ability of programmers to write and distribute software
+anonymously and it is therefore interesting to find methods that prevent
+de-anonymisation with this kind of analysis. More research is needed to answer
+these questions.  Using the methods of \parencite{rosenblum2011wrote}, this
+thesis aims to investigate how changes to the build process can be used to
+reduce the accuracy of author classification on the same Google Code Jam
+dataset.
 
 \section{Problem definition} In short, this thesis aims to:
 \begin{itemize}
