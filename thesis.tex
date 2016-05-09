@@ -46,7 +46,7 @@ of the binary. The data used for prediction consists of features extracted from
 the binaries. Similar to \parencite{rosenblum2011wrote} binary files used in this
 thesis come from the Google Code Jam programming competition.
 
-Results from this study indicate that optimisation of code reduces the accuracy
+Results from this study indicate that compiler optimisation reduces the accuracy
 achieved; however, is not enough to ensure anonymity. Using static linking
 results in a more significant drop in accuracy. The data extracted shows that
 optimisation and static linking results in more features that may be the cause
@@ -70,7 +70,7 @@ från binärfilerna som sedan kan används som data för maskininlärning. Likt
 Rosenblum et al. används data hämtat från programmeringstävlingen Google Code
 Jam. 
 
-Erhållna resultat tyder på att optimering försämrar noggrannheten men är dock
+Erhållna resultat tyder på att kompilatoroptimering försämrar noggrannheten men är dock
 inte tillräckligt för att garantera anonymitet. Användning av statisk länkning
 resulterar i en kraftigare sänkning. Man kan se att optimering och statisk
 länkning resulterar i fler attribut vilket kan vara orsaken till att det blir
@@ -128,7 +128,7 @@ For this thesis only the method of Rosenblum et al. will be implemented by using
 available source code when possible and by implement the remaining parts ourselves
 trying to be consistent with the original implementation. Furthermore, only a subset of C++ solutions from the 2010 rounds of Google
 Code Jam will be analysed. This makes it possible to verify the results in the literature
-\parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
+\parencite{rosenblum2011wrote} and provides a meaningful dataset to work with.
 The method assume that a program has exactly one author. However, in real cases this is
 often not true since many programs are developed in teams.
 
@@ -231,7 +231,7 @@ as x86 \parencite{wartell2011differentiating}. Moreover, a number of techniques
 can be employed to purposely thwart commonly used disassembly algorithms,
 making the process much harder \parencite{linn2003obfuscation}. For the purpose
 of our analysis however this is not an issue, because
-compiled Google Code Jam solutions in the data set used can in fact be automatically
+compiled Google Code Jam solutions in the dataset used can in fact be automatically
 disassembled. Figure 2.TK shows a simple assembly routine, its equivalent
 machine code after compilation and the resulting assembly code after
 disassembly.
@@ -239,7 +239,7 @@ disassembly.
 [figure]
 
 Control flow analysis is performed on assembly code produced by a disassembler.
-The goal is to partition the code into so-called ``basic blocks'': sequences of
+The goal is to partition the assembly code into so-called ``basic blocks'': sequences of
 instructions with exactly one entry point and exit point with respect to
 program flow \parencite{allen1970control}. This structure is captured in the
 control flow graph (CFG), a directed graph with the basic blocks as nodes and
@@ -304,7 +304,7 @@ and \parencite{caliskan2015coding}. In this section each approach will be discus
 The focus will be on the techniques used by Rosenblum et al.
 
 \subsection{Rosenblum et al.}
-Rosenblum et al. evaluate their data on both a private data set obtained from
+Rosenblum et al. evaluate their data on both a private dataset obtained from
 an operating systems course (CS537) at the University of Wisconsin and a subset
 of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
 (GCJ), specifically the solutions that:
@@ -317,7 +317,7 @@ of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
 \end{itemize}
 
 %TK: This thesis only care about 2010 data
-In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
+In total, the GCJ dataset consisted of 2581 binaries (1,747 binaries from
 2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
 from 2010, 51\% accuracy was achieved with 1900 features. For a randomly selected subset of 10
 authors, 81\% accuracy was achieved and for a randomly selected subset of 20
@@ -350,7 +350,7 @@ least 8 submissions in C++. Furthermore, it is also required that solutions cons
 one file with the extension .cpp which can be compiled and statically linked
 with g++ in the test environment used (see section 3.2 for details).
 
-Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
+Three subsets with 20, 191, and all 413 authors of the GCJ 2010 dataset are
 used in order to test how the size of training data affects our analysis.
 Furthermore, analysis on binaries compiled with the -static flag is
 computationally infeasible with large datasets in our test environments. This
@@ -401,9 +401,9 @@ environment that are not included in the base installation used:
 \end{table}
 
 In a supplement to their 2011 paper, Rosenblum et al. provided the programs
-they created for binary feature extraction as open source software. The same programs is used for our own analysis, albeit with minor changes due to
+they created for binary feature extraction as open source software. The same programs are used for our own analysis, albeit with minor changes due to
 outdated dependencies\footnote{
-    The original feature extraction code can be found at
+    The original feature extraction source code can be found at
     \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions
     can be found at \url{https://github.com/macaullyjames/esorics}, along with
     installation instructions.
@@ -455,7 +455,7 @@ The name of each library routine used by the program is extracted.
 Features are extracted for each program in the dataset and the set of unique
 features in the entire dataset is generated; each feature can then be indexed
 and recognised across programs. Finally, features are grouped by author and
-saved in the LibSVM format %TK: reference
+saved in the LibSVM format \parencite{chang2011libsvm}
 for analysis. Tables \ref{tab:413-features},
 \ref{tab:191-features} and \ref{tab:20-features} show the number of unique
 features as well as the total number of features found in the datasets of sizes
@@ -504,7 +504,7 @@ with varying sizes of subsets of the highest ranking features is evaluated. The 
 the best predictive power is retained.
 
 \subsection{Ranking using mutual information}
-Let $X$ be the multiset of all features generated for a given data set. For all
+Let $X$ be the multiset of all features generated for a given dataset. For all
 $x \in X$, let $P(X = x)$ denote the observed frequency of $x$ in $X$, that is,
 $P(X = x) = \frac{1}{|X|}$. Likewise, let $Y$ be the set of all author labels
 and $P(Y = y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$
@@ -540,7 +540,7 @@ svm-scale -l 0 -u 1 features.dat > features.scale
 \end{lstlisting}
 
 The LIBLINEAR SVM implementation is then used \parencite{fan2008liblinear} for
-training and evaluating via 10-fold cross validation:
+training and evaluating via 10-fold cross-validation:
 \begin{lstlisting}
 train -v 10 features.scale
 \end{lstlisting}
@@ -567,7 +567,7 @@ each result follows.
 \section{Validation of \parencite{rosenblum2011wrote}}
 The 191 author subset described in section \ref{data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
-evaluated usng 10 fold cross-validation on each dataset using a varying number
+evaluated usng 10-fold cross-validation on each dataset using a varying number
 of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
 our model using 20 randomly selected subsets of 20 authors in the same way.
 
@@ -615,7 +615,7 @@ This is summarised in table \ref{tab:413-results}.
     \label{tab:413-results}
 \end{table}
 
-Interestingly, the number of features selected by cross validation is roughly
+Interestingly, the number of features selected by cross-validation is roughly
 the same for all optimisation levels. This despite that both the number of
 unique features and total number of features vary greatly, as seen in table
 \ref{tab:413-results-features}.
@@ -630,7 +630,7 @@ unique features and total number of features vary greatly, as seen in table
         \lstinline{-O3} & 3891494 & 21570182 & 10000
         \end{tabular}
     \caption{The number of unique features, total number of features and number
-    of features selected by cross validation for each optimisation level in the
+    of features selected by cross-validation for each optimisation level in the
     full 413 author dataset}
     \label{tab:413-results-features}
 \end{table}
@@ -673,7 +673,7 @@ in total. In comparison, the baseline dataset yields 122420 unique features and
 than 30 times the number of unique features and almost 180 times the number of
 features in total. Models trained on the statically linked programs also
 performed considerably worse than the baseline: 28.7\% vs 75.0\%. The number of
-features selected by cross validation is roughly the same in both cases. These
+features selected by cross-validation is roughly the same in both cases. These
 results are summarised in table \ref{tab:20-static-results}.
 
 \begin{table}[!htb]
@@ -685,7 +685,7 @@ results are summarised in table \ref{tab:20-static-results}.
         \lstinline{Static} & 28.7\% & 3859605 & 110725073 & 9000 \\
         \end{tabular}
     \caption{Comparison of model accuracy, number of unique features, total
-    number of features and number of features selected by cross validation for
+    number of features and number of features selected by cross-validation for
     dynamically respectively statically linked programs from the same 20 author
     dataset} 
     \label{tab:20-static-results}
@@ -786,11 +786,11 @@ interesting to test how different packers affect the accuracy. Moreover, it
 would be interesting to see how this method would work in more practical
 situations. Is it possible to identify teams using these techniques? What if
 the team’s members change frequently? What if two teams enforce the same style
-guide? In real situations the code could be processed using different methods.
+guide? In real situations the source code could be processed using different methods.
 What would happen if the binaries were compiled with a mix of different
 optimisation levels and static?  
 
-Most of the previous reports have focus on code from the Google Code Jam
+Most of the previous reports have focus on source code from the Google Code Jam
 programming competition. More research on other datasets with larger files
 could be interesting to examine.
 
@@ -812,7 +812,7 @@ Optimisation seems not be enough to make authors anonymous; however, it reduces
 the accuracy somewhat. Adding static causes a bigger drop in accuracy. The
 accuracy achieved in the case using static and 10 authors was 45.54\% compare
 to 81.58\% without. Perhaps not enough to ensure anonymity; nevertheless,
-static gives a significantly lower accuracy. The data extracted shows that
+static gives a significantly lower accuracy. The data extracted from the binaries shows that
 optimisation and static linking results in more features that may be the cause
 of the reduction in accuracy.
 
