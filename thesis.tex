@@ -216,41 +216,42 @@ be on deriving authorship from binary programs; however, some related works
 will be mentioned.
 
 \section{Overview of the field}
-Computer forensics is a branch where the goal is to analyse digital data to
-obtain information, often in relation to computer crime
-\parencite{reith2002examination}. One application is authorship attribution. In
-recent years machine learning techniques have been used with great success to
-identify counterfeited integrated circuits \parencite{huang2013counterfeit},
-distinguishing different kinds of brain tumours
-\parencite{zacharaki2009classification} and the automated detection of software
-bugs \parencite{aleem2015comparative}, to name a few examples.
+Authorship classification belongs to a branch of computer science called
+computer forensics. The goal of computer forensics is to analyse digital data
+to obtain information, often in relation to computer crime
+\parencite{reith2002examination}. In recent years machine learning techniques
+have been used with great success to identify counterfeited integrated circuits
+\parencite{huang2013counterfeit}, distinguishing different kinds of brain
+tumours \parencite{zacharaki2009classification} and the automated detection of
+software bugs \parencite{aleem2015comparative}, to name a few examples.
 
-The first attempt at using statistical methods to de-anonymise authors of
-programs from their coding style was performed by Oman et al.
-\parencite{oman1989programming} who classified programmers using a hand-picked,
-language-specific feature set. In 2006, Frantzeskou et al. proposed a method
-using the analysis of byte level n-grams (continuous sequences of n bytes)
-present in the source code which greatly improved upon previous methods, along
-with being language-agnostic \parencite{frantzeskou2006source}. In 2015,
-Caliskan-Islam et al. presented a method based on features of the abstract
-syntax trees (ASTs) of C/C++ programs that significantly improved the
-state-of-the-art again \parencite{caliskan2015anonymizing}.
+The first attempt at using statistical methods to de-anonymise programmers from
+their code style was performed by Oman et al. \parencite{oman1989programming}
+who classified programmers using a hand-picked, language-specific feature set.
+In 2006, Frantzeskou et al. proposed a method using the analysis of byte level
+n-grams (continuous sequences of n bytes) present in the source code which
+greatly improved upon previous methods, along with being language-agnostic
+\parencite{frantzeskou2006source}. In 2015, Caliskan-Islam et al. presented a
+method based on features of the abstract syntax trees (ASTs) of C/C++ programs
+that significantly improved the state-of-the-art again
+\parencite{caliskan2015anonymizing}.
  
-The above methods all assume that de-anonymisation is to be performed on the
-source code of a program. However, there are many contexts where
-de-anonymisation is desirable where access to the source code is either
-impractical or entirely impossible, for example during malware analysis. In
-2011, Rosenblum et al. showed that this is feasible in certain conditions
-using machine learning techniques on the stylistic features of source code that
-survive the compilation process \parencite{rosenblum2011wrote}. Specifically,
-their features were derived from the control flow graph (CFG) of the compiled
-binary and byte level n-grams. In 2014 Alrabaee et al. improved upon the
+The 2011 study by Rosenblum et al. \parencite{rosenblum2011wrote} upon which this
+thesis is based was first to show that author classification in compiled
+executables is feasible. Features were extracted from the disassembled code and
+the resulting control flow graph; this is explained in more detail in section
+\ref{sec:feature-extraction}. In 2014 Alrabaee et al. improved upon the
 accuracy of those techniques and proposed features that were more closely
 related to programming style \parencite{alrabaee2014oba2}. In 2015,
 Caliskan-Islam et al. further improved the state of the art using disassemblers
 and decompilers, and applying their research in de-anonymising programmers from
 source code to the ASTs of the decompiled binaries
-\parencite{caliskan2015coding}.
+\parencite{caliskan2015coding}. In the same report, Caliskan-Islam et al. also
+perform a short side study on the effects of compiler optimisations have on
+their methods, concluding that they result in a significant drop in accuracy
+but not enough to be effective anonymisation tools. No other studies regarding
+techniques for reducing the accuracy of classifiers for authorship attribution
+in compiled executables were found.
 
 \section{Technical Background}
 This section includes the technical details necessary for understanding the
@@ -486,6 +487,7 @@ outdated dependencies\footnote{
 }.
 
 \section{Feature extraction}
+\label{sec:feature-extraction}
 Feature extraction is the process of extracting measurable properties from the
 sample dataset for further analysis. This section aims to provide a short
 account of the \emph{feature templates} used by Rosenblum et al., on which this
