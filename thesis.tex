@@ -547,42 +547,7 @@ Features are extracted for each program in the dataset and the set of unique
 features in the entire dataset is generated; each feature can then be indexed
 and recognised across programs. Finally, features are grouped by author and
 saved in the LibSVM format \parencite{chang2011libsvm}
-for analysis. Tables \ref{tab:413-features},
-\ref{tab:191-features} and \ref{tab:20-features} show the number of unique
-features as well as the total number of features found in the datasets of sizes
-413, 191 and 20 respectively.   
-
-\begin{table}[!htb]
-    \centering
-        \begin{tabular}{ l l l }
-        Compiler setting & Unique features & Total features \\ \hline
-        \lstinline{-O0} & 765307 & 13204201 \\
-        \lstinline{-O3} & 3891494 & 21570182
-        \end{tabular}
-    \caption{Features in the 413 author dataset}
-    \label{tab:413-features}
-\end{table}
-
-\begin{table}[!htb]
-    \centering
-        \begin{tabular}{ l l l }
-        Compiler setting & Unique features & Total features \\ \hline
-        \lstinline{-O0} & 509908 & 6221646 \\
-        \lstinline{-O3} & 2380127 & 10276979
-        \end{tabular}
-    \caption{Features in the 191 author dataset}
-    \label{tab:191-features}
-\end{table}
-
-\begin{table}[!htb]
-    \centering
-        \begin{tabular}{ l l l }
-        Compiler setting & Unique features & Total features \\ \hline
-        \lstinline{-O0 -static} & 3859605 & 110725073 \\
-        \end{tabular}
-    \caption{Features in the 20 author dataset}
-    \label{tab:20-features}
-\end{table}
+for analysis. 
 
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
