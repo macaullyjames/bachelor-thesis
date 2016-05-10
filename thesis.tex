@@ -255,75 +255,57 @@ in compiled executables were found.
 
 \section{Technical Background}
 This section includes the technical details necessary for understanding the
-rest of this thesis. Initially it starts with a brief overview of the compilation process
-and the static analysis. Moreover, this section describes techniques used to extract features from binary
-executables and gives a short explanation of support vector machines (SVMs) and their
-uses. 
+rest of this thesis. Initially it starts with a brief overview of the
+compilation process and the static analysis. Moreover, this section describes
+techniques used to extract features from binary executables and gives a short
+explanation of support vector machines (SVMs) and their uses. 
 
-\subsection{The compilation process}
-Compilation is the process of transforming source code into executable
-programs. It is beyond the scope of this thesis to give a complete overview of
-the inner workings of compilers, so this thesis will utilise the simplification that
-compilation is a two step process: assembly code generation and machine code
-generation.
+A rudimentary understanding of the compilation process of C/C++ programs is
+presumed, in particular the basic relationships between source code, assembly
+code and binary machine code. Chapter 1 of \parencite{aho1986compilers}
+provides a sufficient overview for the purposes of this thesis.
 
-[Figure]
+\subsection{Disassembly}
+Disassembly is the task of generating a functionally equivalent assembly code
+representation of a compiled executable. The general idea is to give a ``human
+readable'' representation of a program that is easier to work with than the plain
+binary data. Figure \ref{fig:disasm} shows a simple assembly routine, its
+equivalent machine code after compilation and the resulting assembly code after
+disassembly. Note that lexical data such as comments and whitespace do not
+survive the compilation process.
 
-As illustrated in figure 2.TK, stylistic elements present in source code are
-not easily discernible from the resulting binary code. This can be formalised
-with the observation that compilation is in general non-reversible; there are 
-an infinite number of source code programs that would generate a given binary
-executable. As such the compilation process suffers from information loss,
-since information contained within the source code may not be present in the
-resulting binary. Figure 2.TK shows two different source code representations
-of the same binary program.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3x4}
+    \caption{TK: text and image}
+    \label{fig:disasm}
+\end{figure}
 
-[Figure]
+In general disassembly is a non-trivial task, especially with executables
+targetting for complex instruction sets such as x86
+\parencite{wartell2011differentiating}. Moreover, a number of techniques can be
+employed to purposely thwart commonly used disassembly algorithms, making the
+process much harder \parencite{linn2003obfuscation}. For the purpose of this
+thesis, however, this is not an issue; the Dyninst library used for
+disassembling (see section \ref{sec:feature-extraction} for details) is capable
+of disassembling all compiled executables in the Google Code Jam dataset.
 
-However, it is hard to say exactly what information is preserved in the
-compilation process. The compiler guarantees that the semantics of the source
-code will be preserved in the resulting machine code but its algorithms and data
-structures may not. Figure 2.TK shows how gcc optimises the calculation of an
-arithmetic sum, replacing the loop with the constant-time formula. The results
-of \parencite{rosenblum2011wrote}, \parencite{caliskan2015coding}, and
-\parencite{alrabaee2014oba2} are novel in this regard as they show that
-stylistic features present in source code do in fact consistently survive the
-compilation process.
+\subsection{Control flow analysis}
+Control flow analysis of compiled executables is performed on assembly code
+produced by a disassembler. The goal is to partition the code into so-called
+``basic blocks'': sequences of instructions with exactly one entry point and
+exit point with respect to program flow \parencite{allen1970control}. This
+structure is captured in the control flow graph (CFG), a directed graph with
+the basic blocks as nodes and control flow paths as edges. Figure
+\ref{basic-blocks} illustrates the basic blocks of a simple assembly code
+routine.
 
-[Figure]
-\subsection{Static analysis of compiled binaries} \label{static-analysis-tb}
-Static binary analysis is the process of understanding how a binary program
-will behave without executing it. This can involve any number of techniques
-but is often used in the context of reverse engineering, that is, the goal of
-the analysis is to understand not only the behaviour but also the
-implementation of the program. It is assumed that the source code of the
-program is not accessible. In this section two methods of static
-analysis, disassembling and control flow analysis, that are used in the
-analysis of the Google Code Jam submissions will be presented.
-
-Disassembling is the task of transforming binary code into the equivalent
-assembly code and is performed by a disassembler. In general this is a
-non-trivial task, especially on machine code for complex instruction sets such
-as x86 \parencite{wartell2011differentiating}. Moreover, a number of techniques
-can be employed to purposely thwart commonly used disassembly algorithms,
-making the process much harder \parencite{linn2003obfuscation}. For the purpose
-of our analysis however this is not an issue, because
-compiled Google Code Jam solutions in the data set used can in fact be automatically
-disassembled. Figure 2.TK shows a simple assembly routine, its equivalent
-machine code after compilation and the resulting assembly code after
-disassembly.
-
-[figure]
-
-Control flow analysis is performed on assembly code produced by a disassembler.
-The goal is to partition the code into so-called ``basic blocks'': sequences of
-instructions with exactly one entry point and exit point with respect to
-program flow \parencite{allen1970control}. This structure is captured in the
-control flow graph (CFG), a directed graph with the basic blocks as nodes and
-control flow paths as edges. Figure 2.TK illustrates the basic blocks of a
-simple assembly code routine.
-
-[figure]
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3x4}
+    \caption{TK: text and image}
+    \label{fig:basic-blocks}
+\end{figure}
 
 The CFG provides a structured view of the binary at a higher level than
 individual instructions. This can be used to identify high-level language
@@ -334,10 +316,11 @@ Rosenblum et al. \parencite{caliskan2015coding}. Rosenblum et al. also use the
 CFG for feature extraction, but do not go as far as to decompile the binaries
 \parencite{rosenblum2011wrote}.
 
-\subsection{Further abstractions of the CFG}
-In their 2011 paper on authorship attribution, Roesenblum et al. defined an
-additional two abstractions based on the CFG of a program: the \emph{coloured
-control flow graph} (CCFG) and the \emph{coloured call graph} (CCG).
+\subsection{Derivatives of the CFG}
+In their 2011 paper upon which this thesis is based, Roesenblum et al. defined
+an additional two abstractions based on the CFG of a program: the
+\emph{coloured control flow graph} (CCFG) and the \emph{coloured call graph}
+(CCG).
 
 The CCFG is a graph identical to the CFG with an additional \emph{colouring
 function}. Each instruction in the target instruction set is classified as one
