@@ -365,7 +365,7 @@ and \parencite{caliskan2015coding}. In this section each approach will be discus
 The focus will be on the techniques used by Rosenblum et al.
 
 \subsection{Rosenblum et al.}
-Rosenblum et al. evaluate their data on both a private data set obtained from
+Rosenblum et al. evaluate their data on both a private dataset obtained from
 an operating systems course (CS537) at the University of Wisconsin and a subset
 of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
 (GCJ), specifically the solutions that:
@@ -378,7 +378,7 @@ of correct solutions from the 2009 and 2010 rounds of the Google Code Jam
 \end{itemize}
 
 %TK: This thesis only care about 2010 data
-In total, the GCJ data set consisted of 2581 binaries (1,747 binaries from
+In total, the GCJ dataset consisted of 2581 binaries (1,747 binaries from
 2010) from 284 authors. Using 10-fold cross-validation on a set of 191 authors
 from 2010, 51\% accuracy was achieved with 1900 features. For a randomly selected subset of 10
 authors, 81\% accuracy was achieved and for a randomly selected subset of 20
@@ -601,7 +601,7 @@ svm-scale -l 0 -u 1 features.dat > features.scale
 \end{lstlisting}
 
 The LIBLINEAR SVM implementation is then used \parencite{fan2008liblinear} for
-training and evaluating via 10-fold cross validation:
+training and evaluating via 10-fold cross-validation:
 \begin{lstlisting}
 train -v 10 features.scale
 \end{lstlisting}
@@ -637,7 +637,7 @@ achieve 51\% accuracy in their comparable 191 author dataset. The chance of
 randomly choosing the correct author among 191 candidates is 0.5\%.
 
 In the 20 randomly selected subsets of 20 authors we achieve an average best
-accuracy of 68.8\% with a standard deviation of 5.18\%. Rosenblum et al.
+accuracy of 71.2\% with a standard deviation of 6.18\%. Rosenblum et al.
 achieve an average 76.8\% accuracy in their comparable study of 20 random
 subsets of 20 authors. The chance of randomly choosing the correct author
 among 20 candidates is 5\%
@@ -658,7 +658,7 @@ unique features and the total number of features extracted from the programs,
 the -O3 dataset yielding 5 times the number of unique features as the -O0
 dataset and a 63\% increase in the total number of features. Models trained on
 the -O1 and -O2 datasets do not perform significantly worse than the baseline
-(28.6\% vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.5\%.
+(28.6\%, 27.6\%  vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.6\%.
 This is summarised in table \ref{tab:413-results}.
 
 \begin{table}[!htb]
@@ -668,7 +668,7 @@ This is summarised in table \ref{tab:413-results}.
         \hline
         \lstinline{-O0} & 32.5\% \\
         \lstinline{-O1} & 28.6\% \\
-        \lstinline{-O2} & 28.6\% \\
+        \lstinline{-O2} & 27.6\% \\
         \lstinline{-O3} & 21.6\%
         \end{tabular}
     \caption{How accuracy varies depending on optimisation level in the full
@@ -676,7 +676,7 @@ This is summarised in table \ref{tab:413-results}.
     \label{tab:413-results}
 \end{table}
 
-Interestingly, the number of features selected by cross validation is roughly
+Interestingly, the number of features selected by cross-validation is roughly
 the same for all optimisation levels. This despite that both the number of
 unique features and total number of features vary greatly, as seen in table
 \ref{tab:413-results-features}.
@@ -691,7 +691,7 @@ unique features and total number of features vary greatly, as seen in table
         \lstinline{-O3} & 3891494 & 21570182 & 10000
         \end{tabular}
     \caption{The number of unique features, total number of features and number
-    of features selected by cross validation for each optimisation level in the
+    of features selected by cross-validation for each optimisation level in the
     full 413 author dataset}
     \label{tab:413-results-features}
 \end{table}
@@ -733,8 +733,8 @@ in total. In comparison, the baseline dataset yields 122420 unique features and
 618918 features in total, meaning the statically linked programs yield more
 than 30 times the number of unique features and almost 180 times the number of
 features in total. Models trained on the statically linked programs also
-performed considerably worse than the baseline: 28.7\% vs 75.0\%. The number of
-features selected by cross validation is roughly the same in both cases. These
+performed considerably worse than the baseline: 28.6\% vs 75.0\%. The number of
+features selected by cross-validation is roughly the same in both cases. These
 results are summarised in table \ref{tab:20-static-results}.
 
 \begin{table}[!htb]
@@ -743,10 +743,10 @@ results are summarised in table \ref{tab:20-static-results}.
         Linkage & Model accuracy & Unique features & Total features &
         Selected features \\ \hline
         \lstinline{Dynamic} & 75.0\% & 122420 & 618918 & 7000 \\
-        \lstinline{Static} & 28.7\% & 3859605 & 110725073 & 9000 \\
+        \lstinline{Static} & 28.6\% & 3859605 & 110725073 & 9000 \\
         \end{tabular}
     \caption{Comparison of model accuracy, number of unique features, total
-    number of features and number of features selected by cross validation for
+    number of features and number of features selected by cross-validation for
     dynamically respectively statically linked programs from the same 20 author
     dataset} 
     \label{tab:20-static-results}
