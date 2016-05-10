@@ -338,6 +338,7 @@ the same way as for the CCFG, with the colours depending on whether not the
 node calls a library function, and if so, which library function is called.
 
 \subsection{Support vector machines}
+\label{sec:svms}
 Support vector machines (SVMs) belong to a group of supervised learning methods
 and are based on statistical learning theory. SVMs have been around since the
 1960s and work well on for example text and image recognition. The learning
@@ -347,6 +348,35 @@ too much information can lead to ``overfitting'' and the algorithm will perform
 poorer for new data \parencite{cristianini2000introduction}. The goal is to
 maximize the distance between data points in the different classes
  \parencite{awad2004effective}. 
+
+\subsection{Mutual information}
+When using SVMs for classification it is important to be weary of
+``overfitting'' the training data, which can lead to poor predictive
+performance \parencite{cristianini2000introduction}. The general idea is to
+remove as many features as possible from the training dataset until the model
+starts to lose predictive power. In order to decide which features to remove
+first they must be ranked according to some criteria: mutual information (MI)
+is one such criteria \parencite{guyon2003introduction}.
+
+Ranking is performed as follows. Let $X$ be the multiset of all features
+generated for a given data set. For all $x \in X$, let $P(X = x)$ denote the
+observed frequency of $x$ in $X$, that is, $P(X = x) = \frac{1}{|X|}$.
+Likewise, let $Y$ be the set of all author labels and $P(Y = y)= \frac{1}{|Y|}$
+be the observed frequency of the label $y$ in $Y$ and let $P(X=x_i,Y=y)$ denote
+the joint frequency of $x_i$ and $y$ in the data set. Each unique feature is
+ranked $x_i \in supp X $ using the mutual information criteria $R(x_i)$
+\parencite{guyon2003introduction} in the following way:
+
+$$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
+Y = y)}{P(X = x_i)P(Y = y)}$$
+
+Intuitively the highly ranked features will be unique to a small set of 
+labels in the training data and as such more useful in the classification
+process, whereas the lowest ranked features can be removed without negatively
+affecting the predictive power of the model. Removing superfluous features also
+has the added benefit of reducing the time needed to train the model, which can
+be important when working with high-dimensional data
+\parencite{guyon2003introduction}.
 
 \subsection{Cross-validation}
 Cross-validation is a common method used when testing predictions. It is a
@@ -556,39 +586,19 @@ features as well as the total number of features found in the datasets of sizes
 
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
-of thousands, sometimes millions, of features. In order to speed up the
+of thousands to hundreds of millions of features. In order to speed up the
 training of the SVM and avoid overfitting it is desirable to remove features
-that provide little or no information about the authors’ programming style. To
-achieve this, features are ranked according to the mutual information
-criteria \parencite{guyon2003introduction} and then a model trained
-with varying sizes of subsets of the highest ranking features is evaluated. The model with
-the best predictive power is retained.
+that provide little or no information about the authors’ programming style.
+This is called \emph{feature selection}. Features are ranked with the mutual
+information criteria presented in section \ref{sec:mi}, after which models are
+trained with varying sizes of subsets of the highest ranking features. The
+predictive power of each model is then evaluated (see section
+\ref{sec:classification}) and the model that performs the best is retained.
 
-\subsection{Ranking using mutual information}
-Let $X$ be the multiset of all features generated for a given data set. For all
-$x \in X$, let $P(X = x)$ denote the observed frequency of $x$ in $X$, that is,
-$P(X = x) = \frac{1}{|X|}$. Likewise, let $Y$ be the set of all author labels
-and $P(Y = y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$
-and let $P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the data
-set. Each unique feature is ranked $x_i \in supp X $ using the mutual information
-criteria $R(x_i)$ (Guyon, 2003) in the following way:
-
-$$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
-Y = y)}{P(X = x_i)P(Y = y)}$$
-
-Intuitively the highly ranked features will be unique to a small set of author
-labels and as such more useful in the classification process, whereas the
-lowest ranked features can be removed without negatively affecting the
-predictive power of the model.
- 
-Determining the optimal subset of features
- 
-Using the above ranking algorithm, a model is trained using the 800, 1900, 7000,
-8000, 9000, 10000 and 100000 highest ranked features, choosing the subset of
-features that yields the best predictive power. When computationally feasible, models
-trained with all features have also been compared.
-The predictive power of each model is validated through cross-validation, see
-section TK for details.
+Subset sizes of between 800 and 100000 are evaluated in all datasets. Models
+trained with all features are also evaluated where doing so is computationally
+feasible, however they consistently perform worse than models trained on
+smaller subsets.
 
 \section{Author classification}
 As in the original paper from Rosenblum et al., classification is performed
