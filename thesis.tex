@@ -116,7 +116,7 @@ be accomplished in vastly different ways in the C programming language.
 \end{figure}
 
 It has been shown in multiple studies that a programmer's code style is unique
-within a limited popultaion, such as a subset of students at RMIT University
+within a limited population, such as a subset of students at RMIT University
 \parencite{burrows2009application} or contestants in the Google Code Jam
 programming competition \parencite{caliskan2015anonymizing}. Moreover, unique
 code style can be used to reliably identify programmers from their source code
@@ -128,7 +128,7 @@ machine learning problem.
 \begin{figure}[!htb]
     \centering
     \includegraphics[width=0.5\textwidth]{id-ml}
-    \caption{ The problem of identifying programmers from their source code is
+    \caption{The problem of identifying programmers from their source code is
     essentially a machine learning problem: Given a \emph{training set} of
     source files with known authors, is it possible to ``learn'' the style of
     each author and accurately \emph{classify} a program outside of the
@@ -150,12 +150,13 @@ methods were improved upon by Caliskan-Islam et al. in 2015, achieving 96\%
 accuracy in a similar dataset \parencite{caliskan2015coding}. 
 
 Instead of trying to further improve upon the results of Caliskan-Islam et al.,
-this thesis takes the opposite approach: What can programmers do to
-\emph{prevent} de-anonymisation with the above methods? Specifically, we
+this thesis takes the opposite approach and examines what programmers can do to
+\emph{prevent} de-anonymisation with the above methods. Specifically, we
 examine how the methods of Rosenblum et al. \parencite{rosenblum2011wrote}
 perform when the training data is compiled with various levels of compiler
 optimisation (-O1 to -O3) turned on, as well as studying the effects of
-statically linking the programs in the training data.
+statically linking the programs in the training data. This is something that
+has not been examined in previous research.
 
 \section{Problem statement}
 The aim of this thesis is to investigate techniques that reduce the accuracy of
@@ -164,11 +165,11 @@ an experimental approach and base our analysis around the methods proposed by
 Rosenblum et al. \parencite{rosenblum2011wrote} for mainly practical reasons
 described in section \ref{sec:scope}. The specific techniques we choose to
 evaluate are the enabling of different levels of compiler optimisation (-O0 to
--O3 using gcc) statically linking when compiling the models' training
+-O3 using gcc) and statically linking when compiling the models' training
 data. This is captured by the following problem statement: 
 
 \begin{italicquotes}
-How do compiler optimisations and static linkage affect the acccuracy of the
+How do compiler optimisations and static linkage affect the accuracy of the
 author classification models presented in \parencite{rosenblum2011wrote}?
 \end{italicquotes}
 
@@ -201,7 +202,7 @@ Rosenblum et al. in \parencite{rosenblum2011wrote}. The reasons for doing so
 are mainly practical; the programs used for feature extraction along with the
 full dataset of features used in their study are available for download at the
 authors' homepage. Having access to the same toolchain as the original authors
-makes for a more reliable comparitive study.
+makes for a more reliable comparative study.
 
 Analysis is limited to solutions from the 2010 round of the Google Code Jam
 programming contest written in C++, one of the datasets used by Rosenblum et
@@ -282,7 +283,7 @@ survive the compilation process.
 \end{figure}
 
 In general disassembly is a non-trivial task, especially with executables
-targetting for complex instruction sets such as x86
+targeting for complex instruction sets such as x86
 \parencite{wartell2011differentiating}. Moreover, a number of techniques can be
 employed to purposely thwart commonly used disassembly algorithms, making the
 process much harder \parencite{linn2003obfuscation}. For the purpose of this
@@ -317,7 +318,7 @@ CFG for feature extraction, but do not go as far as to decompile the binaries
 \parencite{rosenblum2011wrote}.
 
 \subsection{Derivatives of the CFG}
-In their 2011 paper upon which this thesis is based, Roesenblum et al. defined
+In their 2011 paper upon which this thesis is based, Rosenblum et al. defined
 an additional two abstractions based on the CFG of a program: the
 \emph{coloured control flow graph} (CCFG) and the \emph{coloured call graph}
 (CCG).
@@ -410,11 +411,10 @@ least 8 submissions in C++. Furthermore, it is also required that solutions cons
 one file with the extension .cpp which can be compiled and statically linked
 with g++ in the test environment used (see section 3.2 for details).
 
-Three subsets with 20, 191, and all 413 authors of the GCJ 2010 data set are
+Three subsets with 20, 191, and all 413 authors of the GCJ 2010 dataset are
 used in order to test how the size of training data affects our analysis.
 Furthermore, analysis on binaries compiled with the -static flag is
 computationally infeasible with large datasets in our test environments. This
-
 is summarised in Table~\ref{tab:datasets-summary}.
 
 \begin{table}[!htb]
@@ -443,7 +443,7 @@ identified and discarded due to all solutions being compiled in the same way.
 \section{Test environment}
 All processing was done on an server running Fedora 23 x64.
 Table~\ref{tab:dnf-packages} lists the dnf packages used in our test
-environment that are not included in the base installation used:
+environment that are not included in the base installation:
 
 \begin{table}[!htb]
     \centering
@@ -478,7 +478,7 @@ thesis is based upon. For an in-depth account of how each feature template contr
 to the overall analysis, we refer to their original paper
 \parencite{rosenblum2011wrote}.
 
-Becasue it is not known which properties of the compiled binaries are
+Because it is not known which properties of the compiled binaries are
 meaningful for determining authorship, the approach of Rosenblum et al. is to
 extract a large number of generic features in the hope that authorship
 information will be captured indirectly. All features are derived from the
@@ -494,7 +494,7 @@ instructions within the same procedure are considered. Wildcard instructions
 are allowed in order to capture more general instruction patterns.
 
 \item[N-grams]
-N-grams (continuous sequences of bytes) of length 3 or 4 in are extracted from
+N-grams (continuous sequences of bytes) of length 3 or 4 are extracted from
 the program. Again, this is performed intraprocedurally so n-grams outside of
 procedures will be ignored.
 
@@ -565,12 +565,12 @@ with varying sizes of subsets of the highest ranking features is evaluated. The 
 the best predictive power is retained.
 
 \subsection{Ranking using mutual information}
-Let $X$ be the multiset of all features generated for a given data set. For all
+Let $X$ be the multiset of all features generated for a given dataset. For all
 $x \in X$, let $P(X = x)$ denote the observed frequency of $x$ in $X$, that is,
 $P(X = x) = \frac{1}{|X|}$. Likewise, let $Y$ be the set of all author labels
 and $P(Y = y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$
-and let $P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the data
-set. Each unique feature is ranked $x_i \in supp X $ using the mutual information
+and let $P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the dataset.
+Each unique feature is ranked $x_i \in supp X $ using the mutual information
 criteria $R(x_i)$ (Guyon, 2003) in the following way:
 
 $$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
@@ -581,7 +581,7 @@ labels and as such more useful in the classification process, whereas the
 lowest ranked features can be removed without negatively affecting the
 predictive power of the model.
  
-Determining the optimal subset of features
+\subsection{Determining the optimal subset of features}
  
 Using the above ranking algorithm, a model is trained using the 800, 1900, 7000,
 8000, 9000, 10000 and 100000 highest ranked features, choosing the subset of
@@ -612,7 +612,7 @@ As stated in the introduction, the aim of this thesis is to:
 \begin{itemize}
 \item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
       Code Jam dataset
-\item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of
+\item Investigate how g++’s optimisation flags (O1-O3) affect the accuracy of
       the author classification algorithm on the 2010 GCJ dataset
 \item Investigate how statically linking the standard library affects the
       accuracy of the author classification algorithm on the 2010 GCJ dataset.
@@ -628,7 +628,7 @@ each result follows.
 \section{Validation of \parencite{rosenblum2011wrote}}
 The 191 author subset described in section \ref{data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
-evaluated usng 10 fold cross-validation on each dataset using a varying number
+evaluated usng 10-fold cross-validation on each dataset using a varying number
 of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
 our model using 20 randomly selected subsets of 20 authors in the same way.
 
@@ -636,7 +636,7 @@ In the 191 author subset we achieve at most 41.8\% accuracy. Rosenblum et al.
 achieve 51\% accuracy in their comparable 191 author dataset. The chance of
 randomly choosing the correct author among 191 candidates is 0.5\%.
 
-In the 20 randomly selceted subsets of 20 authors we achieve an average best
+In the 20 randomly selected subsets of 20 authors we achieve an average best
 accuracy of 68.8\% with a standard deviation of 5.18\%. Rosenblum et al.
 achieve an average 76.8\% accuracy in their comparable study of 20 random
 subsets of 20 authors. The chance of randomly choosing the correct author
