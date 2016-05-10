@@ -196,23 +196,17 @@ an important first step towards this goal.
 
 \section{Scope}
 \label{sec:scope}
-For this thesis only the method of Rosenblum et al. will be implemented by using
-available source code when possible and by implement the remaining parts ourselves
-trying to be consistent with the original implementation. Furthermore, only a subset of C++ solutions from the 2010 rounds of Google
-Code Jam will be analysed. This makes it possible to verify the results in the literature
-\parencite{rosenblum2011wrote} and provides a meaningful data set to work with.
-The method assume that a program has exactly one author. However, in real cases this is
-often not true since many programs are developed in teams.
+This thesis bases its analysis entirely around the methods presented by
+Rosenblum et al. in \parencite{rosenblum2011wrote}. The reasons for doing so
+are mainly practical; the programs used for feature extraction along with the
+full dataset of features used in their study are available for download at the
+authors' homepage. Having access to the same toolchain as the original authors
+makes for a more reliable comparitive study.
 
-In short, this thesis aims to:
-\begin{itemize}
-\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
-      Code Jam dataset
-\item Investigate how g++’s optimisation flags (O0-O3) affect the accuracy of
-      the author classification algorithm on the 2010 GCJ dataset
-\item Investigate how statically linking the standard library affects the
-      accuracy of the author classification algorithm on the 2010 GCJ dataset.
-\end{itemize}
+Analysis is limited to solutions from the 2010 round of the Google Code Jam
+programming contest written in C++, one of the datasets used by Rosenblum et
+al. Section \ref{sec:data-datasets} provides a more comprehensive description
+of the datasets used.
 
 \chapter{Background}
 This section begins with an overview of the field. Moreover, the
