@@ -647,7 +647,7 @@ achieve 51\% accuracy in their comparable 191 author dataset. The chance of
 randomly choosing the correct author among 191 candidates is 0.5\%.
 
 In the 20 randomly selected subsets of 20 authors we achieve an average best
-accuracy of 68.8\% with a standard deviation of 5.18\%. Rosenblum et al.
+accuracy of 71.2\% with a standard deviation of 6.18\%. Rosenblum et al.
 achieve an average 76.8\% accuracy in their comparable study of 20 random
 subsets of 20 authors. The chance of randomly choosing the correct author
 among 20 candidates is 5\%
@@ -668,7 +668,7 @@ unique features and the total number of features extracted from the programs,
 the -O3 dataset yielding 5 times the number of unique features as the -O0
 dataset and a 63\% increase in the total number of features. Models trained on
 the -O1 and -O2 datasets do not perform significantly worse than the baseline
-(28.6\% vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.5\%.
+(28.6\%, 27.6\%  vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.6\%.
 This is summarised in table \ref{tab:413-results}.
 
 \begin{table}[!htb]
@@ -678,7 +678,7 @@ This is summarised in table \ref{tab:413-results}.
         \hline
         \lstinline{-O0} & 32.5\% \\
         \lstinline{-O1} & 28.6\% \\
-        \lstinline{-O2} & 28.6\% \\
+        \lstinline{-O2} & 27.6\% \\
         \lstinline{-O3} & 21.6\%
         \end{tabular}
     \caption{How accuracy varies depending on optimisation level in the full
@@ -743,7 +743,7 @@ in total. In comparison, the baseline dataset yields 122420 unique features and
 618918 features in total, meaning the statically linked programs yield more
 than 30 times the number of unique features and almost 180 times the number of
 features in total. Models trained on the statically linked programs also
-performed considerably worse than the baseline: 28.7\% vs 75.0\%. The number of
+performed considerably worse than the baseline: 28.6\% vs 75.0\%. The number of
 features selected by cross-validation is roughly the same in both cases. These
 results are summarised in table \ref{tab:20-static-results}.
 
@@ -753,7 +753,7 @@ results are summarised in table \ref{tab:20-static-results}.
         Linkage & Model accuracy & Unique features & Total features &
         Selected features \\ \hline
         \lstinline{Dynamic} & 75.0\% & 122420 & 618918 & 7000 \\
-        \lstinline{Static} & 28.7\% & 3859605 & 110725073 & 9000 \\
+        \lstinline{Static} & 28.6\% & 3859605 & 110725073 & 9000 \\
         \end{tabular}
     \caption{Comparison of model accuracy, number of unique features, total
     number of features and number of features selected by cross-validation for
