@@ -349,14 +349,16 @@ node calls a library function, and if so, which library function is called.
 \subsection{Support vector machines}
 \label{sec:svms}
 Support vector machines (SVMs) belong to a group of supervised learning methods
-and are based on statistical learning theory. SVMs have been around since the
-1960s and work well on for example text and image recognition. The learning
-algorithm is given data and learns from that to identify patterns or classify
-new data. There is a balance in how much data the algorithm should have. Using
-too much information can lead to ``overfitting'' and the algorithm will perform
-poorer for new data \parencite{cristianini2000introduction}. The goal is to
-maximize the distance between data points in the different classes
- \parencite{awad2004effective}. 
+and are based on statistical learning theory. This thesis will use linear SVMs.
+SVMs have been around since the 1960s and perform well on for example text and image recognition.
+The learning algorithm is trained using a set of data and can later be used to identify patterns or to classify new data.
+In the simplest case with only two different classes A and B (binary classification) and a set of data points,
+the goal is to find a hyperplane that separates the data points from class A from those of class B and at
+the same time maximises the margin to the closest data point from each class.
+This concept can later be extended to work on multiple classes.
+Moreover, there is a balance in the amount of data the algorithm needs to perform well.
+More data is not always better; using too much information may cause ``overfitting''
+resulting in poorer predictive performance \parencite{cristianini2000introduction}.
 
 \subsection{Mutual information}
 \label{sec:mi}
@@ -585,7 +587,7 @@ significantly harder to classify accurately.
 
 \section{Method validation}
 \label{sec:method-validation}
-A 191 author subset of the dataset described in section \ref{data-datasets} is
+A 191 author subset of the dataset described in section \ref{sec:data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
 evaluated using 10-fold cross-validation on each dataset using a varying number
 of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
