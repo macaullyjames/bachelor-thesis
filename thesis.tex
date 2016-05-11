@@ -382,7 +382,7 @@ be important when working with high-dimensional data
 
 \subsection{Cross-validation}
 Cross-validation is a common method used when testing predictions. It is a
-model used to analyze how well a predictive model will work in practice. When
+model used to analyse how well a predictive model will work in practice. When
 using 10-fold cross-validation the data is randomly divided into 10 equally
 sized sets, 9 of the sets is used for training and the remaining set is used
 for the testing. This is repeated for each one of the sets, finally resulting
@@ -451,6 +451,8 @@ environment that are not included in the base installation:
 
 \begin{table}[!htb]
     \centering
+        \caption{\lstinline{dnf} packages not including in the base Fedora 23
+        x64 installation that are used in our analysis}
         \begin{tabular}{ l l l }
         Package name & Version & Usage \\ \hline
         gcc-c++ & 5.3.1-2.fc23 & Compiling GCJ submissions \\
@@ -459,8 +461,6 @@ environment that are not included in the base installation:
         libsvm-python & 3.20-5.fc23 & Python bindings for libsvm
         % TK: This is incomplete
         \end{tabular}
-    \caption{\lstinline{dnf} packages not including in the base Fedora 23 x64
-    installation that are used in our analysis}
     \label{tab:dnf-packages}
 \end{table}
 
@@ -534,7 +534,7 @@ trained with varying sizes of subsets of the highest ranking features. The
 predictive power of each model is then evaluated (see section
 \ref{sec:classification}) and the model that performs the best is retained.
 
-Subset sizes of between 800 and 100000 are evaluated in all datasets. Models
+Subset sizes of between 800 and 100000 features are evaluated in all datasets. Models
 trained with all features are also evaluated where doing so is computationally
 feasible, however they consistently perform worse than models trained on
 smaller subsets.
@@ -612,6 +612,8 @@ This is summarised in table \ref{tab:413-results}.
 
 \begin{table}[!htb]
     \centering
+    \caption{How accuracy varies depending on optimisation level in the full
+    413 author dataset}
         \begin{tabular}{ l l l l }
         Optimisation level & Model accuracy \\
         \hline
@@ -620,8 +622,7 @@ This is summarised in table \ref{tab:413-results}.
         \lstinline{-O2} & 27.6\% \\
         \lstinline{-O3} & 21.6\%
         \end{tabular}
-    \caption{How accuracy varies depending on optimisation level in the full
-    413 author dataset}
+
     \label{tab:413-results}
 \end{table}
 
@@ -632,6 +633,9 @@ unique features and total number of features vary greatly, as seen in table
 
 \begin{table}[!htb]
     \centering
+    \caption{The number of unique features, total number of features and number
+    of features selected by cross-validation for each optimisation level in the
+    full 413 author dataset}
         \begin{tabular}{ l l l l }
         Optimisation level & Unique & Total & Selected \\ \hline
         \lstinline{-O0} & 765307 & 13204201 & 7000 \\
@@ -639,10 +643,7 @@ unique features and total number of features vary greatly, as seen in table
         \lstinline{-O2} & 2593340 & 16681152 & 10000 \\
         \lstinline{-O3} & 3891494 & 21570182 & 10000
         \end{tabular}
-    \caption{The number of unique features, total number of features and number
-    of features selected by cross-validation for each optimisation level in the
-    full 413 author dataset}
-    \label{tab:413-results-features}
+        \label{tab:413-results-features}
 \end{table}
 
 The same analysis is performed on 20 random subsets of 20 authors from the same
@@ -653,6 +654,9 @@ vs 68.8\%, respectively) while the -O3 subsets yield an average accuracy of
 
 \begin{table}[!htb]
     \centering
+    \caption{Average accuracy and standard deviance per optimisation level for
+    models over 20 random subsets of 20 authors from the full 413 author
+    dataset}
         \begin{tabular}{ l l l l }
         Optimisation level & Average accuracy & Standard deviance \\
         \hline
@@ -661,10 +665,7 @@ vs 68.8\%, respectively) while the -O3 subsets yield an average accuracy of
         \lstinline{-O2} & 64.4\% & 7.0\% \\
         \lstinline{-O3} & 58.7\% & 5.7\% 
         \end{tabular}
-    \caption{Average accuracy and standard deviance per optimisation level for
-    models over 20 random subsets of 20 authors from the full 413 author
-    dataset.}
-    \label{tab:20-results}
+       \label{tab:20-results}
 \end{table}
 
 In summary, we find that the use of compiler optimisation flags does
@@ -688,16 +689,16 @@ results are summarised in table \ref{tab:20-static-results}.
 
 \begin{table}[!htb]
     \centering
+    \caption{Comparison of model accuracy, number of unique features, total
+    number of features and number of features selected by cross-validation for
+    dynamically respectively statically linked programs from the same 20 author
+    dataset} 
         \begin{tabular}{ l l l l l }
         Linkage & Model accuracy & Unique features & Total features &
         Selected features \\ \hline
         \lstinline{Dynamic} & 75.0\% & 122420 & 618918 & 7000 \\
         \lstinline{Static} & 28.6\% & 3859605 & 110725073 & 9000 \\
         \end{tabular}
-    \caption{Comparison of model accuracy, number of unique features, total
-    number of features and number of features selected by cross-validation for
-    dynamically respectively statically linked programs from the same 20 author
-    dataset} 
     \label{tab:20-static-results}
 \end{table}
 
@@ -708,14 +709,15 @@ dynamially linked counterparts, as seen in table \ref{tab:10-static-results}.
 
 \begin{table}[!htb]
     \centering
+    \caption{Average accuracy and standard deviance for models over 20 random
+    subsets of 10 authors with static and dynamic linkage, respectively}
         \begin{tabular}{ l l l }
         Linkage & Average accuracy & Standard deviance \\
         \hline
         Dynamic & 81.2\% & 7.3\% \\
         Static & 45.5\% & 6.6\%
         \end{tabular}
-    \caption{Average accuracy and standard deviance for models over 20 random
-    subsets of 10 authors with static and dynamic linkage, respectively}
+   
     \label{tab:10-static-results}
 \end{table}
 
