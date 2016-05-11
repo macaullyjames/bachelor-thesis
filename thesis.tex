@@ -41,25 +41,27 @@
 \maketitle
 \selectlanguage{english}
 \begin{abstract}
-Previous research has shown that it is possible to achieve authorship
-attribution with high accuracy using binary files. The idea behind authorship
-attribution for binaries is that authors’ unique style will survive the
-compilation process making it possible to identify the author.    
+Programming languages such as C/C++ allow for great flexibility in how code can
+be written. This leads to programmers developing their own ``code style'' that
+can be used to identify them among a group of other programmers, in a setting
+such as a programming competition. Recent resarch has shown that some of the
+identifying stylistic features present in source code survive the compilation
+process, and that authorship classification can be performed on the compiled
+executables alone. This was originally performed by Rosenblum et al. in their
+2011 paper on the subject.
 
-The aim of this thesis is to investigate different ways to reduce the accuracy
-and see how the processing of binaries affects the author prediction accuracy.
+This thesis takes the approach of Rosenblum et al. and investigates how the
+author classification process is affected by changes in the compilation process
+of the training dataset, specifically different levels of optimisation (-O0 to
+-O3) and static linkage. We find that full optimisation yields a 10\% drop
+in accuracy in datasets with 191 and 20 authors respectively. Static linkage
+results in a 46\% and 36\% drop in accuracy in datasets with 20 and 10 authors,
+respectively. In both cases, the classifiers still perform significantly better
+than random chance and as such these methods cannot guarantee anonymity to the
+programmer. It is not clear how these results translate to other datasets,
+although there is reason to believe they would be reproducible using other
+classifiers found in the literature.
 
-This thesis will build on the report of Rosenblum et al. and implement the method
-they used. The method uses a machine learning approach to predict the author
-of the binary. The data used for prediction consists of features extracted from
-the binaries. Similar to \parencite{rosenblum2011wrote} binary files used in this
-thesis come from the Google Code Jam programming competition.
-
-Results from this study indicate that compiler optimisation reduces the accuracy
-achieved; however, is not enough to ensure anonymity. Using static linking
-results in a more significant drop in accuracy. The data extracted shows that
-optimisation and static linking results in more features that may be the cause
-of the reduction in accuracy.
 \end{abstract}
 \clearpage
 \begin{foreignabstract}{swedish}
