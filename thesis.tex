@@ -353,20 +353,21 @@ maximize the distance between data points in the different classes
 \subsection{Mutual information}
 When using SVMs for classification it is important to be weary of
 ``overfitting'' the training data, which can lead to poor predictive
-performance \parencite{cristianini2000introduction}. The general idea is to
-remove as many features as possible from the training dataset until the model
-starts to lose predictive power. In order to decide which features to remove
-first they must be ranked according to some criteria: mutual information (MI)
-is one such criteria \parencite{guyon2003introduction}.
+performance \parencite{cristianini2000introduction}. A technique called
+\emph{feature selection} can be used to prevent this from happening, the
+general idea being to remove as many features as possible from the training
+dataset until the model starts to lose predictive power. In order to decide
+which features to remove first they must be ranked according to some criteria.
+Mutual information (MI) is one such criteria \parencite{guyon2003introduction}.
 
-Ranking is performed as follows. Let $X$ be the multiset of all features
-generated for a given data set. For all $x \in X$, let $P(X = x)$ denote the
-observed frequency of $x$ in $X$, that is, $P(X = x) = \frac{1}{|X|}$.
-Likewise, let $Y$ be the set of all author labels and $P(Y = y)= \frac{1}{|Y|}$
-be the observed frequency of the label $y$ in $Y$ and let $P(X=x_i,Y=y)$ denote
-the joint frequency of $x_i$ and $y$ in the data set. Each unique feature is
-ranked $x_i \in supp X $ using the mutual information criteria $R(x_i)$
-\parencite{guyon2003introduction} in the following way:
+In the case of the author classification problem, ranking is performed as
+follows. Let $X$ be the multiset of all features generated for a given data
+set. For all $x_i \in supp X$, let $P(X = x_i)$ denote the observed frequency
+of $x_i$ in $X$. Likewise, let $Y$ be the set of all author labels and $P(Y =
+y)= \frac{1}{|Y|}$ be the observed frequency of the label $y$ in $Y$ and let
+$P(X=x_i,Y=y)$ denote the joint frequency of $x_i$ and $y$ in the data set.
+Each unique feature $x_i \in supp X $ is ranked using the mutual information
+criteria $R(x_i)$ \parencite{guyon2003introduction} in the following way:
 
 $$R(x_i)= \sum_{x_i \in X, y \in Y} P(X=x_i,Y=y) \log \frac{P(X = x_i,
 Y = y)}{P(X = x_i)P(Y = y)}$$
