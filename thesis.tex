@@ -11,6 +11,7 @@
 \usepackage{graphicx}
 \usepackage{csquotes}
 \usepackage[backend=bibtex,style=authoryear]{biblatex}
+\usepackage[section]{placeins}
 \addbibresource{references.bib}
 
 \nonzeroparskip
@@ -458,7 +459,28 @@ Furthermore, it is also required that solutions consist of exactly one file
 with the extension .cpp which can be compiled and statically linked with gcc in
 the test environment used (see section 3.2 for details). A total of 413 authors
 in the 2010 GCJ dataset match these critiera with 3969 files in total,
-averaging 9.6 submissions per author.
+averaging 9.6 submissions per author. Most authors have 8-9 submissions, as
+seen in figure \ref{fig:files} 
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.7\textwidth]{loc}
+    \caption{Distribution of files over authors in the full 413 author
+    dataset.}
+    \label{fig:loc}
+\end{figure}
+
+The submissions are comparitively small on average; 97\% of submissions contain
+less than 200 lines of code, with most submissions containing between 50 and
+100 lines of code. Figure \ref{fig:loc} shows the distribution of file size
+in the full 413 author dataset. 
+
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.7\textwidth]{files}
+    \caption{Lines of code per file in the full 413 author dataset.}
+    \label{fig:files}
+\end{figure}
 
 \section{Test environment}
 All processing was done on an server running Fedora 23 x64.
