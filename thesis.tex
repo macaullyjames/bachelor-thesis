@@ -447,9 +447,9 @@ dataset compiled without optimisations or static linkage with the same number
 of authors as in the original paper to ensure that the two implementations
 match. 
 
-This section presents the datasets and test environment used in the analysis,
-as well as the methods used for feature extraction, feature selection and
-classification.
+This section presents the datasets used in the analysis, as well as the methods
+used for feature extraction, feature selection, classification and finally
+evaluation.
 
 \section{Data and datasets} \label{data-datasets}
 The analysis is based on data collected from the 2010 round of Google Code Jam
@@ -481,27 +481,6 @@ in the full 413 author dataset.
     \caption{Lines of code per file in the full 413 author dataset.}
     \label{fig:files}
 \end{figure}
-
-\section{Test environment}
-All processing was done on an server running Fedora 23 x64.
-Table~\ref{tab:dnf-packages} lists the dnf packages used in our test
-environment that are not included in the base installation:
-
-\begin{table}[!htb]
-    \centering
-        \caption{\lstinline{dnf} packages not including in the base Fedora 23
-        x64 installation that are used in our analysis}
-        \begin{tabular}{ l l l }
-        Package name & Version & Usage \\ \hline
-        gcc-c++ & 5.3.1-2.fc23 & Compiling GCJ submissions \\
-        python & 2.7.10-8.fc23 & Scripting, data manipulation \\
-        libsvm & 3.20-5.fc23  & Support vector machine library \\
-        libsvm-python & 3.20-5.fc23 & Python bindings for libsvm
-        % TK: This is incomplete
-        \end{tabular}
-    \label{tab:dnf-packages}
-\end{table}
-
 
 \section{Feature extraction}
 \label{sec:feature-extraction}
