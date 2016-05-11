@@ -545,14 +545,13 @@ reconstruction of the CFG.
 
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
-of thousands to hundreds of millions of features. In order to speed up the
-training of the SVM and avoid overfitting it is desirable to remove features
-that provide little or no information about the authors’ programming style.
-This is called \emph{feature selection}. Features are ranked with the mutual
-information criteria presented in section \ref{sec:mi}, after which models are
-trained with varying sizes of subsets of the highest ranking features. The
-predictive power of each model is then evaluated (see section
-\ref{sec:c-e}) and the model that performs best is retained.
+of thousands to hundreds of millions of features. Given the large number of
+features, feature selection is required in order to speed up the training of
+the SVM and avoid overfitting. Features are ranked with the mutual information
+criteria presented in section \ref{sec:mi}, after which models are trained with
+varying sizes of subsets of the highest ranking features. The predictive power
+of each model is then evaluated (see section \ref{sec:c-e}) and the model that
+performs best is retained.
 
 Subset sizes of between 800 and 100000 features are evaluated in all datasets.
 Models trained with all features are also evaluated where doing so is
