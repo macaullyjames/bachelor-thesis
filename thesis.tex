@@ -457,7 +457,7 @@ is restricted to authors that have submitted at least 8 submissions in C++.
 Furthermore, submissions are required to consist of exactly one file with the
 extension .cpp which can be compiled and statically linked with gcc version 5.3
 on a Fedora 23 x64 installation. A total of 413 authors in the 2010 GCJ dataset
-match these critiera with 3969 files in total, averaging 9.6 submissions per
+match these criteria with 3969 files in total, averaging 9.6 submissions per
 author. Most authors have 8-9 submissions, as seen in figure \ref{fig:files} 
 
 \begin{figure}[!htb]
@@ -468,7 +468,7 @@ author. Most authors have 8-9 submissions, as seen in figure \ref{fig:files}
     \label{fig:loc}
 \end{figure}
 
-The submissions are comparitively small on average; 97\% of submissions contain
+The submissions are comparatively small on average; 97\% of submissions contain
 less than 200 lines of code, with most submissions containing between 50 and
 100 lines of code. Figure \ref{fig:loc} shows the distribution of file size
 in the full 413 author dataset. 
@@ -579,7 +579,7 @@ significantly harder to classify accurately.
 \section{Method validation}
 A 191 author subset of the dataset described in section \ref{data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
-evaluated usng 10-fold cross-validation on each dataset using a varying number
+evaluated using 10-fold cross-validation on each dataset using a varying number
 of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
 our model using 20 randomly selected subsets of 20 authors in the same way.
 Both results are compared to comparable results in the 2011 study by Rosenblum
@@ -706,7 +706,7 @@ results are summarised in table \ref{tab:20-static-results}.
 The same analysis is performed with 20 randomly selected subsets of 10 authors
 from the 20 author dataset used above. Again, models trained on the statically
 linked programs perform significantly worse than models trained on their
-dynamially linked counterparts, as seen in table \ref{tab:10-static-results}. 
+dynamically linked counterparts, as seen in table \ref{tab:10-static-results}. 
 
 \begin{table}[!htb]
     \centering
