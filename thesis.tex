@@ -566,47 +566,38 @@ whereafter the LIBLINEAR SVM implementation \parencite{fan2008liblinear} is
 used for training and evaluating via 10-fold cross-validation.
 
 \chapter{Results}
-As stated in the introduction, the aim of this thesis is to:
-\begin{itemize}
-\item Validate the results of \parencite{rosenblum2011wrote} on the 2010 Google
-      Code Jam dataset
-\item Investigate how gcc’s optimisation flags (O1-O3) affect the accuracy of
-      the author classification algorithm on the 2010 GCJ dataset
-\item Investigate how statically linking the standard library affects the
-      accuracy of the author classification algorithm on the 2010 GCJ dataset.
-\end{itemize}
+As stated in the introduction, the aim of this thesis is to investigate how
+compiler optimisations and static linkage affect the accuracy of the author
+classification models presented by Rosenblum et al. in
+\parencite{rosenblum2011wrote}. This section begins with the results from the
+control study before presenting the results in each of these areas. The control
+study shows that the methods used in this thesis are comparable to those used
+by Rosenblum et al. Compiler optimisations are shown to decrease the predictive
+power of the model in all datasets and statically linked programs are
+significantly harder to classify accurately.
 
-This section presents our results in each of these areas. On a similar 2010 GCJ
-dataset used in \parencite{rosenblum2011wrote} our model performs comparably,
-validating the results of Rosenblum et al. Compiler optimisations decrease the
-predictive power of the model in all datasets and statically linked programs
-are significantly harder to classify accurately. An in depth description of
-each result follows.
-
-\section{Validation of \parencite{rosenblum2011wrote}}
-The 191 author subset described in section \ref{data-datasets} is
+\section{Method validation}
+A 191 author subset of the dataset described in section \ref{data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
 evaluated usng 10-fold cross-validation on each dataset using a varying number
 of features, as described in chapter \ref{ch:method}. Additionally, we evaluate
 our model using 20 randomly selected subsets of 20 authors in the same way.
+Both results are compared to comparable results in the 2011 study by Rosenblum
+et al.
 
-In the 191 author subset we achieve at most 41.8\% accuracy. Rosenblum et al.
-achieve 51\% accuracy in their comparable 191 author dataset. The chance of
-randomly choosing the correct author among 191 candidates is 0.5\%.
+Our models achieve 41.8\% accuracy in the 191 author subset and 71.2\% accuracy
+on average in the 20 random subsets of 20 authors. In comparison, Rosenblum et
+al. achieve 51\% accuracy and 76.8\% accuracy in comparable datasets. The
+chances of randomly choosing the correct author in both datasets are 0.5\% and
+5\% respectively. Figure \ref{fig:rosenblumvalidation} summarises our results
+compared to that of Rosenblum et al.
 
-In the 20 randomly selected subsets of 20 authors we achieve an average best
-accuracy of 71.2\% with a standard deviation of 6.18\%. Rosenblum et al.
-achieve an average 76.8\% accuracy in their comparable study of 20 random
-subsets of 20 authors. The chance of randomly choosing the correct author
-among 20 candidates is 5\%
-
-While our models do not perform quite as well as those of Rosenblum et al.,  we
-argue that the difference in accuracy is reasonable and also expected. This is
-discussed further in section TK. In both datasets our model performs
-significantly better than chance and as such the general approach of Rosenblum
-et al. seems to be valid.
-
-Figure TK summarises our results compared to that of Rosenblum et al.
+\begin{figure}[!htb]
+    \centering
+    \includegraphics[width=0.7\textwidth]{rosenblumvalidation}
+    \caption{Comparison of model accuracies with those of Rosenblum et al.}
+    \label{fig:rosenblumvalidation}
+\end{figure}
 
 \section{Optimisation levels -O1 to -O3}
 The full 413 author dataset is compiled with optimisation levels -O1 to -O3 and
