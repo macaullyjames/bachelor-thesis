@@ -437,39 +437,12 @@ found that it was easier to identify more experienced programmers.
 \chapter{Method} \label{ch:method}
 \section{Data and datasets} \label{data-datasets}
 The analysis is based on data collected from the 2010 round of Google Code Jam
-(GCJ). Specifically, the analysis is restricted to authors that have submitted at
-least 8 submissions in C++. Furthermore, it is also required that solutions consist of exactly
-one file with the extension .cpp which can be compiled and statically linked
-with g++ in the test environment used (see section 3.2 for details).
-
-Three subsets with 20, 191, and all 413 authors of the GCJ 2010 dataset are
-used in order to test how the size of training data affects our analysis.
-Furthermore, analysis on binaries compiled with the -static flag is
-computationally infeasible with large datasets in our test environments. This
-is summarised in Table~\ref{tab:datasets-summary}.
-
-\begin{table}[!htb]
-    \centering
-        \begin{tabular}{ l l l }
-        Authors & Subsets & Compiler flags \\ \hline
-        413 & 413, 20 &  \lstinline{-O0, -O1, -O2, -O3} \\ 
-        191 & 191, 20, 10 &  \lstinline{-O0, -O3} \\ 
-        20 & 20, 10 &  \lstinline{-O0 static} 
-        \end{tabular}
-    \caption{Summary of subsets of the 2010 GCJ dataset used in our analysis}
-    \label{tab:datasets-summary}
-\end{table}
-
-These dataset is chosen primarily to allow us to easily compare our results
-with the existing literature; however, it should be said that the structure of
-the GCJ dataset is a good fit for our analysis nonetheless. An
-unsupervised classification algorithm is used with a large number of features; thus, it is
-important to choose features derived from the coding style of the programmer
-and not the problem itself. The GCJ dataset facilitates this since all
-contestants solve the same set of problems; features derived from the problem
-formulation perform poorly as classifiers and can be identified and discarded.
-Likewise, features derived from the compilation process itself can also be
-identified and discarded due to all solutions being compiled in the same way.
+(GCJ). Specifically, the analysis is restricted to authors that have submitted
+at least 8 submissions in C++. Furthermore, it is also required that solutions
+consist of exactly one file with the extension .cpp which can be compiled and
+statically linked with gcc in the test environment used (see section 3.2 for
+details). A total of 413 authors in the 2010 GCJ dataset match these critiera
+with 3969 files in total, averaging 9.6 submissions per author.
 
 \section{Test environment}
 All processing was done on an server running Fedora 23 x64.
