@@ -318,6 +318,7 @@ CFG for feature extraction, but do not go as far as to decompile the binaries
 \parencite{rosenblum2011wrote}.
 
 \subsection{Derivatives of the CFG}
+\label{sec:cfg-derivatives}
 In their 2011 paper upon which this thesis is based, Rosenblum et al. defined
 an additional two abstractions based on the CFG of a program: the
 \emph{coloured control flow graph} (CCFG) and the \emph{coloured call graph}
@@ -351,6 +352,7 @@ maximize the distance between data points in the different classes
  \parencite{awad2004effective}. 
 
 \subsection{Mutual information}
+\label{sec:mi}
 When using SVMs for classification it is important to be weary of
 ``overfitting'' the training data, which can lead to poor predictive
 performance \parencite{cristianini2000introduction}. A technique called
@@ -435,14 +437,28 @@ accuracy and with level 3 optimisation 60.1\% accuracy. Furthermore, the study
 found that it was easier to identify more experienced programmers.
 
 \chapter{Method} \label{ch:method}
+As the goal of this thesis is to investigate the robustness of methods
+presented by Rosenblum et al. in \parencite{rosenblum2011wrote}, the methods
+presented in this section necessarily overlap those presented by Rosenblum et
+al. in their original paper. To the extent possible, the same datasets, sample
+sizes, algorithms and toolchain are used. A control study is performed on a
+dataset compiled without optimisations or static linkage with the same number
+of authors as in the original paper to ensure that the two implementations
+match. 
+
+This section presents the datasets and test environment used in the analysis,
+as well as the methods used for feature extraction, feature selection and
+classification.
+
 \section{Data and datasets} \label{data-datasets}
 The analysis is based on data collected from the 2010 round of Google Code Jam
-(GCJ). Specifically, the analysis is restricted to authors that have submitted
-at least 8 submissions in C++. Furthermore, it is also required that solutions
-consist of exactly one file with the extension .cpp which can be compiled and
-statically linked with gcc in the test environment used (see section 3.2 for
-details). A total of 413 authors in the 2010 GCJ dataset match these critiera
-with 3969 files in total, averaging 9.6 submissions per author.
+(GCJ), one of the datasets used by Rosenblum et al. Specifically, the analysis
+is restricted to authors that have submitted at least 8 submissions in C++.
+Furthermore, it is also required that solutions consist of exactly one file
+with the extension .cpp which can be compiled and statically linked with gcc in
+the test environment used (see section 3.2 for details). A total of 413 authors
+in the 2010 GCJ dataset match these critiera with 3969 files in total,
+averaging 9.6 submissions per author.
 
 \section{Test environment}
 All processing was done on an server running Fedora 23 x64.
@@ -464,14 +480,6 @@ environment that are not included in the base installation:
     \label{tab:dnf-packages}
 \end{table}
 
-In a supplement to their 2011 paper, Rosenblum et al. provided the programs
-they created for binary feature extraction as open source software. The same programs are used for our own analysis, albeit with minor changes due to
-outdated dependencies\footnote{
-    The original feature extraction source code can be found at
-    \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions
-    can be found at \url{https://github.com/macaullyjames/esorics}, along with
-    installation instructions.
-}.
 
 \section{Feature extraction}
 \label{sec:feature-extraction}
@@ -487,7 +495,7 @@ meaningful for determining authorship, the approach of Rosenblum et al. is to
 extract a large number of generic features in the hope that authorship
 information will be captured indirectly. All features are derived from the
 program's disassembled code, coloured control flow graph (CCFG) and coloured
-call graph (CCG) (section \ref{static-analysis-tb} explains these concepts in
+call graph (CCG) (section \ref{sec:cfg-derivatives} explains these concepts in
 detail) and are based on 6 feature templates: 
 
 \begin{description}[style=nextline]
@@ -523,6 +531,17 @@ and recognised across programs. Finally, features are grouped by author and
 saved in the LibSVM format \parencite{chang2011libsvm}
 for analysis. 
 
+In a supplement to their 2011 paper, Rosenblum et al. provided the programs
+they created for feature extraction as open source software. The same programs
+are used in the analysis presented in this thesis, albeit with minor changes
+due to outdated dependencies \footnote{
+    The original feature extraction source code can be found at
+    \url{http://pages.cs.wisc.edu/~nater/esorics-supp/}. Our modified versions
+    can be found at \url{https://github.com/macaullyjames/esorics}, along with
+    installation instructions.
+}. Both versions use the Dyninst library (TK: Source) for disassembly and
+reconstruction of the CFG.
+
 \section{Feature selection}
 The feature extraction process yields a high dimensional dataset with hundreds
 of thousands to hundreds of millions of features. In order to speed up the
@@ -532,29 +551,21 @@ This is called \emph{feature selection}. Features are ranked with the mutual
 information criteria presented in section \ref{sec:mi}, after which models are
 trained with varying sizes of subsets of the highest ranking features. The
 predictive power of each model is then evaluated (see section
-\ref{sec:classification}) and the model that performs the best is retained.
+\ref{sec:c-e}) and the model that performs best is retained.
 
-Subset sizes of between 800 and 100000 features are evaluated in all datasets. Models
-trained with all features are also evaluated where doing so is computationally
-feasible, however they consistently perform worse than models trained on
-smaller subsets.
+Subset sizes of between 800 and 100000 features are evaluated in all datasets.
+Models trained with all features are also evaluated where doing so is
+computationally feasible, however they consistently perform worse than models
+trained on smaller subsets.
 
-\section{Author classification}
+\section{Classification and evaluation}
+\label{sec:c-e}
 As in the original paper from Rosenblum et al., classification is performed
-using a linear support vector machine (SVM) \parencite{rosenblum2011wrote}. See
-section 2.TK for details. The svm-scale program from the LIBSVM toolkit is used
-\parencite{chang2011libsvm} to scale the feature values (avoids overweighting
-frequently occurring features) to the interval [0, 1]:
-\begin{lstlisting}
-svm-scale -l 0 -u 1 features.dat > features.scale
-\end{lstlisting}
-
-The LIBLINEAR SVM implementation is then used \parencite{fan2008liblinear} for
-training and evaluating via 10-fold cross-validation:
-\begin{lstlisting}
-train -v 10 features.scale
-\end{lstlisting}
-
+using a linear support vector machine (SVM) (section \ref{sec:svms} explains
+SVMs in more detail). The svm-scale program from the LIBSVM toolkit is used
+\parencite{chang2011libsvm} to scale the feature values to the interval [0, 1],
+whereafter the LIBLINEAR SVM implementation \parencite{fan2008liblinear} is
+used for training and evaluating via 10-fold cross-validation.
 
 \chapter{Results}
 As stated in the introduction, the aim of this thesis is to:
