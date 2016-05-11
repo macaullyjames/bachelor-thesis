@@ -566,6 +566,7 @@ whereafter the LIBLINEAR SVM implementation \parencite{fan2008liblinear} is
 used for training and evaluating via 10-fold cross-validation.
 
 \chapter{Results}
+\label{ch:results}
 As stated in the introduction, the aim of this thesis is to investigate how
 compiler optimisations and static linkage affect the accuracy of the author
 classification models presented by Rosenblum et al. in
@@ -577,6 +578,7 @@ power of the model in all datasets and statically linked programs are
 significantly harder to classify accurately.
 
 \section{Method validation}
+\label{sec:method-validation}
 A 191 author subset of the dataset described in section \ref{data-datasets} is
 compiled without additional compiler optimisations (-O0). Our model is then
 evaluated using 10-fold cross-validation on each dataset using a varying number
@@ -727,89 +729,101 @@ large increase of unique features and total number of features, and
 significantly reduces the accuracy of our models.
 
 \chapter{Discussion}
-\section{Method discussion}
-When attempting to implement the method used in Rosenblum et al. it was not
-without difficulties. To be able to use the source code provided by Rosenblum
-et al. some adjustments to the source code had to be made, updating it to make
-it work on a more modern system. As far as we can tell it has not caused any
-errors.
+The results presented in chapter \ref{ch:results} show that both compiler
+optimisations and static linkage negatively effect the performance of the
+authorship classifiers used. In this section we discuss the validity of these  
+results and whether they can be expected to hold in other datasets. The
+implications of our research are discussed with respect to programmer
+anonymity. Practical aspects of using our methods in real-life scenarios 
+and future research.
 
-The source code provided by Rosenblum et al. was only for feature extraction.
-Therefore, it is possible that inconsistencies with the method of Rosenblum et al. could have
-emerged from the process of converting output data from the feature extraction to
-data with the LIBSVM format needed for LIBLINEAR.
+\section{Method analysis}
+The method presented in the 2011 paper by Rosenblum et al.
+\parencite{rosenblum2011wrote} was followed to the best of our abilities.
+Nevertheless, the comparison study in section \ref{sec:method-validation}
+showed that our methods experienced a near 10\% drop in accuracy on a 191
+author dataset and an average 5\% drop in accuracy in the 20 author subsets.
+There are, despite our best efforts, several discrepancies between the two
+methods:
 
-Something to note is that a larger number of features than Rosenblum et al. was needed to achieve high
-accuracy. One reason could be that our implementation of feature selection may differ from that of
-Rosenblum et al. 
+\begin{description}[style=nextline]
+\item[Dataset inconsistencies]
+Our full dataset contains 413 authors, compared to the 191 authors used by
+Rosenblum et al. This despite using the same 2010 Google Code Jam data and the
+same selection criteria (8+ submissions per author, written in C++ etc.).
 
-\section{Results analysis}
-The experiments conducted show that optimisation reduces the accuracy. This is
-similar to what \parencite{caliskan2015coding} found in their experiments. As
-previously mentioned, they got with 100 authors and no optimisation 78.3\%
-accuracy and with level 3 optimisation 60.1\% accuracy.
+\item[Errors in the feature extraction process]
+As described in section \ref{sec:feature-extraction}, we make use of the open
+source programs Rosenblum et al. provide for feature extraction. However, minor
+modifications to these programs were necessary in order for them to build in
+our test environment. Moreover, it is not clear exactly how Rosenblum et al.
+used these programs; for example, their paper does not state the number of
+times the CCFG is collapsed in order to obtain supergraphlet features.
 
-When optimisation is used to compile the binaries there tend to be a larger
-amount of features extracted. Optimisation with -O3 gave 3891494 unique
-features in the case with 413 authors compared to 736307 features when -O0 was
-used. That is more than five times as many features. For optimisation -O3  the
-highest accuracy with 20 authors was 58.66\% compared to 68.80\% when no
-optimisation was used (see Figure 4.2. and Figure 4.8.), a 10.14\% difference).
-Furthermore, optimisation with -O1 and -O2 gave only a small reduction in
-accuracy. The results are still much higher than the random chance 5\% of
-guessing the author . 
+\item[Different testing environments]
+The study by Rosenblum et al. was performed in 2011. Since then, the Linux
+kernel has jumped from version 3.0 to version 4.3, gcc has jumped from version
+4.6.0 to version 5.3 and the Dyninst library used for feature extraction (see
+section \ref{sec:feature-extraction}) has undergone 2 major version revisions.
+\end{description}
 
-Experiments with subsets of 20 authors from the set of 191 authors shows
-similar results. When no optimisation was used the highest accuracy was 71.22
-\% compared to 59.79\% when -O3 was used (see Figure 4.X. and  Figure 4.X. ).
-In this case the difference is 11.43\%.
+It is also possible that the differences in accuracy are due to error on our
+part. Nevertheless, we feel that the results are close enough that our general
+approach can be considered valid.
 
-It is also possible to see that the accuracy is higher when fewer authors is
-used which is not that strange, random chance of guessing the correct author is
-also higher 10\%. If the case with 20 authors and no optimisation from the set
-of 191 is compared with that of 10 authors (see Figure 4.X.) the highest
-accuracy with 10 authors and was 81.58\% compared to 71.22\% with 20 authors.
-The difference is 10.36\%.
+\section{Wider implications}
+\label{sec:wider}
+Our experiments are performed using the methods of Rosenblum et al. Can the
+results be expected to hold for other methods of classification? Caliskan-Islam
+et al. performed a short side study of the implications of compiler
+optimisation in their 2015 paper regarding author classification for compiled
+executables \parencite{caliskan2015coding} and found that compiling with the
+-O3 flag enabled yielded a drop of accuracy with approximately 18\% in a 100
+author dataset. We suspect that static linkage would also have similar results
+with their methods.
 
-When using static with only 20 authors the unique number of features was
-3859605 and the total number of features was 110725073. In contrast, even
-though using more authors,  the number of unique features from the set of 191
-authors was 509908 and the total number of features was only 6221646.The
-accuracy achieved in the case using static linking and 10 authors was 45.54\%
-compare to 81.58\%. Thus, an important factor affecting the accuracy seems to
-be the number of features. 
+As stated in section \ref{sec:data-datasets}, most files in our dataset contain
+between 50 and 100 lines of code. It can be expected that most useful programs
+``in the wild'' are much larger than this, and it is not clear that our results
+would be reproducible in a dataset with larger programs. Static linkage has the
+effect of mixing application code with library code in the resulting
+executable, and larger programs would have a smaller percentage of library code
+present. This could potentially negate the benefits of static linkage seen in
+our experiments.
 
-Even though it was not possible to replicate Rosenblum’s et al. (2011) experiment and data
-exactly, our experiments showed accuracy levels not far from theirs. Using 191
-authors and 20 authors \parencite{rosenblum2011wrote} got approximately 77\% while
-our experiment using 191 authors gave 71\%; however, with a different number of files and
-probably not the exact set of 191 authors.     
+\section{Consequences for programmer anonymity}
+While our research shows that it is relatively easy to dramatically decrease the
+effectiveness of the classifiers in our datasets, the predictive power of
+models trained on those datasets are still significantly higher than random
+chance. To be clear: these methods do not \emph{guarantee} anonymity, but do
+help reduce the chance of being identified.
 
-With no optimisation and using all 191 authors and 7000 features an accuracy of
-41.8\% was achieved (see Figure 4.23). It is much better than random chance
-0.5\%. \parencite{rosenblum2011wrote} achieved 51\% on the full set with 191
-authors using only 1900 features. Not only did they achieve better results,
-they also manage to do this using fewer features. This could indicate that our
-implementation of feature selection differ from that of Rosenblum et al.
+When trying to preserve programmer anonymity it is important that any
+techniques employed be \emph{non-reversible}. If, for example, the statically
+linked executables could be pre-processed in a way that removed the statically
+linked library code then the benefits of static linkage would be completely
+negated; the analyst would simply add an extra pre-processing step to the
+process. While we have not seen evidence in the literature that compiler
+optimisations or static linkage are reversible, we have not seen evidence of
+the contrary either.
 
 \section{Future research}
-There are more techniques one could use when processing the source code or the
-binaries that could be interesting to investigate further. It would be
-interesting to test how different packers affect the accuracy. Moreover, it
-would be interesting to see how this method would work in more practical
-situations. Is it possible to identify teams using these techniques? What if
-the team’s members change frequently? What if two teams enforce the same style
-guide? In real situations the source code could be processed using different methods.
-What would happen if the binaries were compiled with a mix of different
-optimisation levels and static?  
+As stated in section \ref{sec:wider}, it is not clear that similar results
+would be achieved in datasets containing larger programs. Also, most datasets
+enountered in the literature are chosen so that authors solve the \emph{same}
+set of problems; Google Code Jam submissions, hand-ins for a university-level
+class etc. There are many potential applications of author classification, such
+as malware analysis, where datasets can be expected to consist of programs with
+mutually different functionality. Further research is needed to investigate if
+the current state-of-the-art can be used in these circumstances. 
 
-Most of the previous reports have focus on source code from the Google Code Jam
-programming competition. More research on other datasets with larger files
-could be interesting to examine.
-
-With the purpose of testing the accuracy values obtained it could also be
-interesting to use different machine learning approaches. Possible try another
-program than LIBLINEAR for the cross-validation.
+The fact that many programs are developed in teams also needs to be adressed.
+Is it possible to classify teams of authors in the same way? What if two teams
+enforce the same code style guidelines? What if team members change frequently? 
+Again, further research is needed. A greater understanding of how the stylistic
+characteristics of source code are transformed during the compilation process
+could lead to both better feature extraction methods and anti-analysis
+techniques.
 
 \chapter{Conclusion}
 This thesis attempted to verify the authorship attribution method created by
