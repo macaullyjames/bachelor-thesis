@@ -834,22 +834,20 @@ could lead to both better feature extraction methods and anti-analysis
 techniques.
 
 \chapter{Conclusion}
-This thesis attempted to verify the authorship attribution method created by
-\parencite{rosenblum2011wrote}. Our results tend to be somewhat lower than that
-of Rosenblum et al. and need more features to give high accuracy; nevertheless,
-the method seems to be working. Some possible explanations concerning the
-differences in accuracy achieved could be because of difficulties in
-implementing Rosenblum et al. method exactly. Furthermore, even though working
-with data from Google Code Jam 2010 the exact dataset that Rosenblum et al.
-used could not be replicated and therefore cause differences in results. 
+This thesis has shown that the predictive power of authorship classification
+methods for compiled executables presented in the literature, specifically
+those presented in the 2011 paper of Rosenblum et al.
+\parencite{rosenblum2011wrote}, are significantly weakened when working with
+executables compiled with full optimisation turned on or when the executables
+are statically linked. Nevertheless, the accuracy of the models is still much
+higher than random chance in all cases and the use of these techniques does not
+guarantee the anonymity.
 
-Optimisation seems not be enough to make authors anonymous; however, it reduces
-the accuracy somewhat. Adding static causes a bigger drop in accuracy. The
-accuracy achieved in the case using static and 10 authors was 45.54\% compare
-to 81.58\% without. Perhaps not enough to ensure anonymity; nevertheless,
-static gives a significantly lower accuracy. The data extracted from the binaries shows that
-optimisation and static linking results in more features that may be the cause
-of the reduction in accuracy.
+Further research is required to determine the real-world implications of our
+findings, particularly with respect to alternative datasets. A greater
+understanding of how high-level stylistic features of source code are
+transformed during the compilation process could potentially lead to both
+better classifiers and better anti-analysis techniques.
 
 \printbibliography
 
