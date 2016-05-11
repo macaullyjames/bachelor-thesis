@@ -607,7 +607,7 @@ unique features and the total number of features extracted from the programs,
 the -O3 dataset yielding 5 times the number of unique features as the -O0
 dataset and a 63\% increase in the total number of features. Models trained on
 the -O1 and -O2 datasets do not perform significantly worse than the baseline
-(28.6\%, 27.6\%  vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.6\%.
+(28.6\% and 27.6\%  vs 32.5\%) whereas the -O3 dataset yields an accuracy of just 21.6\%.
 This is summarised in table \ref{tab:413-results}.
 
 \begin{table}[!htb]
@@ -637,7 +637,8 @@ unique features and total number of features vary greatly, as seen in table
     of features selected by cross-validation for each optimisation level in the
     full 413 author dataset}
         \begin{tabular}{ l l l l }
-        Optimisation level & Unique & Total & Selected \\ \hline
+        Optimisation level & Unique features & Total features &
+        Selected features \\ \hline
         \lstinline{-O0} & 765307 & 13204201 & 7000 \\
         \lstinline{-O1} & 2141558 & 15532246 & 9000 \\
         \lstinline{-O2} & 2593340 & 16681152 & 10000 \\
@@ -658,7 +659,7 @@ vs 68.8\%, respectively) while the -O3 subsets yield an average accuracy of
     models over 20 random subsets of 20 authors from the full 413 author
     dataset}
         \begin{tabular}{ l l l l }
-        Optimisation level & Average accuracy & Standard deviance \\
+        Optimisation level & Average accuracy & Standard deviation \\
         \hline
         \lstinline{-O0} & 68.8\% & 5.1\% \\
         \lstinline{-O1} & 65.4\% & 6.9\% \\
@@ -712,7 +713,7 @@ dynamially linked counterparts, as seen in table \ref{tab:10-static-results}.
     \caption{Average accuracy and standard deviance for models over 20 random
     subsets of 10 authors with static and dynamic linkage, respectively}
         \begin{tabular}{ l l l }
-        Linkage & Average accuracy & Standard deviance \\
+        Linkage & Average accuracy & Standard deviation \\
         \hline
         Dynamic & 81.2\% & 7.3\% \\
         Static & 45.5\% & 6.6\%
