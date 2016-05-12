@@ -12,6 +12,7 @@
 \usepackage{csquotes}
 \usepackage[backend=bibtex,style=authoryear]{biblatex}
 \usepackage[section]{placeins}
+\usepackage{setspace}
 \addbibresource{references.bib}
 
 \nonzeroparskip
@@ -44,7 +45,7 @@
 Programming languages such as C/C++ allow for great flexibility in how code can
 be written. This leads to programmers developing their own ``code style'' that
 can be used to identify them among a group of other programmers, in a setting
-such as a programming competition. Recent resarch has shown that some of the
+such as a programming competition. Recent research has shown that some of the
 identifying stylistic features present in source code survive the compilation
 process, and that authorship classification can be performed on the compiled
 executables alone. This was originally performed by Rosenblum et al. in their
@@ -52,10 +53,10 @@ executables alone. This was originally performed by Rosenblum et al. in their
 
 This thesis takes the approach of Rosenblum et al. and investigates how the
 author classification process is affected by changes in the compilation process
-of the training dataset, specifically different levels of optimisation (-O0 to
+of the training dataset, specifically different levels of optimisation (-O1 to
 -O3) and static linkage. We find that full optimisation yields a 10\% drop
-in accuracy in datasets with 191 and 20 authors respectively. Static linkage
-results in a 46\% and 36\% drop in accuracy in datasets with 20 and 10 authors,
+in accuracy in datasets with 413 and 20 authors respectively. Static linkage
+results in a significant drop in accuracy in datasets with 20 and 10 authors,
 respectively. In both cases, the classifiers still perform significantly better
 than random chance and as such these methods cannot guarantee anonymity to the
 programmer. It is not clear how these results translate to other datasets,
@@ -65,27 +66,31 @@ classifiers found in the literature.
 \end{abstract}
 \clearpage
 \begin{foreignabstract}{swedish}
-I tidigare studier har det visat sig möjligt att med hög noggrannhet
-identifiera författaren till binära filer. Idéen är att författare till kod
-lämnar karaktäristiska drag i koden som går att känna igen även efter
-kompilering. 
+\begin{center}
+\Large\bfseries Tekniker för att reducera möjligheten att identifiera författare till
+kompilerade program
+\end{center}
 
-Syftet med denna rapport är att utforska olika tekniker för att minska
-säkerheten då man vill bestämma vem som är författaren till binära filer och
-undersöka hur olika bearbetningar av binärfilerna påverkar noggrannheten.     
+Programspråk såsom C och C++ ger programmeraren stor valfrihet i hur koden kan
+se ut. Detta leder till att man utvecklar sin egen ``kodstil'' som kan användas
+för att känna igen en programmerare i en större grupp, såsom vid en
+programmeringstävling. Ny forskning har visat att några av de identifierande
+stilfaktorerna som finns i källkoden överlever kompileringsprocessen och att
+författarklassificering kan göras med de kompilerade programmen enbart. Detta
+visades för första gången av Rosenblum et al. i en artikel publicerad år 2011. 
 
-Denna rapport bygger vidare på rapport av \parencite{rosenblum2011wrote}
-och dess metod. En maskininlärningsmetod implementerats för
-att identifiera vem som är författaren till en binär fil. Attribut extraheras
-från binärfilerna som sedan kan används som data för maskininlärning. Likt
-Rosenblum et al. används data hämtat från programmeringstävlingen Google Code
-Jam. 
+Denna uppsats använder sig av samma metoder som Rosenblum et al. och undersöker
+hur förändringar i kompileringsprocessen påverkar klassificeringens noggrannhet.
+Effekterna av olika optimeringsnivåer (-O1 till -O3) samt statisk länkning
+undersöks. Vi ser att full optimering ger en 10\% förminskning av noggrannhet i
+datamängder med 413 respektive 20 författare. Statisk länkning leder till en
+betydligt minskad noggrannhet i datamängder med 20 respektive 10 författare. I
+både fallen presterar klassificeringen ändå bättre än slumpen, vilket gör att
+dessa metoder därmed inte kan garantera programmerarens anonymitet. Det är
+svårt att säga huruvida dessa resultat kan reproduceras i andra datamängder.
+Dock finns det anledning att tro att liknande resultat skulle erhållas om
+andra klassificerare i litteraturen skulle användas.
 
-Erhållna resultat tyder på att kompilatoroptimering försämrar noggrannheten men är dock
-inte tillräckligt för att garantera anonymitet. Användning av statisk länkning
-resulterar i en kraftigare sänkning. Man kan se att optimering och statisk
-länkning resulterar i fler attribut vilket kan vara orsaken till att det blir
-svårare att avgöra vem som är författaren.
 \end{foreignabstract}
 \clearpage
 \tableofcontents*
