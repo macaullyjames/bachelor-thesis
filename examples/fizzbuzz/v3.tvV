@@ -1,0 +1,412 @@
+v3.out:
+(__TEXT,__text) section
+_main:
+0000000100000720	pushq	%rbp
+0000000100000721	movq	%rsp, %rbp
+0000000100000724	subq	$0x1a0, %rsp            ## imm = 0x1A0
+000000010000072b	leaq	0x7a0(%rip), %rdi       ## literal pool for: "1\n"
+0000000100000732	movl	$0x0, -0x4(%rbp)
+0000000100000739	movb	$0x0, %al
+000000010000073b	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000740	leaq	0x78e(%rip), %rdi       ## literal pool for: "2\n"
+0000000100000747	movl	%eax, -0x8(%rbp)
+000000010000074a	movb	$0x0, %al
+000000010000074c	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000751	leaq	0x780(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000758	movl	%eax, -0xc(%rbp)
+000000010000075b	movb	$0x0, %al
+000000010000075d	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000762	leaq	0x775(%rip), %rdi       ## literal pool for: "4\n"
+0000000100000769	movl	%eax, -0x10(%rbp)
+000000010000076c	movb	$0x0, %al
+000000010000076e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000773	leaq	0x767(%rip), %rdi       ## literal pool for: "Buzz\n"
+000000010000077a	movl	%eax, -0x14(%rbp)
+000000010000077d	movb	$0x0, %al
+000000010000077f	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000784	leaq	0x74d(%rip), %rdi       ## literal pool for: "Fizz\n"
+000000010000078b	movl	%eax, -0x18(%rbp)
+000000010000078e	movb	$0x0, %al
+0000000100000790	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000795	leaq	0x74b(%rip), %rdi       ## literal pool for: "7\n"
+000000010000079c	movl	%eax, -0x1c(%rbp)
+000000010000079f	movb	$0x0, %al
+00000001000007a1	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007a6	leaq	0x73d(%rip), %rdi       ## literal pool for: "8\n"
+00000001000007ad	movl	%eax, -0x20(%rbp)
+00000001000007b0	movb	$0x0, %al
+00000001000007b2	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007b7	leaq	0x71a(%rip), %rdi       ## literal pool for: "Fizz\n"
+00000001000007be	movl	%eax, -0x24(%rbp)
+00000001000007c1	movb	$0x0, %al
+00000001000007c3	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007c8	leaq	0x712(%rip), %rdi       ## literal pool for: "Buzz\n"
+00000001000007cf	movl	%eax, -0x28(%rbp)
+00000001000007d2	movb	$0x0, %al
+00000001000007d4	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007d9	leaq	0x70d(%rip), %rdi       ## literal pool for: "11\n"
+00000001000007e0	movl	%eax, -0x2c(%rbp)
+00000001000007e3	movb	$0x0, %al
+00000001000007e5	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007ea	leaq	0x6e7(%rip), %rdi       ## literal pool for: "Fizz\n"
+00000001000007f1	movl	%eax, -0x30(%rbp)
+00000001000007f4	movb	$0x0, %al
+00000001000007f6	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000007fb	leaq	0x6ef(%rip), %rdi       ## literal pool for: "13\n"
+0000000100000802	movl	%eax, -0x34(%rbp)
+0000000100000805	movb	$0x0, %al
+0000000100000807	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000080c	leaq	0x6e2(%rip), %rdi       ## literal pool for: "14\n"
+0000000100000813	movl	%eax, -0x38(%rbp)
+0000000100000816	movb	$0x0, %al
+0000000100000818	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000081d	leaq	0x6d5(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000824	movl	%eax, -0x3c(%rbp)
+0000000100000827	movb	$0x0, %al
+0000000100000829	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000082e	leaq	0x6ce(%rip), %rdi       ## literal pool for: "16\n"
+0000000100000835	movl	%eax, -0x40(%rbp)
+0000000100000838	movb	$0x0, %al
+000000010000083a	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000083f	leaq	0x6c1(%rip), %rdi       ## literal pool for: "17\n"
+0000000100000846	movl	%eax, -0x44(%rbp)
+0000000100000849	movb	$0x0, %al
+000000010000084b	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000850	leaq	0x681(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000857	movl	%eax, -0x48(%rbp)
+000000010000085a	movb	$0x0, %al
+000000010000085c	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000861	leaq	0x6a3(%rip), %rdi       ## literal pool for: "19\n"
+0000000100000868	movl	%eax, -0x4c(%rbp)
+000000010000086b	movb	$0x0, %al
+000000010000086d	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000872	leaq	0x668(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000879	movl	%eax, -0x50(%rbp)
+000000010000087c	movb	$0x0, %al
+000000010000087e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000883	leaq	0x64e(%rip), %rdi       ## literal pool for: "Fizz\n"
+000000010000088a	movl	%eax, -0x54(%rbp)
+000000010000088d	movb	$0x0, %al
+000000010000088f	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000894	leaq	0x674(%rip), %rdi       ## literal pool for: "22\n"
+000000010000089b	movl	%eax, -0x58(%rbp)
+000000010000089e	movb	$0x0, %al
+00000001000008a0	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008a5	leaq	0x667(%rip), %rdi       ## literal pool for: "23\n"
+00000001000008ac	movl	%eax, -0x5c(%rbp)
+00000001000008af	movb	$0x0, %al
+00000001000008b1	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008b6	leaq	0x61b(%rip), %rdi       ## literal pool for: "Fizz\n"
+00000001000008bd	movl	%eax, -0x60(%rbp)
+00000001000008c0	movb	$0x0, %al
+00000001000008c2	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008c7	leaq	0x613(%rip), %rdi       ## literal pool for: "Buzz\n"
+00000001000008ce	movl	%eax, -0x64(%rbp)
+00000001000008d1	movb	$0x0, %al
+00000001000008d3	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008d8	leaq	0x638(%rip), %rdi       ## literal pool for: "26\n"
+00000001000008df	movl	%eax, -0x68(%rbp)
+00000001000008e2	movb	$0x0, %al
+00000001000008e4	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008e9	leaq	0x5e8(%rip), %rdi       ## literal pool for: "Fizz\n"
+00000001000008f0	movl	%eax, -0x6c(%rbp)
+00000001000008f3	movb	$0x0, %al
+00000001000008f5	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000008fa	leaq	0x61a(%rip), %rdi       ## literal pool for: "28\n"
+0000000100000901	movl	%eax, -0x70(%rbp)
+0000000100000904	movb	$0x0, %al
+0000000100000906	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000090b	leaq	0x60d(%rip), %rdi       ## literal pool for: "29\n"
+0000000100000912	movl	%eax, -0x74(%rbp)
+0000000100000915	movb	$0x0, %al
+0000000100000917	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000091c	leaq	0x5d6(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000923	movl	%eax, -0x78(%rbp)
+0000000100000926	movb	$0x0, %al
+0000000100000928	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000092d	leaq	0x5ef(%rip), %rdi       ## literal pool for: "31\n"
+0000000100000934	movl	%eax, -0x7c(%rbp)
+0000000100000937	movb	$0x0, %al
+0000000100000939	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000093e	leaq	0x5e2(%rip), %rdi       ## literal pool for: "32\n"
+0000000100000945	movl	%eax, -0x80(%rbp)
+0000000100000948	movb	$0x0, %al
+000000010000094a	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000094f	leaq	0x582(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000956	movl	%eax, -0x84(%rbp)
+000000010000095c	movb	$0x0, %al
+000000010000095e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000963	leaq	0x5c1(%rip), %rdi       ## literal pool for: "34\n"
+000000010000096a	movl	%eax, -0x88(%rbp)
+0000000100000970	movb	$0x0, %al
+0000000100000972	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000977	leaq	0x563(%rip), %rdi       ## literal pool for: "Buzz\n"
+000000010000097e	movl	%eax, -0x8c(%rbp)
+0000000100000984	movb	$0x0, %al
+0000000100000986	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000098b	leaq	0x546(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000992	movl	%eax, -0x90(%rbp)
+0000000100000998	movb	$0x0, %al
+000000010000099a	callq	0x100000eb2             ## symbol stub for: _printf
+000000010000099f	leaq	0x589(%rip), %rdi       ## literal pool for: "37\n"
+00000001000009a6	movl	%eax, -0x94(%rbp)
+00000001000009ac	movb	$0x0, %al
+00000001000009ae	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000009b3	leaq	0x579(%rip), %rdi       ## literal pool for: "38\n"
+00000001000009ba	movl	%eax, -0x98(%rbp)
+00000001000009c0	movb	$0x0, %al
+00000001000009c2	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000009c7	leaq	0x50a(%rip), %rdi       ## literal pool for: "Fizz\n"
+00000001000009ce	movl	%eax, -0x9c(%rbp)
+00000001000009d4	movb	$0x0, %al
+00000001000009d6	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000009db	leaq	0x4ff(%rip), %rdi       ## literal pool for: "Buzz\n"
+00000001000009e2	movl	%eax, -0xa0(%rbp)
+00000001000009e8	movb	$0x0, %al
+00000001000009ea	callq	0x100000eb2             ## symbol stub for: _printf
+00000001000009ef	leaq	0x541(%rip), %rdi       ## literal pool for: "41\n"
+00000001000009f6	movl	%eax, -0xa4(%rbp)
+00000001000009fc	movb	$0x0, %al
+00000001000009fe	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a03	leaq	0x4ce(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000a0a	movl	%eax, -0xa8(%rbp)
+0000000100000a10	movb	$0x0, %al
+0000000100000a12	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a17	leaq	0x51d(%rip), %rdi       ## literal pool for: "43\n"
+0000000100000a1e	movl	%eax, -0xac(%rbp)
+0000000100000a24	movb	$0x0, %al
+0000000100000a26	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a2b	leaq	0x50d(%rip), %rdi       ## literal pool for: "44\n"
+0000000100000a32	movl	%eax, -0xb0(%rbp)
+0000000100000a38	movb	$0x0, %al
+0000000100000a3a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a3f	leaq	0x4b3(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000a46	movl	%eax, -0xb4(%rbp)
+0000000100000a4c	movb	$0x0, %al
+0000000100000a4e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a53	leaq	0x4e9(%rip), %rdi       ## literal pool for: "46\n"
+0000000100000a5a	movl	%eax, -0xb8(%rbp)
+0000000100000a60	movb	$0x0, %al
+0000000100000a62	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a67	leaq	0x4d9(%rip), %rdi       ## literal pool for: "47\n"
+0000000100000a6e	movl	%eax, -0xbc(%rbp)
+0000000100000a74	movb	$0x0, %al
+0000000100000a76	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a7b	leaq	0x456(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000a82	movl	%eax, -0xc0(%rbp)
+0000000100000a88	movb	$0x0, %al
+0000000100000a8a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000a8f	leaq	0x4b5(%rip), %rdi       ## literal pool for: "49\n"
+0000000100000a96	movl	%eax, -0xc4(%rbp)
+0000000100000a9c	movb	$0x0, %al
+0000000100000a9e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000aa3	leaq	0x437(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000aaa	movl	%eax, -0xc8(%rbp)
+0000000100000ab0	movb	$0x0, %al
+0000000100000ab2	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000ab7	leaq	0x41a(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000abe	movl	%eax, -0xcc(%rbp)
+0000000100000ac4	movb	$0x0, %al
+0000000100000ac6	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000acb	leaq	0x47d(%rip), %rdi       ## literal pool for: "52\n"
+0000000100000ad2	movl	%eax, -0xd0(%rbp)
+0000000100000ad8	movb	$0x0, %al
+0000000100000ada	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000adf	leaq	0x46d(%rip), %rdi       ## literal pool for: "53\n"
+0000000100000ae6	movl	%eax, -0xd4(%rbp)
+0000000100000aec	movb	$0x0, %al
+0000000100000aee	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000af3	leaq	0x3de(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000afa	movl	%eax, -0xd8(%rbp)
+0000000100000b00	movb	$0x0, %al
+0000000100000b02	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b07	leaq	0x3d3(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000b0e	movl	%eax, -0xdc(%rbp)
+0000000100000b14	movb	$0x0, %al
+0000000100000b16	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b1b	leaq	0x435(%rip), %rdi       ## literal pool for: "56\n"
+0000000100000b22	movl	%eax, -0xe0(%rbp)
+0000000100000b28	movb	$0x0, %al
+0000000100000b2a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b2f	leaq	0x3a2(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000b36	movl	%eax, -0xe4(%rbp)
+0000000100000b3c	movb	$0x0, %al
+0000000100000b3e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b43	leaq	0x411(%rip), %rdi       ## literal pool for: "58\n"
+0000000100000b4a	movl	%eax, -0xe8(%rbp)
+0000000100000b50	movb	$0x0, %al
+0000000100000b52	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b57	leaq	0x401(%rip), %rdi       ## literal pool for: "59\n"
+0000000100000b5e	movl	%eax, -0xec(%rbp)
+0000000100000b64	movb	$0x0, %al
+0000000100000b66	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b6b	leaq	0x387(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000b72	movl	%eax, -0xf0(%rbp)
+0000000100000b78	movb	$0x0, %al
+0000000100000b7a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b7f	leaq	0x3dd(%rip), %rdi       ## literal pool for: "61\n"
+0000000100000b86	movl	%eax, -0xf4(%rbp)
+0000000100000b8c	movb	$0x0, %al
+0000000100000b8e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000b93	leaq	0x3cd(%rip), %rdi       ## literal pool for: "62\n"
+0000000100000b9a	movl	%eax, -0xf8(%rbp)
+0000000100000ba0	movb	$0x0, %al
+0000000100000ba2	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000ba7	leaq	0x32a(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000bae	movl	%eax, -0xfc(%rbp)
+0000000100000bb4	movb	$0x0, %al
+0000000100000bb6	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000bbb	leaq	0x3a9(%rip), %rdi       ## literal pool for: "64\n"
+0000000100000bc2	movl	%eax, -0x100(%rbp)
+0000000100000bc8	movb	$0x0, %al
+0000000100000bca	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000bcf	leaq	0x30b(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000bd6	movl	%eax, -0x104(%rbp)
+0000000100000bdc	movb	$0x0, %al
+0000000100000bde	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000be3	leaq	0x2ee(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000bea	movl	%eax, -0x108(%rbp)
+0000000100000bf0	movb	$0x0, %al
+0000000100000bf2	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000bf7	leaq	0x371(%rip), %rdi       ## literal pool for: "67\n"
+0000000100000bfe	movl	%eax, -0x10c(%rbp)
+0000000100000c04	movb	$0x0, %al
+0000000100000c06	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c0b	leaq	0x361(%rip), %rdi       ## literal pool for: "68\n"
+0000000100000c12	movl	%eax, -0x110(%rbp)
+0000000100000c18	movb	$0x0, %al
+0000000100000c1a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c1f	leaq	0x2b2(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000c26	movl	%eax, -0x114(%rbp)
+0000000100000c2c	movb	$0x0, %al
+0000000100000c2e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c33	leaq	0x2a7(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000c3a	movl	%eax, -0x118(%rbp)
+0000000100000c40	movb	$0x0, %al
+0000000100000c42	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c47	leaq	0x329(%rip), %rdi       ## literal pool for: "71\n"
+0000000100000c4e	movl	%eax, -0x11c(%rbp)
+0000000100000c54	movb	$0x0, %al
+0000000100000c56	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c5b	leaq	0x276(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000c62	movl	%eax, -0x120(%rbp)
+0000000100000c68	movb	$0x0, %al
+0000000100000c6a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c6f	leaq	0x305(%rip), %rdi       ## literal pool for: "73\n"
+0000000100000c76	movl	%eax, -0x124(%rbp)
+0000000100000c7c	movb	$0x0, %al
+0000000100000c7e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c83	leaq	0x2f5(%rip), %rdi       ## literal pool for: "74\n"
+0000000100000c8a	movl	%eax, -0x128(%rbp)
+0000000100000c90	movb	$0x0, %al
+0000000100000c92	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000c97	leaq	0x25b(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000c9e	movl	%eax, -0x12c(%rbp)
+0000000100000ca4	movb	$0x0, %al
+0000000100000ca6	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000cab	leaq	0x2d1(%rip), %rdi       ## literal pool for: "76\n"
+0000000100000cb2	movl	%eax, -0x130(%rbp)
+0000000100000cb8	movb	$0x0, %al
+0000000100000cba	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000cbf	leaq	0x2c1(%rip), %rdi       ## literal pool for: "77\n"
+0000000100000cc6	movl	%eax, -0x134(%rbp)
+0000000100000ccc	movb	$0x0, %al
+0000000100000cce	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000cd3	leaq	0x1fe(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000cda	movl	%eax, -0x138(%rbp)
+0000000100000ce0	movb	$0x0, %al
+0000000100000ce2	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000ce7	leaq	0x29d(%rip), %rdi       ## literal pool for: "79\n"
+0000000100000cee	movl	%eax, -0x13c(%rbp)
+0000000100000cf4	movb	$0x0, %al
+0000000100000cf6	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000cfb	leaq	0x1df(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000d02	movl	%eax, -0x140(%rbp)
+0000000100000d08	movb	$0x0, %al
+0000000100000d0a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d0f	leaq	0x1c2(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000d16	movl	%eax, -0x144(%rbp)
+0000000100000d1c	movb	$0x0, %al
+0000000100000d1e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d23	leaq	0x265(%rip), %rdi       ## literal pool for: "82\n"
+0000000100000d2a	movl	%eax, -0x148(%rbp)
+0000000100000d30	movb	$0x0, %al
+0000000100000d32	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d37	leaq	0x255(%rip), %rdi       ## literal pool for: "83\n"
+0000000100000d3e	movl	%eax, -0x14c(%rbp)
+0000000100000d44	movb	$0x0, %al
+0000000100000d46	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d4b	leaq	0x186(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000d52	movl	%eax, -0x150(%rbp)
+0000000100000d58	movb	$0x0, %al
+0000000100000d5a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d5f	leaq	0x17b(%rip), %rdi       ## literal pool for: "Buzz\n"
+0000000100000d66	movl	%eax, -0x154(%rbp)
+0000000100000d6c	movb	$0x0, %al
+0000000100000d6e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d73	leaq	0x21d(%rip), %rdi       ## literal pool for: "86\n"
+0000000100000d7a	movl	%eax, -0x158(%rbp)
+0000000100000d80	movb	$0x0, %al
+0000000100000d82	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d87	leaq	0x14a(%rip), %rdi       ## literal pool for: "Fizz\n"
+0000000100000d8e	movl	%eax, -0x15c(%rbp)
+0000000100000d94	movb	$0x0, %al
+0000000100000d96	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000d9b	leaq	0x1f9(%rip), %rdi       ## literal pool for: "88\n"
+0000000100000da2	movl	%eax, -0x160(%rbp)
+0000000100000da8	movb	$0x0, %al
+0000000100000daa	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000daf	leaq	0x1e9(%rip), %rdi       ## literal pool for: "89\n"
+0000000100000db6	movl	%eax, -0x164(%rbp)
+0000000100000dbc	movb	$0x0, %al
+0000000100000dbe	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000dc3	leaq	0x12f(%rip), %rdi       ## literal pool for: "FizzBuzz\n"
+0000000100000dca	movl	%eax, -0x168(%rbp)
+0000000100000dd0	movb	$0x0, %al
+0000000100000dd2	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000dd7	leaq	0x1c5(%rip), %rdi       ## literal pool for: "91\n"
+0000000100000dde	movl	%eax, -0x16c(%rbp)
+0000000100000de4	movb	$0x0, %al
+0000000100000de6	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000deb	leaq	0x1b5(%rip), %rdi       ## literal pool for: "92\n"
+0000000100000df2	movl	%eax, -0x170(%rbp)
+0000000100000df8	movb	$0x0, %al
+0000000100000dfa	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000dff	leaq	0xd2(%rip), %rdi        ## literal pool for: "Fizz\n"
+0000000100000e06	movl	%eax, -0x174(%rbp)
+0000000100000e0c	movb	$0x0, %al
+0000000100000e0e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e13	leaq	0x191(%rip), %rdi       ## literal pool for: "94\n"
+0000000100000e1a	movl	%eax, -0x178(%rbp)
+0000000100000e20	movb	$0x0, %al
+0000000100000e22	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e27	leaq	0xb3(%rip), %rdi        ## literal pool for: "Buzz\n"
+0000000100000e2e	movl	%eax, -0x17c(%rbp)
+0000000100000e34	movb	$0x0, %al
+0000000100000e36	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e3b	leaq	0x96(%rip), %rdi        ## literal pool for: "Fizz\n"
+0000000100000e42	movl	%eax, -0x180(%rbp)
+0000000100000e48	movb	$0x0, %al
+0000000100000e4a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e4f	leaq	0x159(%rip), %rdi       ## literal pool for: "97\n"
+0000000100000e56	movl	%eax, -0x184(%rbp)
+0000000100000e5c	movb	$0x0, %al
+0000000100000e5e	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e63	leaq	0x149(%rip), %rdi       ## literal pool for: "98\n"
+0000000100000e6a	movl	%eax, -0x188(%rbp)
+0000000100000e70	movb	$0x0, %al
+0000000100000e72	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e77	leaq	0x5a(%rip), %rdi        ## literal pool for: "Fizz\n"
+0000000100000e7e	movl	%eax, -0x18c(%rbp)
+0000000100000e84	movb	$0x0, %al
+0000000100000e86	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e8b	leaq	0x4f(%rip), %rdi        ## literal pool for: "Buzz\n"
+0000000100000e92	movl	%eax, -0x190(%rbp)
+0000000100000e98	movb	$0x0, %al
+0000000100000e9a	callq	0x100000eb2             ## symbol stub for: _printf
+0000000100000e9f	xorl	%ecx, %ecx
+0000000100000ea1	movl	%eax, -0x194(%rbp)
+0000000100000ea7	movl	%ecx, %eax
+0000000100000ea9	addq	$0x1a0, %rsp            ## imm = 0x1A0
+0000000100000eb0	popq	%rbp
+0000000100000eb1	retq

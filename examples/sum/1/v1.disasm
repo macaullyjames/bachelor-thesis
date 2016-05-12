@@ -1,0 +1,12 @@
+v1.out:
+(__TEXT,__text) section
+_main:
+0000000100000f70	pushq	%rbp
+0000000100000f71	movq	%rsp, %rbp
+0000000100000f74	leaq	0x33(%rip), %rdi
+0000000100000f7b	movl	$0x4, %esi
+0000000100000f80	xorl	%eax, %eax
+0000000100000f82	callq	0x100000f8c
+0000000100000f87	xorl	%eax, %eax
+0000000100000f89	popq	%rbp
+0000000100000f8a	retq

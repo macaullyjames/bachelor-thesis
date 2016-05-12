@@ -1,0 +1,68 @@
+v1.out:
+(__TEXT,__text) section
+_main:
+0000000100000e80	pushq	%rbp
+0000000100000e81	movq	%rsp, %rbp
+0000000100000e84	subq	$0x30, %rsp
+0000000100000e88	movl	$0x0, -0x4(%rbp)
+0000000100000e8f	movl	$0x1, -0x8(%rbp)
+0000000100000e96	cmpl	$0x64, -0x8(%rbp)
+0000000100000e9a	jg	0x100000f67
+0000000100000ea0	movl	$0xf, %eax
+0000000100000ea5	movl	-0x8(%rbp), %ecx
+0000000100000ea8	movl	%eax, -0xc(%rbp)
+0000000100000eab	movl	%ecx, %eax
+0000000100000ead	cltd
+0000000100000eae	movl	-0xc(%rbp), %ecx
+0000000100000eb1	idivl	%ecx
+0000000100000eb3	cmpl	$0x0, %edx
+0000000100000eb6	jne	0x100000ed2
+0000000100000ebc	leaq	0xcf(%rip), %rdi        ## literal pool for: "FizzBuzz\n"
+0000000100000ec3	movb	$0x0, %al
+0000000100000ec5	callq	0x100000f70             ## symbol stub for: _printf
+0000000100000eca	movl	%eax, -0x10(%rbp)
+0000000100000ecd	jmp	0x100000f54
+0000000100000ed2	movl	$0x3, %eax
+0000000100000ed7	movl	-0x8(%rbp), %ecx
+0000000100000eda	movl	%eax, -0x14(%rbp)
+0000000100000edd	movl	%ecx, %eax
+0000000100000edf	cltd
+0000000100000ee0	movl	-0x14(%rbp), %ecx
+0000000100000ee3	idivl	%ecx
+0000000100000ee5	cmpl	$0x0, %edx
+0000000100000ee8	jne	0x100000f04
+0000000100000eee	leaq	0xa7(%rip), %rdi        ## literal pool for: "Fizz\n"
+0000000100000ef5	movb	$0x0, %al
+0000000100000ef7	callq	0x100000f70             ## symbol stub for: _printf
+0000000100000efc	movl	%eax, -0x18(%rbp)
+0000000100000eff	jmp	0x100000f4f
+0000000100000f04	movl	$0x5, %eax
+0000000100000f09	movl	-0x8(%rbp), %ecx
+0000000100000f0c	movl	%eax, -0x1c(%rbp)
+0000000100000f0f	movl	%ecx, %eax
+0000000100000f11	cltd
+0000000100000f12	movl	-0x1c(%rbp), %ecx
+0000000100000f15	idivl	%ecx
+0000000100000f17	cmpl	$0x0, %edx
+0000000100000f1a	jne	0x100000f36
+0000000100000f20	leaq	0x7b(%rip), %rdi        ## literal pool for: "Buzz\n"
+0000000100000f27	movb	$0x0, %al
+0000000100000f29	callq	0x100000f70             ## symbol stub for: _printf
+0000000100000f2e	movl	%eax, -0x20(%rbp)
+0000000100000f31	jmp	0x100000f4a
+0000000100000f36	leaq	0x6b(%rip), %rdi        ## literal pool for: "%d\n"
+0000000100000f3d	movl	-0x8(%rbp), %esi
+0000000100000f40	movb	$0x0, %al
+0000000100000f42	callq	0x100000f70             ## symbol stub for: _printf
+0000000100000f47	movl	%eax, -0x24(%rbp)
+0000000100000f4a	jmp	0x100000f4f
+0000000100000f4f	jmp	0x100000f54
+0000000100000f54	jmp	0x100000f59
+0000000100000f59	movl	-0x8(%rbp), %eax
+0000000100000f5c	addl	$0x1, %eax
+0000000100000f5f	movl	%eax, -0x8(%rbp)
+0000000100000f62	jmp	0x100000e96
+0000000100000f67	xorl	%eax, %eax
+0000000100000f69	addq	$0x30, %rsp
+0000000100000f6d	popq	%rbp
+0000000100000f6e	retq
