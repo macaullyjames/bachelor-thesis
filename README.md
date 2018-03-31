@@ -5,7 +5,7 @@ The LaTeX source for my bachelor thesis in computer science, _"Anti-analysis tec
 The full thesis in PDF format can be found [here](thesis.pdf).
 
 >
-###Abstract
+### Abstract
 >
 Programming languages such as C/C++ allow for great flexibility in how code can be written. This leads to programmers developing their own “code style” that can be used to identify them among a group of other programmers in a setting such as a programming competition. Recent research has shown that some of the identifying stylistic features present in source code survive the compilation process, and that authorship classification can be performed on the compiled executables alone. This was originally performed by Rosenblum et al. in their 2011 paper on the subject.
 >
